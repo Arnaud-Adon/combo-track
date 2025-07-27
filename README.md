@@ -9,11 +9,13 @@ It allows you to **take timestamped notes** directly on YouTube videos — wheth
 ## 🔥 Why ComboTrack?
 
 Right now, players use:
+
 - 📝 Paper notebooks (easy to lose or forget)
 - 📄 Google Docs or Notion (not synced with video time)
 - 🧠 Their memory (not reliable for consistent improvement)
 
 But none of these tools are truly made for:
+
 > ✅ Linking **each note** to a **specific video moment**  
 > ✅ **Instantly replaying** important moments  
 > ✅ Keeping a clean, searchable history of match notes
@@ -52,3 +54,4 @@ cd combotrack
 pnpm install
 pnpm dev
 
+```
