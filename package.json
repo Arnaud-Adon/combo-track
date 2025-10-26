@@ -12,6 +12,7 @@
     "format": "prettier --write .",
     "commit": "cz",
     "commit:done": "cz && git push && git checkout main && git pull origin main",
+    "cleanup": "git branch --merged main | grep -v '^\\*\\|main\\|master' | xargs -r git branch -d",
     "prepare": "husky"
   },
   "dependencies": {
