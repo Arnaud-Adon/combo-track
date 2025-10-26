@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-. "$(dirname "$0")/_/h"
-
-git checkout main
-git pull origin main

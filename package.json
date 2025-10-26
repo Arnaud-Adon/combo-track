@@ -11,6 +11,7 @@
     "ts": "tsc",
     "format": "prettier --write .",
     "commit": "cz",
+    "commit:done": "cz && git push && git checkout main && git pull origin main",
     "prepare": "husky"
   },
   "dependencies": {
