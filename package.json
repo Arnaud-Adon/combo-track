@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "next lint",
     "lint:ci": "next lint",
-    "ts": "tsc"
+    "ts": "tsc",
+    "format": "prettier --write .",
+    "commit": "cz",
+    "prepare": "husky"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.0",
@@ -38,28 +41,41 @@
     "input-otp": "^1.4.2",
     "lucide-react": "^0.526.0",
     "next": "15.4.4",
+    "next-safe-action": "^8.0.8",
     "next-themes": "^0.4.6",
     "react": "19.1.0",
     "react-day-picker": "^9.8.1",
     "react-dom": "19.1.0",
     "react-hook-form": "^7.61.1",
+    "react-youtube": "^10.1.0",
     "recharts": "2.15.4",
     "sonner": "^2.0.6",
     "tailwind-merge": "^3.3.1",
     "zod": "^4.0.10"
   },
   "devDependencies": {
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20.19.9",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9",
     "eslint-config-next": "15.4.4",
+    "husky": "^9.1.7",
+    "prettier": "^3.6.2",
     "prisma": "^6.12.0",
     "tailwindcss": "^4",
     "tsx": "^4.20.3",
     "tw-animate-css": "^1.3.6",
     "typescript": "^5.8.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   }
 }
