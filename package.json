@@ -10,9 +10,10 @@
     "lint:ci": "next lint",
     "ts": "tsc",
     "format": "prettier --write .",
+    "sync-main": "git checkout main && git pull origin main",
     "commit": "cz",
-    "commit:done": "cz && git push && git checkout main && git pull origin main",
-    "cleanup": "git branch --merged main | grep -v '^\\*\\|main\\|master' | xargs -r git branch -d",
+    "commit:done": "cz && git push && pnpm sync-main && pnpm cleanup",
+    "cleanup": "git branch --merged main | grep -v '^*\\|main\\|master' | xargs -r git branch -d && gh pr list --state merged --json headRefName --jq '.[].headRefName' | xargs -I {} sh -c 'git show-ref --verify --quiet refs/heads/{} && git branch -D {}' || true",
     "prepare": "husky"
   },
   "dependencies": {
