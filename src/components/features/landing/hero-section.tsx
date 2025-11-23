@@ -24,9 +24,9 @@ export function HeroSection(props: HeroSectionProps) {
         </h1>
 
         <p className="text-muted-foreground mx-auto mt-6 max-w-2xl text-lg md:text-xl">
-          Stop rewatching the same matches over and over. Drop timestamped
-          notes on your fighting game replays and actually remember what you
-          learned. Get good, faster.
+          Stop rewatching the same matches over and over. Drop timestamped notes
+          on your fighting game replays and actually remember what you learned.
+          Get good, faster.
         </p>
 
         <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center">
