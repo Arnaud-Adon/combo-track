@@ -15,7 +15,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { noteSchema, NoteSchemaType } from "./note-schema";
 
-export function NoteForm() {
+type NoteFormProps = {
+  matchId: string;
+};
+
+export function NoteForm({ matchId }: NoteFormProps) {
   const form = useForm<NoteSchemaType>({
     resolver: zodResolver(noteSchema),
     defaultValues: {
@@ -24,29 +28,36 @@ export function NoteForm() {
   });
 
   const onSubmit = (data: NoteSchemaType) => {
-    console.log(data);
+    console.log(data, matchId);
     form.reset();
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="note"
-          render={({ field, fieldState: { error } }) => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel>Note</FormLabel>
               <FormControl>
-                <Textarea {...field} />
+                <Textarea
+                  {...field}
+                  placeholder="Ajouter une note à ce moment de la vidéo..."
+                  className="min-h-[100px]"
+                />
               </FormControl>
-              <FormDescription>Add a note to the replay</FormDescription>
+              <FormDescription>
+                Votre note sera horodatée automatiquement
+              </FormDescription>
               <FormMessage />
-              <pre>{JSON.stringify(error, null, 2)}</pre>
             </FormItem>
           )}
         />
-        <Button type="submit">Add note</Button>
+        <Button type="submit" className="w-full">
+          Ajouter la note
+        </Button>
       </form>
     </Form>
   );
