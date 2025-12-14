@@ -1,14 +1,14 @@
-import { VideoPlayer } from "@/components/features/video/video-player";
 import { NoteForm } from "@/components/features/video/note-form";
 import { NoteList } from "@/components/features/video/note-list";
+import { VideoPlayer } from "@/components/features/video/video-player";
 import { Layout, LayoutHeader } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { prisma } from "@/lib/prisma";
 import { extractYoutubeVideoId } from "@/utils";
-import { notFound } from "next/navigation";
-import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export default async function VideoPage({
   params,
@@ -21,18 +21,17 @@ export default async function VideoPage({
     where: {
       id,
     },
-    include: {
-      notes: {
-        orderBy: {
-          timestamp: "asc",
-        },
-      },
-    },
   });
 
   if (!match) {
     notFound();
   }
+
+  const notes = await prisma.note.findMany({
+    where: {
+      matchId: match.id,
+    },
+  });
 
   const videoId = extractYoutubeVideoId(match.videoUrl);
 
@@ -57,7 +56,7 @@ export default async function VideoPage({
         <div className="md:col-span-2 space-y-6">
           <Card>
             <CardContent className="p-0">
-              <VideoPlayer videoId={videoId} matchId={match.id} />
+              <VideoPlayer videoId={videoId} />
             </CardContent>
           </Card>
 
@@ -78,7 +77,7 @@ export default async function VideoPage({
                 <CardTitle>Notes</CardTitle>
               </CardHeader>
               <CardContent className="overflow-y-auto max-h-[60vh] md:max-h-[calc(100vh-16rem)]">
-                <NoteList notes={match.notes} />
+                <NoteList notes={notes} />
               </CardContent>
             </Card>
           </div>

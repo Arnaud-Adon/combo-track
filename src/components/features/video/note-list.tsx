@@ -35,16 +35,26 @@ function NoteItem({ note, isActive, onClick }: NoteItemProps) {
       type="button"
       onClick={() => onClick(note.timestamp)}
       className={cn(
-        "w-full p-3 rounded-lg border bg-muted/50 hover:bg-muted transition-colors text-left",
-        isActive && "ring-2 ring-primary bg-primary/10",
+        "w-full p-4 rounded-lg border-2 transition-all text-left shadow-sm hover:shadow-md",
+        "bg-card border-border hover:border-primary/50",
+        isActive && "ring-2 ring-primary border-primary bg-primary/5 shadow-lg"
       )}
     >
       <div className="flex items-center gap-2 mb-2">
-        <span className="text-xs font-mono font-semibold text-primary">
+        <div
+          className={cn(
+            "px-2.5 py-1 rounded-md font-mono text-xs font-bold",
+            isActive
+              ? "bg-primary text-primary-foreground"
+              : "bg-primary/10 text-primary"
+          )}
+        >
           {formatTime(note.timestamp)}
-        </span>
+        </div>
       </div>
-      <p className="text-sm text-foreground leading-relaxed">{note.content}</p>
+      <p className="text-sm text-black leading-relaxed font-medium">
+        {note.content}
+      </p>
     </button>
   );
 }
@@ -58,7 +68,7 @@ export function NoteList(props: NoteListProps) {
     (timestamp: number) => {
       seekToTimestamp(timestamp);
     },
-    [seekToTimestamp],
+    [seekToTimestamp]
   );
 
   const activeNoteId = notes.find((note, index) => {
