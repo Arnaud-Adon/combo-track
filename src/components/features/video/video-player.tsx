@@ -7,7 +7,6 @@ import { useVideoPlayerStore } from "@/stores/video-player";
 
 type VideoPlayerProps = {
   videoId: string;
-  matchId: string;
 };
 
 export function VideoPlayer({ videoId }: VideoPlayerProps) {
@@ -16,8 +15,10 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
 
   const onReady: YouTubeProps["onReady"] = (event) => {
     const player = event.target;
+
     setPlayerRef(player);
     const duration = player.getDuration();
+
     updateDuration(duration);
   };
 
@@ -47,6 +48,8 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
           width: "100%",
           playerVars: {
             autoplay: 0,
+            rel: 0,
+            modestbranding: 1,
           },
         }}
       />

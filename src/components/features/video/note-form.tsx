@@ -11,8 +11,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
+import { useVideoPlayerStore } from "@/stores/video-player";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAction } from "next-safe-action/hooks";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { createNoteAction } from "./note-action";
 import { noteSchema, NoteSchemaType } from "./note-schema";
 
 type NoteFormProps = {
@@ -20,6 +24,17 @@ type NoteFormProps = {
 };
 
 export function NoteForm({ matchId }: NoteFormProps) {
+  const router = useRouter();
+
+  const { execute, isPending, result } = useAction(createNoteAction, {
+    onSuccess: () => {
+      form.reset();
+      router.refresh();
+    },
+  });
+
+  const currentTime = useVideoPlayerStore((state) => state.currentTime);
+
   const form = useForm<NoteSchemaType>({
     resolver: zodResolver(noteSchema),
     defaultValues: {
@@ -28,8 +43,11 @@ export function NoteForm({ matchId }: NoteFormProps) {
   });
 
   const onSubmit = (data: NoteSchemaType) => {
-    console.log(data, matchId);
-    form.reset();
+    execute({
+      content: data.note,
+      timestamp: currentTime,
+      matchId: matchId,
+    });
   };
 
   return (
@@ -55,9 +73,12 @@ export function NoteForm({ matchId }: NoteFormProps) {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">
-          Ajouter la note
+        <Button type="submit" className="w-full" disabled={isPending}>
+          {isPending ? "Ajout en cours..." : "Ajouter la note"}
         </Button>
+        {result.serverError && (
+          <p className="text-sm text-destructive mt-2">{result.serverError}</p>
+        )}
       </form>
     </Form>
   );
