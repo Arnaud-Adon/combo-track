@@ -2,17 +2,20 @@
 
 import { useCallback, useEffect, useRef } from "react";
 
-import { Note } from "@/../generated/prisma";
+import { Note, Tag } from "@/../generated/prisma";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useVideoPlayerStore } from "@/stores/video-player";
 import { formatTime } from "@/utils";
 
+type NoteWithTags = Note & { tags: Tag[] };
+
 type NoteListProps = {
-  notes: Note[];
+  notes: NoteWithTags[];
 };
 
 type NoteItemProps = {
-  note: Note;
+  note: NoteWithTags;
   isActive: boolean;
   onClick: (timestamp: number) => void;
 };
@@ -37,7 +40,7 @@ function NoteItem({ note, isActive, onClick }: NoteItemProps) {
       className={cn(
         "w-full p-4 rounded-lg border-2 transition-all text-left shadow-sm hover:shadow-md",
         "bg-card border-border hover:border-primary/50",
-        isActive && "ring-2 ring-primary border-primary bg-primary/5 shadow-lg"
+        isActive && "ring-2 ring-primary border-primary bg-primary/5 shadow-lg",
       )}
     >
       <div className="flex items-center gap-2 mb-2">
@@ -46,7 +49,7 @@ function NoteItem({ note, isActive, onClick }: NoteItemProps) {
             "px-2.5 py-1 rounded-md font-mono text-xs font-bold",
             isActive
               ? "bg-primary text-primary-foreground"
-              : "bg-primary/10 text-primary"
+              : "bg-primary/10 text-primary",
           )}
         >
           {formatTime(note.timestamp)}
@@ -55,6 +58,15 @@ function NoteItem({ note, isActive, onClick }: NoteItemProps) {
       <p className="text-sm text-black leading-relaxed font-medium">
         {note.content}
       </p>
+      {note.tags && note.tags.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 mt-2">
+          {note.tags.map((tag) => (
+            <Badge key={tag.id} variant="secondary" className="text-xs">
+              {tag.name}
+            </Badge>
+          ))}
+        </div>
+      )}
     </button>
   );
 }
@@ -68,7 +80,7 @@ export function NoteList(props: NoteListProps) {
     (timestamp: number) => {
       seekToTimestamp(timestamp);
     },
-    [seekToTimestamp]
+    [seekToTimestamp],
   );
 
   const activeNoteId = notes.find((note, index) => {

@@ -31,6 +31,18 @@ export default async function VideoPage({
     where: {
       matchId: match.id,
     },
+    include: {
+      tags: true,
+    },
+    orderBy: {
+      timestamp: "asc",
+    },
+  });
+
+  const tags = await prisma.tag.findMany({
+    orderBy: {
+      name: "asc",
+    },
   });
 
   const videoId = extractYoutubeVideoId(match.videoUrl);
@@ -65,7 +77,7 @@ export default async function VideoPage({
               <CardTitle>Ajouter une note</CardTitle>
             </CardHeader>
             <CardContent>
-              <NoteForm matchId={match.id} />
+              <NoteForm matchId={match.id} availableTags={tags} />
             </CardContent>
           </Card>
         </div>

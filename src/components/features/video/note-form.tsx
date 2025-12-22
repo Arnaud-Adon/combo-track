@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { Tag } from "@/../generated/prisma";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -11,6 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 import { useVideoPlayerStore } from "@/stores/video-player";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
@@ -21,14 +24,17 @@ import { noteSchema, NoteSchemaType } from "./note-schema";
 
 type NoteFormProps = {
   matchId: string;
+  availableTags: Tag[];
 };
 
-export function NoteForm({ matchId }: NoteFormProps) {
+export function NoteForm({ matchId, availableTags }: NoteFormProps) {
   const router = useRouter();
+  const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
 
   const { execute, isPending, result } = useAction(createNoteAction, {
     onSuccess: () => {
       form.reset();
+      setSelectedTagIds([]);
       router.refresh();
     },
   });
@@ -39,14 +45,26 @@ export function NoteForm({ matchId }: NoteFormProps) {
     resolver: zodResolver(noteSchema),
     defaultValues: {
       note: "",
+      tagIds: [],
     },
   });
+
+  const toggleTag = (tagId: string) => {
+    setSelectedTagIds((prev) =>
+      prev.includes(tagId)
+        ? prev.filter((id) => id !== tagId)
+        : prev.length < 10
+          ? [...prev, tagId]
+          : prev,
+    );
+  };
 
   const onSubmit = (data: NoteSchemaType) => {
     execute({
       content: data.note,
       timestamp: currentTime,
       matchId: matchId,
+      tagIds: selectedTagIds,
     });
   };
 
@@ -73,7 +91,48 @@ export function NoteForm({ matchId }: NoteFormProps) {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full" disabled={isPending}>
+
+        <div className="space-y-3">
+          <FormLabel>Tags ({selectedTagIds.length}/10)</FormLabel>
+          <FormDescription>
+            Sélectionnez les tags qui décrivent cette note
+          </FormDescription>
+          <div className="flex flex-wrap gap-2">
+            {availableTags.map((tag) => {
+              const isSelected = selectedTagIds.includes(tag.id);
+              const isDisabled = !isSelected && selectedTagIds.length >= 10;
+
+              return (
+                <button
+                  key={tag.id}
+                  type="button"
+                  onClick={() => toggleTag(tag.id)}
+                  disabled={isDisabled}
+                  className={cn(
+                    "px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
+                    isSelected
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+                    isDisabled && "opacity-50 cursor-not-allowed",
+                  )}
+                >
+                  {tag.name}
+                </button>
+              );
+            })}
+          </div>
+          {selectedTagIds.length === 0 && (
+            <p className="text-sm text-destructive">
+              Veuillez sélectionner au moins un tag
+            </p>
+          )}
+        </div>
+
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={isPending || selectedTagIds.length === 0}
+        >
           {isPending ? "Ajout en cours..." : "Ajouter la note"}
         </Button>
         {result.serverError && (
