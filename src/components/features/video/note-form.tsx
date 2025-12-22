@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Tag } from "@/../generated/prisma";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,6 +17,7 @@ import { useVideoPlayerStore } from "@/stores/video-player";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { createNoteAction } from "./note-action";
 import { noteSchema, NoteSchemaType } from "./note-schema";
@@ -50,13 +50,16 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
   });
 
   const toggleTag = (tagId: string) => {
-    setSelectedTagIds((prev) =>
-      prev.includes(tagId)
+    setSelectedTagIds((prev) => {
+      const newTagIds = prev.includes(tagId)
         ? prev.filter((id) => id !== tagId)
         : prev.length < 10
           ? [...prev, tagId]
-          : prev,
-    );
+          : prev;
+
+      form.setValue("tagIds", newTagIds);
+      return newTagIds;
+    });
   };
 
   const onSubmit = (data: NoteSchemaType) => {
@@ -64,7 +67,7 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
       content: data.note,
       timestamp: currentTime,
       matchId: matchId,
-      tagIds: selectedTagIds,
+      tagIds: data.tagIds,
     });
   };
 
@@ -113,7 +116,7 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
                     isSelected
                       ? "bg-primary text-primary-foreground"
                       : "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-                    isDisabled && "opacity-50 cursor-not-allowed",
+                    isDisabled && "opacity-50 cursor-not-allowed"
                   )}
                 >
                   {tag.name}

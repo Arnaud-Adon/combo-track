@@ -15,7 +15,7 @@ export const createNoteAction = actionClient
         .array(z.string())
         .min(1, { error: "At least one tag required" })
         .max(10, { error: "Maximum 10 tags allowed" }),
-    }),
+    })
   )
   .action(async ({ parsedInput }) => {
     const { content, timestamp, matchId, tagIds } = parsedInput;
