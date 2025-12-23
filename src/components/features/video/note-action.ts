@@ -15,7 +15,7 @@ export const createNoteAction = actionClient
         .array(z.string())
         .min(1, { error: "At least one tag required" })
         .max(10, { error: "Maximum 10 tags allowed" }),
-    })
+    }),
   )
   .action(async ({ parsedInput }) => {
     const { content, timestamp, matchId, tagIds } = parsedInput;
@@ -33,4 +33,20 @@ export const createNoteAction = actionClient
         tags: true,
       },
     });
+  });
+
+export const deleteNoteAction = actionClient
+  .inputSchema(
+    z.object({
+      noteId: z.string().min(1, { error: "L'ID de la note est requis" }),
+    }),
+  )
+  .action(async ({ parsedInput }) => {
+    const { noteId } = parsedInput;
+
+    await prisma.note.delete({
+      where: { id: noteId },
+    });
+
+    return { success: true };
   });
