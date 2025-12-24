@@ -5,6 +5,7 @@ export const env = createEnv({
   server: {
     DATABASE_URL: z.url(),
     OPEN_AI_API_KEY: z.string().min(1),
+    GOOGLE_CLIENT_SECRET: z.string().min(1),
   },
 
   /**
@@ -15,6 +16,7 @@ export const env = createEnv({
 
   client: {
     PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(1),
+    PUBLIC_GOOGLE_CLIENT_ID: z.string().min(1),
   },
 
   /**

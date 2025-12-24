@@ -8,7 +8,7 @@ export function Header() {
   return (
     <header
       className={cn(
-        "w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+        "w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
       )}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -23,10 +23,10 @@ export function Header() {
             <Link href="/videos">
               <Button variant="ghost">My Videos</Button>
             </Link>
-            <Link href="/api/auth/signin">
+            <Link href="/sign-in">
               <Button variant="outline">Sign In</Button>
             </Link>
-            <Link href="/api/auth/signup">
+            <Link href="/sign-up">
               <Button>Sign Up</Button>
             </Link>
           </div>
