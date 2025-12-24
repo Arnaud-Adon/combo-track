@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { PrismaClient } from "../../generated/prisma";
+import { env } from "./env";
 
 const prisma = new PrismaClient();
 
@@ -12,16 +13,11 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: true,
   },
+  socialProviders: {
+    google: {
+      clientId: env.PUBLIC_GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
+      redirectURI: "http://localhost:3000/api/auth/callback/google",
+    },
+  },
 });
-
-// export const getUser = async () => {
-//   const session = await auth.api.getSession({
-//     headers: await headers(),
-//   });
-
-//   if (!session) {
-//     return null;
-//   }
-
-//   return session.user;
-// };
