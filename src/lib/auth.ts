@@ -13,11 +13,14 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: true,
   },
-  socialProviders: {
-    google: {
-      clientId: env.PUBLIC_GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
-      redirectURI: "http://localhost:3000/api/auth/callback/google",
-    },
-  },
+  socialProviders:
+    env.PUBLIC_GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET
+      ? {
+          google: {
+            clientId: env.PUBLIC_GOOGLE_CLIENT_ID,
+            clientSecret: env.GOOGLE_CLIENT_SECRET,
+            redirectURI: "http://localhost:3000/api/auth/callback/google",
+          },
+        }
+      : undefined,
 });

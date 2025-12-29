@@ -15,6 +15,7 @@ export const signUpSchema = z
       .regex(/[A-Z]/, "Le mot de passe doit contenir une majuscule")
       .regex(/[0-9]/, "Le mot de passe doit contenir un chiffre"),
     confirmPassword: z.string(),
+    image: z.string().url().optional().nullable(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Les mots de passe ne correspondent pas",

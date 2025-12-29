@@ -1,14 +1,18 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { AuthenticatedNav } from "@/components/features/landing/authenticated-nav";
+import { UnauthenticatedNav } from "@/components/features/landing/unauthenticated-nav";
+import { useSession } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 export function Header() {
+  const { data: session, isPending } = useSession();
+
   return (
     <header
       className={cn(
-        "w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
+        "w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
       )}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -19,17 +23,19 @@ export function Header() {
             </span>
           </Link>
 
-          <div className="flex items-center gap-4">
-            <Link href="/videos">
-              <Button variant="ghost">My Videos</Button>
-            </Link>
-            <Link href="/sign-in">
-              <Button variant="outline">Sign In</Button>
-            </Link>
-            <Link href="/sign-up">
-              <Button>Sign Up</Button>
-            </Link>
-          </div>
+          {isPending ? (
+            <div className="h-10 w-32" />
+          ) : session?.user ? (
+            <AuthenticatedNav
+              user={{
+                name: session.user.name,
+                email: session.user.email,
+                image: session.user.image ?? null,
+              }}
+            />
+          ) : (
+            <UnauthenticatedNav />
+          )}
         </div>
       </div>
     </header>

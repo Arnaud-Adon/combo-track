@@ -4,8 +4,13 @@ import { z } from "zod";
 export const env = createEnv({
   server: {
     DATABASE_URL: z.url(),
-    OPEN_AI_API_KEY: z.string().min(1),
-    GOOGLE_CLIENT_SECRET: z.string().min(1),
+    OPEN_AI_API_KEY: z.string().min(1).optional(),
+    GOOGLE_CLIENT_SECRET: z.string().min(1).optional(),
+    AWS_S3_BUCKET_NAME: z.string().min(1),
+    AWS_S3_API_URL: z.string().url(),
+    AWS_ACCESS_KEY_ID: z.string().min(1),
+    AWS_SECRET_ACCESS_KEY_ID: z.string().min(1),
+    R2_URL: z.string().url(),
   },
 
   /**
@@ -15,8 +20,8 @@ export const env = createEnv({
   clientPrefix: "PUBLIC_",
 
   client: {
-    PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(1),
-    PUBLIC_GOOGLE_CLIENT_ID: z.string().min(1),
+    PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(1).optional(),
+    PUBLIC_GOOGLE_CLIENT_ID: z.string().min(1).optional(),
   },
 
   /**
