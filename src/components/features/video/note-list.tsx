@@ -55,7 +55,7 @@ function NoteItem({ note, isActive, onClick, onDelete }: NoteItemProps) {
       className={cn(
         "w-full p-4 rounded-lg border-2 transition-all shadow-sm hover:shadow-md",
         "bg-card border-border hover:border-primary/50",
-        isActive && "ring-2 ring-primary border-primary bg-primary/5 shadow-lg"
+        isActive && "ring-2 ring-primary border-primary bg-primary/5 shadow-lg",
       )}
     >
       <div className="flex items-center justify-between gap-2 mb-2">
@@ -64,7 +64,7 @@ function NoteItem({ note, isActive, onClick, onDelete }: NoteItemProps) {
             "px-2.5 py-1 rounded-md font-mono text-xs font-bold",
             isActive
               ? "bg-primary text-primary-foreground"
-              : "bg-primary/10 text-primary"
+              : "bg-primary/10 text-primary",
           )}
           aria-label={`Aller à ${formatTime(note.timestamp)}`}
         >
@@ -121,7 +121,7 @@ export function NoteList(props: NoteListProps) {
     (timestamp: number) => {
       seekToTimestamp(timestamp);
     },
-    [seekToTimestamp]
+    [seekToTimestamp],
   );
 
   const openDeleteDialog = (note: NoteWithTags) => {

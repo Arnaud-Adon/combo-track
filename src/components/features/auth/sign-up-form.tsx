@@ -1,9 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -14,14 +11,22 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { signUp } from "@/lib/auth-client";
-import { signUpSchema, SignUpInput } from "./auth-schema";
+import { uploadAvatarAction } from "@/lib/actions/upload-avatar";
+import { signUp, useSession } from "@/lib/auth-client";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { SignUpInput, signUpSchema } from "./auth-schema";
+import { ImageUploadField } from "./image-upload-field";
 
 export function SignUpForm() {
   const router = useRouter();
+  const { refetch } = useSession();
   const [error, setError] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [showAvatarUpload, setShowAvatarUpload] = useState(false);
 
   const form = useForm<SignUpInput>({
     resolver: zodResolver(signUpSchema),
@@ -49,8 +54,20 @@ export function SignUpForm() {
       return;
     }
 
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append("avatar", selectedFile);
+      const uploadResult = await uploadAvatarAction(formData);
+
+      if (uploadResult.success) {
+        refetch();
+      }
+    }
+
     router.push("/videos");
   }
+
+  const handleFileSelect = (file: File | null) => setSelectedFile(file);
 
   return (
     <Form {...form}>
@@ -80,6 +97,28 @@ export function SignUpForm() {
             </FormItem>
           )}
         />
+
+        {showAvatarUpload && (
+          <ImageUploadField onFileSelect={handleFileSelect} />
+        )}
+
+        {!showAvatarUpload && !selectedFile && (
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => setShowAvatarUpload(true)}
+            className="w-full"
+          >
+            Add Profile Picture (Optional)
+          </Button>
+        )}
+
+        {selectedFile && (
+          <div className="text-sm text-muted-foreground">
+            ✓ Profile picture selected
+          </div>
+        )}
 
         <FormField
           control={form.control}

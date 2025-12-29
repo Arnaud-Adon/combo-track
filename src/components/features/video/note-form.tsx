@@ -116,7 +116,7 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
                     isSelected
                       ? "bg-primary text-primary-foreground"
                       : "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-                    isDisabled && "opacity-50 cursor-not-allowed"
+                    isDisabled && "opacity-50 cursor-not-allowed",
                   )}
                 >
                   {tag.name}
