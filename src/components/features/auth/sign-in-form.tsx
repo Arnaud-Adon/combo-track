@@ -1,9 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -14,10 +11,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { signIn } from "@/lib/auth-client";
-import { signInSchema, SignInInput } from "./auth-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { SignInInput, signInSchema } from "./auth-schema";
 
 export function SignInForm() {
   const router = useRouter();
@@ -40,7 +40,7 @@ export function SignInForm() {
       email: data.email,
       password: data.password,
       rememberMe: rememberMe,
-      callbackURL: "/videos",
+      callbackURL: "/dashboard",
     });
 
     if (result.error) {
@@ -108,7 +108,7 @@ export function SignInForm() {
             onChange={(e) => setRememberMe(e.target.checked)}
             className="h-4 w-4"
           />
-          <label htmlFor="rememberMe" className="text-sm cursor-pointer">
+          <label htmlFor="rememberMe" className="cursor-pointer text-sm">
             Se souvenir de moi
           </label>
         </div>

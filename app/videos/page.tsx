@@ -1,8 +1,23 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 export default async function VideosPage() {
-  const matches = await prisma.match.findMany();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session?.user) {
+    redirect("/sign-in");
+  }
+
+  const matches = await prisma.match.findMany({
+    where: {
+      userId: session.user.id,
+    },
+  });
 
   if (!matches) {
     return (

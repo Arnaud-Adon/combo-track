@@ -14,7 +14,7 @@ export const metadata = {
 
 export default function SignInPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+    <div className="bg-background flex min-h-screen items-center justify-center px-4">
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>Connexion</CardTitle>
@@ -30,7 +30,7 @@ export default function SignInPage() {
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
+              <span className="bg-background text-muted-foreground px-2">
                 Ou
               </span>
             </div>

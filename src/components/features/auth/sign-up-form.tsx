@@ -46,7 +46,7 @@ export function SignUpForm() {
       name: data.name,
       email: data.email,
       password: data.password,
-      callbackURL: "/videos",
+      callbackURL: "/dashboard",
     });
 
     if (result.error) {
@@ -115,7 +115,7 @@ export function SignUpForm() {
         )}
 
         {selectedFile && (
-          <div className="text-sm text-muted-foreground">
+          <div className="text-muted-foreground text-sm">
             ✓ Profile picture selected
           </div>
         )}

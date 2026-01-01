@@ -15,9 +15,12 @@ interface AuthenticatedNavProps {
 export function AuthenticatedNav({ user }: AuthenticatedNavProps) {
   return (
     <div className="flex items-center gap-4">
-      <Link href="/videos">
-        <Button variant="ghost">My Videos</Button>
+      <Link href="/dashboard">
+        <Button variant="ghost">Dashboard</Button>
       </Link>
+      <span className="text-sm font-medium text-foreground hover:text-primary transition-colors">
+        {user.name ?? user.email.split("@")[0]}
+      </span>
       <UserProfileDropdown user={user} />
     </div>
   );

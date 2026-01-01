@@ -14,6 +14,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum MatchStatus {
+  DRAFT
+  COMPLETED
+  ANALYZED
+  IN_PROGRESS
+}
+
+enum MatchType {
+  RANKED
+  TOURNAMENT
+  TRAINING
+}
+
 model User {
   id            String    @id @default(cuid())
   email         String    @unique
@@ -30,12 +43,15 @@ model User {
 }
 
 model Match {
-  id        String   @id @default(cuid())
+  id        String      @id @default(cuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User        @relation(fields: [userId], references: [id])
   title     String
   videoUrl  String
-  createdAt DateTime @default(now())
+  matchType MatchType   @default(RANKED)
+  status    MatchStatus @default(IN_PROGRESS)
+  duration  Int?
+  createdAt DateTime    @default(now())
   notes     Note[]
 }
 
