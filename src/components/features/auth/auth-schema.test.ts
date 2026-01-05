@@ -78,8 +78,8 @@ describe("signUpSchema", () => {
     const invalidData = {
       name: "John",
       email: "john@example.com",
-      password: "Pass123!",
-      confirmPassword: "Pass456!",
+      password: "TestPassword123!",
+      confirmPassword: "DifferentPassword123!",
     };
     const result = signUpSchema.safeParse(invalidData);
     expect(result.success).toBe(false);
