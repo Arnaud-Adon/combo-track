@@ -45,3 +45,8 @@ next-env.d.ts
 # claude
 .claude/tasks/*
 .claude/docs/*
+
+# testing
+/test-results/
+/playwright-report/
+/.vitest/
