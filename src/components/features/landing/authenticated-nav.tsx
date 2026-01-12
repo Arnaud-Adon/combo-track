@@ -18,7 +18,10 @@ export function AuthenticatedNav({ user }: AuthenticatedNavProps) {
       <Link href="/dashboard">
         <Button variant="ghost">Dashboard</Button>
       </Link>
-      <span className="text-sm font-medium text-foreground hover:text-primary transition-colors">
+      <Link href="/glossary">
+        <Button variant="ghost">Glossaire</Button>
+      </Link>
+      <span className="text-foreground hover:text-primary text-sm font-medium transition-colors">
         {user.name ?? user.email.split("@")[0]}
       </span>
       <UserProfileDropdown user={user} />
