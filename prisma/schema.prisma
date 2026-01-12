@@ -28,16 +28,17 @@ enum MatchType {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
-  createdAt     DateTime  @default(now())
-  matches       Match[]
-  name          String
-  emailVerified Boolean
-  image         String?
-  updatedAt     DateTime
-  sessions      Session[]
-  accounts      Account[]
+  id               String             @id @default(cuid())
+  email            String             @unique
+  createdAt        DateTime           @default(now())
+  matches          Match[]
+  name             String
+  emailVerified    Boolean
+  image            String?
+  updatedAt        DateTime
+  sessions         Session[]
+  accounts         Account[]
+  glossaryArticles GlossaryArticle[]  @relation("GlossaryArticles")
 
   @@map("user")
 }
@@ -70,6 +71,27 @@ model Tag {
   name      String   @unique
   notes     Note[]
   createdAt DateTime @default(now())
+}
+
+model GlossaryArticle {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  title     String
+  content   String   @db.Text
+  excerpt   String?
+  category  String?
+  published Boolean  @default(false)
+
+  createdBy String
+  creator   User     @relation("GlossaryArticles", fields: [createdBy], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+  @@index([category])
+  @@index([createdBy])
+  @@map("glossary_article")
 }
 
 model Session {
