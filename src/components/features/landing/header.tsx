@@ -2,12 +2,14 @@
 
 import { AuthenticatedNav } from "@/components/features/landing/authenticated-nav";
 import { UnauthenticatedNav } from "@/components/features/landing/unauthenticated-nav";
+import { useUserRole } from "@/hooks/use-user-role";
 import { useSession } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 export function Header() {
   const { data: session, isPending } = useSession();
+  const { role } = useUserRole();
 
   return (
     <header
@@ -31,6 +33,7 @@ export function Header() {
                 name: session.user.name,
                 email: session.user.email,
                 image: session.user.image ?? null,
+                role: role ?? undefined,
               }}
             />
           ) : (

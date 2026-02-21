@@ -9,6 +9,7 @@ interface AuthenticatedNavProps {
     name: string;
     email: string;
     image: string | null;
+    role?: string;
   };
 }
 
@@ -21,6 +22,11 @@ export function AuthenticatedNav({ user }: AuthenticatedNavProps) {
       <Link href="/glossary">
         <Button variant="ghost">Glossaire</Button>
       </Link>
+      {user.role === "ADMIN" && (
+        <Link href="/admin/glossary">
+          <Button variant="ghost">Admin</Button>
+        </Link>
+      )}
       <span className="text-foreground hover:text-primary text-sm font-medium transition-colors">
         {user.name ?? user.email.split("@")[0]}
       </span>
