@@ -55,7 +55,7 @@ export default async function VideoPage({
     <Layout className="max-w-7xl">
       <LayoutHeader>
         <div className="flex items-center gap-4 w-full">
-          <Link href="/">
+          <Link href="/dashboard">
             <Button variant="ghost" size="icon">
               <ArrowLeft />
             </Button>
