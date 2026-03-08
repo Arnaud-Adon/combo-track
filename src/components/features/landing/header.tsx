@@ -14,7 +14,7 @@ export function Header() {
   return (
     <header
       className={cn(
-        "border-border bg-background/95 supports-[backdrop-filter]:bg-background/60 w-full border-b backdrop-blur",
+        "sticky top-0 z-50 border-border bg-background/95 supports-[backdrop-filter]:bg-background/60 w-full border-b backdrop-blur",
       )}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
