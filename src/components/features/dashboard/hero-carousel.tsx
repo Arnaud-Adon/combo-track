@@ -36,7 +36,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
       <div className="h-[400px] rounded-3xl bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 p-12 flex items-center justify-center">
         <div className="text-center text-white">
           <p className="text-2xl font-semibold">
-            Aucun slide configuré pour le moment
+            Aucune slide configurée pour le moment
           </p>
         </div>
       </div>

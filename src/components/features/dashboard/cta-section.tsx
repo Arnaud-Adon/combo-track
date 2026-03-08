@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import Link from "next/link";
 
 export function CTASection() {
   return (
@@ -31,21 +32,22 @@ export function CTASection() {
           <Plus className="mr-2 h-4 w-4" />
           Nouvelle note personnelle
         </Button>
-        <Button
-          className="rounded-full border-2 border-white/20 bg-white/5 font-semibold backdrop-blur transition-all hover:scale-105 hover:bg-white/10"
-          size="lg"
-          onClick={() => {}}
-        >
-          <svg
-            role="img"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+        <Link href="/videos/new">
+          <Button
+            className="rounded-full border-2 border-white/20 bg-white/5 font-semibold backdrop-blur transition-all hover:scale-105 hover:bg-white/10"
+            size="lg"
           >
-            <title>YouTube</title>
-            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-          </svg>
-          Nouvelle note de replay
-        </Button>
+            <svg
+              role="img"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>YouTube</title>
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+            </svg>
+            Nouvelle note de replay
+          </Button>
+        </Link>
       </div>
     </section>
   );
