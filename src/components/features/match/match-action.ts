@@ -5,6 +5,7 @@ import { authActionClient } from "@/lib/auth-action";
 import { getVideoDetails, isStreetFighter6 } from "@/lib/youtube";
 import { extractYoutubeVideoId } from "@/utils";
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 import { matchFormSchema } from "./match-schema";
 
 export const createMatchAction = authActionClient
@@ -37,4 +38,18 @@ export const createMatchAction = authActionClient
     revalidatePath("/dashboard");
 
     return match;
+  });
+
+export const deleteMatchAction = authActionClient
+  .inputSchema(
+    z.object({
+      matchId: z.string().min(1, "L'ID du match est requis"),
+    }),
+  )
+  .action(async ({ parsedInput, ctx }) => {
+    await prisma.match.delete({
+      where: { id: parsedInput.matchId, userId: ctx.user.id },
+    });
+
+    return { success: true };
   });

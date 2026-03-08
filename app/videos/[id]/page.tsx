@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { prisma } from "@/lib/prisma";
 import { extractYoutubeVideoId } from "@/utils";
+import { DeleteMatchDialog } from "@/components/features/match/delete-match-dialog";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -61,6 +62,9 @@ export default async function VideoPage({
             </Button>
           </Link>
           <h1 className="text-2xl font-bold">{match.title}</h1>
+          <div className="ml-auto">
+            <DeleteMatchDialog matchId={match.id} matchTitle={match.title} />
+          </div>
         </div>
       </LayoutHeader>
 
