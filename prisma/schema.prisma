@@ -66,7 +66,7 @@ model Match {
 model Note {
   id        String   @id @default(cuid())
   matchId   String
-  match     Match    @relation(fields: [matchId], references: [id])
+  match     Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
   timestamp Int // timecode en secondes
   content   String
   tags      Tag[]
