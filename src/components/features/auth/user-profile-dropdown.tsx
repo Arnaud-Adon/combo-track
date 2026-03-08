@@ -39,13 +39,19 @@ export function UserProfileDropdown({ user }: UserProfileDropdownProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0">
-          <Avatar className="h-9 w-9">
+        <Button
+          variant="ghost"
+          className="relative flex h-10 items-center gap-2 rounded-full bg-muted/50 px-2 pr-3"
+        >
+          <Avatar className="h-7 w-7">
             <AvatarImage src={user.image ?? undefined} alt={user.name} />
             <AvatarFallback>
               {getInitials(user.name, user.email)}
             </AvatarFallback>
           </Avatar>
+          <span className="text-sm font-medium">
+            {user.name ?? user.email.split("@")[0]}
+          </span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
