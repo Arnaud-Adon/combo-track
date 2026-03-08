@@ -31,7 +31,7 @@ export default function SignInPage() {
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-background text-muted-foreground px-2">
-                Ou
+                ou
               </span>
             </div>
           </div>

@@ -20,7 +20,7 @@ export default async function EditArticlePage({
 
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
-      <h1 className="mb-6 text-3xl font-bold">Éditer l&apos;article</h1>
+      <h1 className="mb-6 text-3xl font-bold">Modifier l&apos;article</h1>
       <ArticleForm mode="edit" article={article} />
     </div>
   );

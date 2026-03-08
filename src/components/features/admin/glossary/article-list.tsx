@@ -129,7 +129,7 @@ export function ArticleList({ articles }: ArticleListProps) {
                   </p>
                 )}
                 <div className="text-muted-foreground flex items-center gap-4 text-xs">
-                  <span>Catégorie: {article.category}</span>
+                  <span>Catégorie : {article.category}</span>
                   <span>Par {article.creator.name}</span>
                   <span>
                     Modifié le{" "}

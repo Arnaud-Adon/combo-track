@@ -145,7 +145,7 @@ export function NoteList(props: NoteListProps) {
   if (notes.length === 0) {
     return (
       <div className="text-center py-8 text-muted-foreground">
-        Aucune note de disponible pour cette vidéo
+        Aucune note disponible pour cette vidéo
       </div>
     );
   }
