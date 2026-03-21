@@ -14,7 +14,7 @@ export function RecentMatchesSection({ matches }: RecentMatchesSectionProps) {
         <h2 className="text-2xl font-semibold">Derniers replays</h2>
         <Link
           href="/videos"
-          className="flex items-center gap-1 text-sm text-zinc-400 transition-colors hover:text-white hover:underline"
+          className="flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground hover:underline"
         >
           Voir tout <ArrowRight className="h-4 w-4" />
         </Link>

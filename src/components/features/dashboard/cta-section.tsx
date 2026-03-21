@@ -8,7 +8,7 @@ export function CTASection() {
   return (
     <section className="space-y-6 text-center">
       <h1 className="text-5xl font-bold">
-        <span className="bg-gradient-to-r from-zinc-400 via-white to-zinc-400 bg-clip-text text-transparent">
+        <span className="bg-gradient-to-r from-muted-foreground via-foreground to-muted-foreground bg-clip-text text-transparent">
           Level Up Your Gameplay{" "}
         </span>
         <br />
@@ -20,7 +20,7 @@ export function CTASection() {
         Stop rewatching the same matches over and over. Drop timestamped notes
         on your fighting game replays and actually remember what you learned.
         <br />
-        <span className="font-medium text-white">Get good, faster.</span>
+        <span className="font-medium text-foreground">Get good, faster.</span>
       </p>
       <div className="flex justify-center gap-4">
         <Button
@@ -34,7 +34,8 @@ export function CTASection() {
         </Button>
         <Link href="/videos/new">
           <Button
-            className="rounded-full border-2 border-white/20 bg-white/5 font-semibold backdrop-blur transition-all hover:scale-105 hover:bg-white/10"
+            className="rounded-full font-semibold backdrop-blur transition-all hover:scale-105"
+            variant="outline"
             size="lg"
           >
             <svg
