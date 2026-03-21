@@ -19,8 +19,7 @@ vi.mock("@/lib/actions/upload-avatar", () => ({
   uploadAvatarAction: vi.fn(),
 }));
 
-// Import after mocks
-const { SignUpForm } = await import("./sign-up-form");
+import { SignUpForm } from "./sign-up-form";
 
 describe("SignUpForm", () => {
   it("should render the form", () => {
