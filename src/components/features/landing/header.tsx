@@ -2,6 +2,7 @@
 
 import { AuthenticatedNav } from "@/components/features/landing/authenticated-nav";
 import { UnauthenticatedNav } from "@/components/features/landing/unauthenticated-nav";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { useUserRole } from "@/hooks/use-user-role";
 import { useSession } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
@@ -20,25 +21,28 @@ export function Header() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <h1 className="bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-xl font-bold tracking-tight text-transparent">
+            <h1 className="bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-xl font-bold tracking-tight text-transparent">
               ComboTrack
             </h1>
           </Link>
 
-          {isPending ? (
-            <div className="h-10 w-32" />
-          ) : session?.user ? (
-            <AuthenticatedNav
-              user={{
-                name: session.user.name,
-                email: session.user.email,
-                image: session.user.image ?? null,
-                role: role ?? undefined,
-              }}
-            />
-          ) : (
-            <UnauthenticatedNav />
-          )}
+          <div className="flex items-center gap-2">
+            {isPending ? (
+              <div className="h-10 w-32" />
+            ) : session?.user ? (
+              <AuthenticatedNav
+                user={{
+                  name: session.user.name,
+                  email: session.user.email,
+                  image: session.user.image ?? null,
+                  role: role ?? undefined,
+                }}
+              />
+            ) : (
+              <UnauthenticatedNav />
+            )}
+            <ThemeToggle />
+          </div>
         </div>
       </div>
     </header>

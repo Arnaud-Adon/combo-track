@@ -41,7 +41,7 @@ function getStatusLabel(status: MatchStatus): string {
 export function ReplayCard({ match }: ReplayCardProps) {
   return (
     <Link href={`/videos/${match.id}`}>
-      <Card className="text-muted-foreground cursor-pointer rounded-xl border border-zinc-800 bg-zinc-900/50 px-1 py-4 backdrop-blur transition-all hover:-translate-y-0.5 hover:border-zinc-700 hover:bg-zinc-900 hover:shadow-lg">
+      <Card className="text-muted-foreground cursor-pointer rounded-xl border border-border bg-card/50 px-1 py-4 backdrop-blur transition-all hover:-translate-y-0.5 hover:border-border/80 hover:bg-card hover:shadow-lg">
         <CardHeader>
           <CardTitle className="flex w-full items-center justify-between">
             <div className="flex items-center gap-2">
