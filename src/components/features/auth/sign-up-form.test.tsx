@@ -1,18 +1,6 @@
+import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-// Mock auth client
-vi.mock("@/lib/auth-client", () => ({
-  signUp: {
-    email: vi.fn(),
-  },
-  useSession: vi.fn(() => ({
-    data: null,
-    isPending: false,
-    error: null,
-    refetch: vi.fn(),
-  })),
-}));
 
 // Mock upload avatar action
 vi.mock("@/lib/actions/upload-avatar", () => ({
