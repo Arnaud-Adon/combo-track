@@ -23,16 +23,11 @@ import { createMatchAction } from "./match-action";
 export function MatchForm() {
   const router = useRouter();
 
-  const { execute, isPending } = useAction(createMatchAction, {
+  const { execute, isPending, result } = useAction(createMatchAction, {
     onSuccess: ({ data }) => {
       toast.success("Match créé avec succès");
       router.push(`/videos/${data?.id}`);
       router.refresh();
-    },
-    onError: ({ error }) => {
-      toast.error(
-        error.serverError ?? "Erreur lors de la création du match",
-      );
     },
   });
 
@@ -81,6 +76,12 @@ export function MatchForm() {
             </FormItem>
           )}
         />
+
+        {result.serverError && (
+          <p className="text-sm text-destructive">
+            {result.serverError}
+          </p>
+        )}
 
         <div className="flex gap-4">
           <Button
