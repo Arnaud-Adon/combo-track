@@ -12,6 +12,8 @@ export const env = createEnv({
     AWS_SECRET_ACCESS_KEY_ID: z.string().min(1),
     R2_URL: z.string().url(),
     YOUTUBE_API_KEY: z.string().min(1),
+    TWITCH_CLIENT_ID: z.string().min(1),
+    TWITCH_CLIENT_SECRET: z.string().min(1),
   },
 
   /**

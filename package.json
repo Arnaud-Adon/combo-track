@@ -60,6 +60,7 @@
     "react-dom": "19.1.0",
     "react-hook-form": "^7.61.1",
     "react-markdown": "^10.1.0",
+    "react-twitch-embed": "^3.0.2",
     "react-youtube": "^10.1.0",
     "recharts": "2.15.4",
     "remark-gfm": "^4.0.1",

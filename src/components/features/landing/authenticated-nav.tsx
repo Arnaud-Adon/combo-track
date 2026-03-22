@@ -22,6 +22,9 @@ export function AuthenticatedNav({ user }: AuthenticatedNavProps) {
       <Link href="/glossary">
         <Button variant="ghost">Glossaire</Button>
       </Link>
+      <Link href="/stream">
+        <Button variant="ghost">Stream</Button>
+      </Link>
       {user.role === "ADMIN" && (
         <Link href="/admin/glossary">
           <Button variant="ghost">Admin</Button>
