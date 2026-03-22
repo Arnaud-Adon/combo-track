@@ -22,16 +22,18 @@ Create a dedicated `NavLink` component that encapsulates the active route detect
 **Behavior:**
 
 - Uses `usePathname()` from `next/navigation` to detect the current route
-- Compares `href` with the current pathname using `startsWith` to support sub-routes (e.g., `/admin/glossary` matches `/admin`)
+- Active detection: `pathname === href` OR (`pathname.startsWith(href)` AND `pathname[href.length] === '/'`). This prevents false positives (e.g., `/admin/glossary` only matches `/admin`, not `/dashboard`)
+- All buttons show inactive when on routes outside the nav structure (e.g., `/`, `/videos/[id]`)
 - Renders a `Link` wrapping a `Button`
+- Applies `aria-current="page"` when active for accessibility
 
 **Styling:**
 
-| State            | Classes                                                    |
-|------------------|------------------------------------------------------------|
-| Active (default) | `bg-accent text-accent-foreground`                         |
-| Active (hover)   | `hover:bg-accent/80`                                      |
-| Inactive         | Standard `ghost` variant (`hover:bg-accent hover:text-accent-foreground`) |
+| State            | Button variant | Classes                                                    |
+|------------------|----------------|------------------------------------------------------------|
+| Active (default) | `ghost`        | `bg-accent text-accent-foreground` applied via className    |
+| Active (hover)   | `ghost`        | `hover:bg-accent/80` applied via className                  |
+| Inactive         | `ghost`        | Standard ghost behavior (`hover:bg-accent hover:text-accent-foreground`) |
 
 ## Integration
 
