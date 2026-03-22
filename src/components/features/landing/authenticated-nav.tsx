@@ -19,7 +19,7 @@ export function AuthenticatedNav({ user }: AuthenticatedNavProps) {
       <NavLink href="/glossary">Glossaire</NavLink>
       <NavLink href="/stream">Stream</NavLink>
       {user.role === "ADMIN" && (
-        <NavLink href="/admin">Admin</NavLink>
+        <NavLink href="/admin/glossary">Admin</NavLink>
       )}
       <UserProfileDropdown user={user} />
     </div>
