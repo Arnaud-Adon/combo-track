@@ -1,8 +1,7 @@
 "use client";
 
 import { UserProfileDropdown } from "@/components/features/auth/user-profile-dropdown";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { NavLink } from "@/components/features/landing/nav-link";
 
 interface AuthenticatedNavProps {
   user: {
@@ -16,19 +15,11 @@ interface AuthenticatedNavProps {
 export function AuthenticatedNav({ user }: AuthenticatedNavProps) {
   return (
     <div className="flex items-center gap-4">
-      <Link href="/dashboard">
-        <Button variant="ghost">Dashboard</Button>
-      </Link>
-      <Link href="/glossary">
-        <Button variant="ghost">Glossaire</Button>
-      </Link>
-      <Link href="/stream">
-        <Button variant="ghost">Stream</Button>
-      </Link>
+      <NavLink href="/dashboard">Dashboard</NavLink>
+      <NavLink href="/glossary">Glossaire</NavLink>
+      <NavLink href="/stream">Stream</NavLink>
       {user.role === "ADMIN" && (
-        <Link href="/admin/glossary">
-          <Button variant="ghost">Admin</Button>
-        </Link>
+        <NavLink href="/admin/glossary">Admin</NavLink>
       )}
       <UserProfileDropdown user={user} />
     </div>
