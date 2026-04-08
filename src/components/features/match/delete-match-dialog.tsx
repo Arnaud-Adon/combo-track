@@ -60,8 +60,8 @@ export function DeleteMatchDialog({
         <AlertDialogHeader>
           <AlertDialogTitle>Supprimer ce match ?</AlertDialogTitle>
           <AlertDialogDescription>
-            Cette action est irréversible. Le match «&nbsp;{matchTitle}&nbsp;» et
-            toutes ses notes seront définitivement supprimés.
+            Cette action est irréversible. Le match «&nbsp;{matchTitle}&nbsp;»
+            et toutes ses notes seront définitivement supprimés.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -78,9 +78,7 @@ export function DeleteMatchDialog({
           </AlertDialogAction>
         </AlertDialogFooter>
         {result.serverError && (
-          <p className="text-sm text-destructive mt-2">
-            {result.serverError}
-          </p>
+          <p className="text-destructive mt-2 text-sm">{result.serverError}</p>
         )}
       </AlertDialogContent>
     </AlertDialog>

@@ -39,9 +39,7 @@ function formatStartedAt(startedAt: string): string {
 }
 
 function getThumbnailUrl(templateUrl: string): string {
-  return templateUrl
-    .replace("{width}", "440")
-    .replace("{height}", "248");
+  return templateUrl.replace("{width}", "440").replace("{height}", "248");
 }
 
 export function StreamCard({ stream }: StreamCardProps) {
@@ -81,7 +79,7 @@ export function StreamCard({ stream }: StreamCardProps) {
             </div>
           </CardTitle>
         </CardHeader>
-        <CardContent className="px-4 pb-4 pt-0">
+        <CardContent className="px-4 pt-0 pb-4">
           <p className="text-muted-foreground line-clamp-2 text-sm">
             {stream.title}
           </p>

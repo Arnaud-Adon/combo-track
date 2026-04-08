@@ -14,11 +14,11 @@ const imageSchema = z.object({
     .instanceof(File)
     .refine(
       (file) => file.size <= 5 * 1024 * 1024,
-      "Image must be less than 5MB"
+      "Image must be less than 5MB",
     )
     .refine(
       (file) => ["image/jpeg", "image/png", "image/webp"].includes(file.type),
-      "Only JPEG, PNG, and WebP images are allowed"
+      "Only JPEG, PNG, and WebP images are allowed",
     ),
 });
 
@@ -59,7 +59,7 @@ export async function uploadAvatarAction(formData: FormData) {
         Key: filename,
         Body: buffer,
         ContentType: file.type,
-      })
+      }),
     );
 
     const imageUrl = `${env.R2_URL}/${filename}`;

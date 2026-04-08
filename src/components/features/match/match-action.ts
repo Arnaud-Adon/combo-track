@@ -22,9 +22,7 @@ export const createMatchAction = authActionClient
     const videoDetails = await getVideoDetails(videoId);
 
     if (!isStreetFighter6(videoDetails)) {
-      throw new Error(
-        "Cette vidéo ne semble pas être liée à Street Fighter 6",
-      );
+      throw new Error("Cette vidéo ne semble pas être liée à Street Fighter 6");
     }
 
     const match = await prisma.match.create({

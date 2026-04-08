@@ -54,7 +54,7 @@ export function ImageUploadField({ onFileSelect }: ImageUploadFieldProps) {
         <Avatar className="h-20 w-20">
           {preview && <AvatarImage src={preview} alt="Preview" />}
           <AvatarFallback>
-            <Camera className="h-8 w-8 text-muted-foreground" />
+            <Camera className="text-muted-foreground h-8 w-8" />
           </AvatarFallback>
         </Avatar>
 
@@ -81,7 +81,7 @@ export function ImageUploadField({ onFileSelect }: ImageUploadFieldProps) {
         </div>
       </div>
 
-      {error && <p className="text-sm text-destructive">{error}</p>}
+      {error && <p className="text-destructive text-sm">{error}</p>}
     </div>
   );
 }

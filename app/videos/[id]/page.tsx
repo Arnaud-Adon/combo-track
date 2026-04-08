@@ -55,7 +55,7 @@ export default async function VideoPage({
   return (
     <Layout className="max-w-7xl">
       <LayoutHeader>
-        <div className="flex items-center gap-4 w-full">
+        <div className="flex w-full items-center gap-4">
           <Link href="/dashboard">
             <Button variant="ghost" size="icon">
               <ArrowLeft />
@@ -68,8 +68,8 @@ export default async function VideoPage({
         </div>
       </LayoutHeader>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
-        <div className="md:col-span-2 space-y-6">
+      <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="space-y-6 md:col-span-2">
           <Card>
             <CardContent className="p-0">
               <VideoPlayer videoId={videoId} />
@@ -92,7 +92,7 @@ export default async function VideoPage({
               <CardHeader>
                 <CardTitle>Notes</CardTitle>
               </CardHeader>
-              <CardContent className="overflow-y-auto max-h-[60vh] md:max-h-[calc(100vh-16rem)]">
+              <CardContent className="max-h-[60vh] overflow-y-auto md:max-h-[calc(100vh-16rem)]">
                 <NoteList notes={notes} />
               </CardContent>
             </Card>
