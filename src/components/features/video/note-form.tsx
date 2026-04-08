@@ -12,13 +12,21 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useSpeechRecognition } from "@/hooks/use-speech-recognition";
 import { cn } from "@/lib/utils";
 import { useVideoPlayerStore } from "@/stores/video-player";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Mic, MicOff } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { createNoteAction } from "./note-action";
 import { noteSchema, NoteSchemaType } from "./note-schema";
 
@@ -31,10 +39,22 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
   const router = useRouter();
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
 
+  const {
+    transcript,
+    interimTranscript,
+    isListening,
+    isSupported,
+    error: speechError,
+    start: startListening,
+    stop: stopListening,
+    resetTranscript,
+  } = useSpeechRecognition();
+
   const { execute, isPending, result } = useAction(createNoteAction, {
     onSuccess: () => {
       form.reset();
       setSelectedTagIds([]);
+      resetTranscript();
       router.refresh();
     },
   });
@@ -48,6 +68,32 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
       tagIds: [],
     },
   });
+
+  useEffect(() => {
+    if (transcript) {
+      form.setValue("note", transcript, { shouldDirty: true, shouldValidate: true });
+    }
+  }, [transcript, form]);
+
+  useEffect(() => {
+    if (speechError) {
+      toast.error(speechError);
+    }
+  }, [speechError]);
+
+  const handleToggleRecording = () => {
+    if (!isSupported) {
+      toast.error("Votre navigateur ne supporte pas la reconnaissance vocale");
+      return;
+    }
+
+    if (isListening) {
+      stopListening();
+    } else {
+      resetTranscript();
+      startListening();
+    }
+  };
 
   const toggleTag = (tagId: string) => {
     setSelectedTagIds((prev) => {
@@ -79,7 +125,41 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
           name="note"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Note</FormLabel>
+              <div className="flex items-center justify-between">
+                <FormLabel>Note</FormLabel>
+                {isSupported && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={handleToggleRecording}
+                        className={cn(
+                          "h-8 w-8",
+                          isListening && "text-destructive animate-pulse",
+                        )}
+                        aria-label={
+                          isListening
+                            ? "Arrêter la dictée vocale"
+                            : "Démarrer la dictée vocale"
+                        }
+                      >
+                        {isListening ? (
+                          <MicOff className="h-4 w-4" />
+                        ) : (
+                          <Mic className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      {isListening
+                        ? "Arrêter la dictée vocale"
+                        : "Dicter une note"}
+                    </TooltipContent>
+                  </Tooltip>
+                )}
+              </div>
               <FormControl>
                 <Textarea
                   {...field}
@@ -87,6 +167,11 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
                   className="min-h-[100px]"
                 />
               </FormControl>
+              {isListening && interimTranscript && (
+                <p className="text-muted-foreground text-xs italic">
+                  {interimTranscript}
+                </p>
+              )}
               <FormDescription>
                 Votre note sera horodatée automatiquement
               </FormDescription>
@@ -112,11 +197,11 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
                   onClick={() => toggleTag(tag.id)}
                   disabled={isDisabled}
                   className={cn(
-                    "px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
+                    "rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
                     isSelected
                       ? "bg-primary text-primary-foreground"
                       : "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-                    isDisabled && "opacity-50 cursor-not-allowed",
+                    isDisabled && "cursor-not-allowed opacity-50",
                   )}
                 >
                   {tag.name}
@@ -125,7 +210,7 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
             })}
           </div>
           {selectedTagIds.length === 0 && (
-            <p className="text-sm text-destructive">
+            <p className="text-destructive text-sm">
               Veuillez sélectionner au moins un tag
             </p>
           )}
@@ -139,7 +224,7 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
           {isPending ? "Ajout en cours..." : "Ajouter la note"}
         </Button>
         {result.serverError && (
-          <p className="text-sm text-destructive mt-2">{result.serverError}</p>
+          <p className="text-destructive mt-2 text-sm">{result.serverError}</p>
         )}
       </form>
     </Form>
