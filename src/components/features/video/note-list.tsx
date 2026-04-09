@@ -53,15 +53,15 @@ function NoteItem({ note, isActive, onClick, onDelete }: NoteItemProps) {
       ref={ref}
       onClick={() => onClick(note.timestamp)}
       className={cn(
-        "w-full p-4 rounded-lg border-2 transition-all shadow-sm hover:shadow-md",
+        "w-full rounded-lg border-2 p-4 shadow-sm transition-all hover:shadow-md",
         "bg-card border-border hover:border-primary/50",
-        isActive && "ring-2 ring-primary border-primary bg-primary/5 shadow-lg",
+        isActive && "ring-primary border-primary bg-primary/5 shadow-lg ring-2",
       )}
     >
-      <div className="flex items-center justify-between gap-2 mb-2">
+      <div className="mb-2 flex items-center justify-between gap-2">
         <div
           className={cn(
-            "px-2.5 py-1 rounded-md font-mono text-xs font-bold",
+            "rounded-md px-2.5 py-1 font-mono text-xs font-bold",
             isActive
               ? "bg-primary text-primary-foreground"
               : "bg-primary/10 text-primary",
@@ -73,18 +73,18 @@ function NoteItem({ note, isActive, onClick, onDelete }: NoteItemProps) {
         <button
           type="button"
           onClick={() => onDelete(note)}
-          className="p-1.5 rounded-md transition-colors hover:bg-destructive/10 hover:text-destructive"
+          className="hover:bg-destructive/10 hover:text-destructive rounded-md p-1.5 transition-colors"
           aria-label="Supprimer la note"
         >
           <Trash2 className="h-4 w-4" />
           <span className="sr-only">Supprimer la note</span>
         </button>
       </div>
-      <p className="text-sm text-black leading-relaxed font-medium">
+      <p className="text-sm leading-relaxed font-medium text-black">
         {note.content}
       </p>
       {note.tags && note.tags.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 mt-2">
+        <div className="mt-2 flex flex-wrap gap-1.5">
           {note.tags.map((tag) => (
             <Badge key={tag.id} variant="secondary" className="text-xs">
               {tag.name}
@@ -144,7 +144,7 @@ export function NoteList(props: NoteListProps) {
 
   if (notes.length === 0) {
     return (
-      <div className="text-center py-8 text-muted-foreground">
+      <div className="text-muted-foreground py-8 text-center">
         Aucune note disponible pour cette vidéo
       </div>
     );
@@ -193,7 +193,7 @@ export function NoteList(props: NoteListProps) {
             </AlertDialogAction>
           </AlertDialogFooter>
           {result.serverError && (
-            <p className="text-sm text-destructive mt-2">
+            <p className="text-destructive mt-2 text-sm">
               {result.serverError}
             </p>
           )}

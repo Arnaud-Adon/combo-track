@@ -41,7 +41,7 @@ export function UserProfileDropdown({ user }: UserProfileDropdownProps) {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="relative flex h-10 items-center gap-2 rounded-full bg-muted/50 px-2 pr-3"
+          className="bg-muted/50 relative flex h-10 items-center gap-2 rounded-full px-2 pr-3"
         >
           <Avatar className="h-7 w-7">
             <AvatarImage src={user.image ?? undefined} alt={user.name} />
@@ -57,8 +57,8 @@ export function UserProfileDropdown({ user }: UserProfileDropdownProps) {
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel>
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{user.name}</p>
-            <p className="text-xs leading-none text-muted-foreground">
+            <p className="text-sm leading-none font-medium">{user.name}</p>
+            <p className="text-muted-foreground text-xs leading-none">
               {user.email}
             </p>
           </div>

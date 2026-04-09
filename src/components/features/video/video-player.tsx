@@ -41,7 +41,7 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
     <div className="aspect-video w-full">
       <YouTube
         videoId={videoId}
-        className="w-full h-full"
+        className="h-full w-full"
         onReady={onReady}
         opts={{
           height: "100%",

@@ -50,7 +50,7 @@ export function HowItWorksSection(props: HowItWorksSectionProps) {
                 </p>
               </div>
               {index < steps.length - 1 && (
-                <div className="ml-8 border-l-2 border-dashed border-primary/20" />
+                <div className="border-primary/20 ml-8 border-l-2 border-dashed" />
               )}
             </div>
           ))}

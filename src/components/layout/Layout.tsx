@@ -6,7 +6,7 @@ export const Layout = (props: ComponentPropsWithoutRef<"div">) => {
     <div
       {...props}
       className={cn(
-        "max-w-3xl flex-wrap w-full flex gap-4 m-auto px-4 mt-4",
+        "m-auto mt-4 flex w-full max-w-3xl flex-wrap gap-4 px-4",
         props.className,
       )}
     ></div>
@@ -18,7 +18,7 @@ export const LayoutHeader = (props: ComponentPropsWithRef<"div">) => {
     <div
       {...props}
       className={cn(
-        "flex items-center gap-1 flex-col w-full md:flex-1 min-w-[200px]",
+        "flex w-full min-w-[200px] flex-col items-center gap-1 md:flex-1",
         props.className,
       )}
     ></div>
@@ -27,6 +27,6 @@ export const LayoutHeader = (props: ComponentPropsWithRef<"div">) => {
 
 export const LayoutContent = (props: ComponentPropsWithRef<"div">) => {
   return (
-    <div {...props} className={cn("w-2/4 mx-auto", props.className)}></div>
+    <div {...props} className={cn("mx-auto w-2/4", props.className)}></div>
   );
 };

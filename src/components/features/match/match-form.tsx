@@ -78,9 +78,7 @@ export function MatchForm() {
         />
 
         {result.serverError && (
-          <p className="text-sm text-destructive">
-            {result.serverError}
-          </p>
+          <p className="text-destructive text-sm">{result.serverError}</p>
         )}
 
         <div className="flex gap-4">

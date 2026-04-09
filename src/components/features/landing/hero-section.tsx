@@ -16,10 +16,10 @@ export function HeroSection(props: HeroSectionProps) {
         className,
       )}
     >
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-primary/5 via-accent/5 to-background" />
+      <div className="from-primary/5 via-accent/5 to-background absolute inset-0 -z-10 bg-gradient-to-b" />
 
       <div className="mx-auto max-w-4xl text-center">
-        <h1 className="bg-gradient-to-r from-primary to-accent bg-clip-text text-5xl font-bold leading-tight tracking-tight text-transparent md:text-7xl">
+        <h1 className="from-primary to-accent bg-gradient-to-r bg-clip-text text-5xl leading-tight font-bold tracking-tight text-transparent md:text-7xl">
           Level Up Your Gameplay with ComboTrack
         </h1>
 

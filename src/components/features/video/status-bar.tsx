@@ -7,8 +7,8 @@ type StatusBarProps = {
 
 export function StatusBar({ currentTime, videoDuration }: StatusBarProps) {
   return (
-    <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
-      <div className="text-sm text-muted-foreground">
+    <div className="bg-muted flex items-center justify-between rounded-lg p-4">
+      <div className="text-muted-foreground text-sm">
         Temps actuel:{" "}
         <span className="font-mono">{formatTime(currentTime)}</span> /{" "}
         <span className="font-mono">{formatTime(videoDuration)}</span>

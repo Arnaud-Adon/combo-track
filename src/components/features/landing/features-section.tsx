@@ -46,10 +46,10 @@ export function FeaturesSection(props: FeaturesSectionProps) {
           {features.map((feature) => (
             <Card
               key={feature.title}
-              className="flex flex-col items-center bg-background border border-foreground text-foreground"
+              className="bg-background border-foreground text-foreground flex flex-col items-center border"
             >
               <CardTitle>{feature.title}</CardTitle>
-              <CardContent className="flex gap-4 items-center">
+              <CardContent className="flex items-center gap-4">
                 <Image
                   src={feature.src}
                   alt={feature.title}
