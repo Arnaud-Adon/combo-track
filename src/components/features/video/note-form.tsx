@@ -21,7 +21,7 @@ import { useSpeechRecognition } from "@/hooks/use-speech-recognition";
 import { cn } from "@/lib/utils";
 import { useVideoPlayerStore } from "@/stores/video-player";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Mic, MicOff } from "lucide-react";
+import { Loader2, Mic, MicOff, Sparkles } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -29,6 +29,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { createNoteAction } from "./note-action";
 import { noteSchema, NoteSchemaType } from "./note-schema";
+import { suggestTagsAction } from "./suggest-tags-action";
 
 type NoteFormProps = {
   matchId: string;
@@ -38,6 +39,7 @@ type NoteFormProps = {
 export function NoteForm({ matchId, availableTags }: NoteFormProps) {
   const router = useRouter();
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
+  const [suggestedTagIds, setSuggestedTagIds] = useState<string[]>([]);
 
   const {
     transcript,
@@ -54,10 +56,24 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
     onSuccess: () => {
       form.reset();
       setSelectedTagIds([]);
+      setSuggestedTagIds([]);
       resetTranscript();
       router.refresh();
     },
   });
+
+  const { execute: executeSuggest, isPending: isSuggesting } = useAction(
+    suggestTagsAction,
+    {
+      onSuccess: ({ data }) => {
+        if (!data?.suggestedTags) return;
+        const ids = availableTags
+          .filter((tag) => data.suggestedTags.includes(tag.name))
+          .map((tag) => tag.id);
+        setSuggestedTagIds(ids);
+      },
+    },
+  );
 
   const currentTime = useVideoPlayerStore((state) => state.currentTime);
 
@@ -68,6 +84,8 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
       tagIds: [],
     },
   });
+
+  const noteValue = form.watch("note");
 
   useEffect(() => {
     if (transcript) {
@@ -106,6 +124,25 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
       form.setValue("tagIds", newTagIds);
       return newTagIds;
     });
+  };
+
+  const handleSuggestTags = () => {
+    const noteText = form.getValues("note");
+    if (noteText.length < 10) return;
+    executeSuggest({
+      noteText,
+      availableTagNames: availableTags.map((t) => t.name),
+    });
+  };
+
+  const handleAcceptAllSuggestions = () => {
+    const unselected = suggestedTagIds.filter(
+      (id) => !selectedTagIds.includes(id),
+    );
+    const newTagIds = [...selectedTagIds, ...unselected].slice(0, 10);
+    setSelectedTagIds(newTagIds);
+    form.setValue("tagIds", newTagIds);
+    setSuggestedTagIds([]);
   };
 
   const onSubmit = (data: NoteSchemaType) => {
@@ -181,29 +218,83 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
         />
 
         <div className="space-y-3">
-          <FormLabel>Tags ({selectedTagIds.length}/10)</FormLabel>
+          <div className="flex items-center justify-between">
+            <FormLabel>Tags ({selectedTagIds.length}/10)</FormLabel>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleSuggestTags}
+                    disabled={isSuggesting || noteValue.length < 10}
+                  >
+                    {isSuggesting ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Sparkles className="h-4 w-4" />
+                    )}
+                    {isSuggesting
+                      ? "Suggestion en cours..."
+                      : "Suggérer des tags"}
+                  </Button>
+                </span>
+              </TooltipTrigger>
+              {noteValue.length < 10 && (
+                <TooltipContent>
+                  La note doit contenir au moins 10 caractères
+                </TooltipContent>
+              )}
+            </Tooltip>
+          </div>
           <FormDescription>
             Sélectionnez les tags qui décrivent cette note
           </FormDescription>
+          {suggestedTagIds.length > 0 && (
+            <div className="flex items-center gap-2">
+              <p className="text-muted-foreground text-xs">
+                Tags suggérés par l&apos;IA
+              </p>
+              <button
+                type="button"
+                onClick={handleAcceptAllSuggestions}
+                className="text-primary text-xs underline"
+              >
+                Tout accepter
+              </button>
+            </div>
+          )}
           <div className="flex flex-wrap gap-2">
             {availableTags.map((tag) => {
               const isSelected = selectedTagIds.includes(tag.id);
-              const isDisabled = !isSelected && selectedTagIds.length >= 10;
+              const isSuggested =
+                !isSelected && suggestedTagIds.includes(tag.id);
+              const isDisabled =
+                !isSelected && !isSuggested && selectedTagIds.length >= 10;
 
               return (
                 <button
                   key={tag.id}
                   type="button"
-                  onClick={() => toggleTag(tag.id)}
+                  onClick={() => {
+                    toggleTag(tag.id);
+                    setSuggestedTagIds((prev) =>
+                      prev.filter((id) => id !== tag.id),
+                    );
+                  }}
                   disabled={isDisabled}
                   className={cn(
                     "rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
                     isSelected
                       ? "bg-primary text-primary-foreground"
-                      : "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+                      : isSuggested
+                        ? "bg-secondary text-secondary-foreground ring-primary/50 ring-2"
+                        : "bg-secondary text-secondary-foreground hover:bg-secondary/80",
                     isDisabled && "cursor-not-allowed opacity-50",
                   )}
                 >
+                  {isSuggested && <Sparkles className="mr-1 inline h-3 w-3" />}
                   {tag.name}
                 </button>
               );
