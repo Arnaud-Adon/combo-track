@@ -1,5 +1,7 @@
 import { NoteForm } from "@/components/features/video/note-form";
 import { NoteList } from "@/components/features/video/note-list";
+import { MatchReportDialog } from "@/components/features/video/match-report-dialog";
+import { parseStoredReport } from "@/components/features/video/match-report-schema";
 import { VideoPlayer } from "@/components/features/video/video-player";
 import { Layout, LayoutHeader } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -46,6 +48,12 @@ export default async function VideoPage({
     },
   });
 
+  const storedReport = await prisma.matchReport.findUnique({
+    where: { matchId: match.id },
+  });
+
+  const existingReport = storedReport ? parseStoredReport(storedReport) : null;
+
   const videoId = extractYoutubeVideoId(match.videoUrl);
 
   if (!videoId) {
@@ -62,7 +70,12 @@ export default async function VideoPage({
             </Button>
           </Link>
           <h1 className="text-2xl font-bold">{match.title}</h1>
-          <div className="ml-auto">
+          <div className="ml-auto flex items-center gap-2">
+            <MatchReportDialog
+              matchId={match.id}
+              noteCount={notes.length}
+              existingReport={existingReport}
+            />
             <DeleteMatchDialog matchId={match.id} matchTitle={match.title} />
           </div>
         </div>
