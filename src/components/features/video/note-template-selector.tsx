@@ -21,6 +21,18 @@ import {
   NoteTemplate,
 } from "./note-templates";
 
+const CATEGORY_COLORS: Record<
+  (typeof NOTE_TEMPLATE_CATEGORIES)[number],
+  string
+> = {
+  Offense: "bg-red-500/15 text-red-700 dark:text-red-400",
+  Defense: "bg-blue-500/15 text-blue-700 dark:text-blue-400",
+  Neutral: "bg-green-500/15 text-green-700 dark:text-green-400",
+  Mental: "bg-purple-500/15 text-purple-700 dark:text-purple-400",
+  Execution: "bg-orange-500/15 text-orange-700 dark:text-orange-400",
+  Okizeme: "bg-yellow-500/15 text-yellow-700 dark:text-yellow-400",
+};
+
 type NoteTemplateSelectorProps = {
   onSelect: (template: NoteTemplate) => void;
 };
@@ -44,14 +56,15 @@ export function NoteTemplateSelector({ onSelect }: NoteTemplateSelectorProps) {
         </TooltipTrigger>
         <TooltipContent>Utiliser un modèle de note</TooltipContent>
       </Tooltip>
-      <DropdownMenuContent
-        align="end"
-        className="max-h-80 overflow-y-auto"
-      >
+      <DropdownMenuContent align="end" className="max-h-80 overflow-y-auto">
         {NOTE_TEMPLATE_CATEGORIES.map((category, index) => (
           <div key={category}>
             {index > 0 && <DropdownMenuSeparator />}
-            <DropdownMenuLabel>{category}</DropdownMenuLabel>
+            <DropdownMenuLabel
+              className={`mx-1 rounded-sm px-2 ${CATEGORY_COLORS[category]}`}
+            >
+              {category}
+            </DropdownMenuLabel>
             {NOTE_TEMPLATES.filter((t) => t.category === category).map(
               (template) => (
                 <DropdownMenuItem
