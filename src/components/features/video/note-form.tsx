@@ -12,16 +12,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { useSpeechRecognition } from "@/hooks/use-speech-recognition";
-import { cn } from "@/lib/utils";
 import { useVideoPlayerStore } from "@/stores/video-player";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, Mic, MicOff, Sparkles } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -29,6 +22,11 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { createNoteAction } from "./note-action";
 import { noteSchema, NoteSchemaType } from "./note-schema";
+import { NoteSuggestTagsButton } from "./note-suggest-tags-button";
+import { NoteTagButton } from "./note-tag-button";
+import { NoteTemplateSelector } from "./note-template-selector";
+import { NoteTemplate } from "./note-templates";
+import { NoteVoiceRecorder } from "./note-voice-recorder";
 import { suggestTagsAction } from "./suggest-tags-action";
 
 type NoteFormProps = {
@@ -113,6 +111,13 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
     }
   };
 
+  const handleSelectTemplate = (template: NoteTemplate) => {
+    form.setValue("note", template.content, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+  };
+
   const toggleTag = (tagId: string) => {
     setSelectedTagIds((prev) => {
       const newTagIds = prev.includes(tagId)
@@ -164,38 +169,15 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
             <FormItem>
               <div className="flex items-center justify-between">
                 <FormLabel>Note</FormLabel>
-                {isSupported && (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        onClick={handleToggleRecording}
-                        className={cn(
-                          "h-8 w-8",
-                          isListening && "text-destructive animate-pulse",
-                        )}
-                        aria-label={
-                          isListening
-                            ? "Arrêter la dictée vocale"
-                            : "Démarrer la dictée vocale"
-                        }
-                      >
-                        {isListening ? (
-                          <MicOff className="h-4 w-4" />
-                        ) : (
-                          <Mic className="h-4 w-4" />
-                        )}
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      {isListening
-                        ? "Arrêter la dictée vocale"
-                        : "Dicter une note"}
-                    </TooltipContent>
-                  </Tooltip>
-                )}
+                <div className="flex items-center gap-1">
+                  <NoteTemplateSelector onSelect={handleSelectTemplate} />
+                  {isSupported && (
+                    <NoteVoiceRecorder
+                      isListening={isListening}
+                      onToggle={handleToggleRecording}
+                    />
+                  )}
+                </div>
               </div>
               <FormControl>
                 <Textarea
@@ -220,33 +202,11 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <FormLabel>Tags ({selectedTagIds.length}/10)</FormLabel>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <span>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={handleSuggestTags}
-                    disabled={isSuggesting || noteValue.length < 10}
-                  >
-                    {isSuggesting ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <Sparkles className="h-4 w-4" />
-                    )}
-                    {isSuggesting
-                      ? "Suggestion en cours..."
-                      : "Suggérer des tags"}
-                  </Button>
-                </span>
-              </TooltipTrigger>
-              {noteValue.length < 10 && (
-                <TooltipContent>
-                  La note doit contenir au moins 10 caractères
-                </TooltipContent>
-              )}
-            </Tooltip>
+            <NoteSuggestTagsButton
+              onSuggest={handleSuggestTags}
+              isSuggesting={isSuggesting}
+              disabled={noteValue.length < 10}
+            />
           </div>
           <FormDescription>
             Sélectionnez les tags qui décrivent cette note
@@ -274,29 +234,19 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
                 !isSelected && !isSuggested && selectedTagIds.length >= 10;
 
               return (
-                <button
+                <NoteTagButton
                   key={tag.id}
-                  type="button"
+                  tag={tag}
+                  isSelected={isSelected}
+                  isSuggested={isSuggested}
+                  isDisabled={isDisabled}
                   onClick={() => {
                     toggleTag(tag.id);
                     setSuggestedTagIds((prev) =>
                       prev.filter((id) => id !== tag.id),
                     );
                   }}
-                  disabled={isDisabled}
-                  className={cn(
-                    "rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
-                    isSelected
-                      ? "bg-primary text-primary-foreground"
-                      : isSuggested
-                        ? "bg-secondary text-secondary-foreground ring-primary/50 ring-2"
-                        : "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-                    isDisabled && "cursor-not-allowed opacity-50",
-                  )}
-                >
-                  {isSuggested && <Sparkles className="mr-1 inline h-3 w-3" />}
-                  {tag.name}
-                </button>
+                />
               );
             })}
           </div>
