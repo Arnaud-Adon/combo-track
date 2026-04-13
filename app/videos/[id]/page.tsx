@@ -61,7 +61,7 @@ export default async function VideoPage({
   }
 
   return (
-    <Layout className="max-w-7xl">
+    <Layout className="max-w-7xl pb-12">
       <LayoutHeader>
         <div className="flex w-full items-center gap-4">
           <Link href="/dashboard">
@@ -100,10 +100,15 @@ export default async function VideoPage({
         </div>
 
         <div className="md:col-span-1">
-          <div className="md:sticky md:top-6 md:max-h-[calc(100vh-8rem)]">
+          <div className="md:sticky md:top-20 md:max-h-[calc(100vh-6rem)]">
             <Card>
               <CardHeader>
-                <CardTitle>Notes</CardTitle>
+                <CardTitle>
+                  Notes{" "}
+                  <span className="text-muted-foreground font-normal">
+                    ({notes.length})
+                  </span>
+                </CardTitle>
               </CardHeader>
               <CardContent className="max-h-[60vh] overflow-y-auto md:max-h-[calc(100vh-16rem)]">
                 <NoteList notes={notes} />
