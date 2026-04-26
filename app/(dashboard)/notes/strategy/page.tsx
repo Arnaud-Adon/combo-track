@@ -1,13 +1,32 @@
+import { StrategyMatrixFilters } from "@/components/features/strategy-matrix/strategy-matrix-filters";
 import { StrategyMatrixList } from "@/components/features/strategy-matrix/strategy-matrix-list";
 import { Button } from "@/components/ui/button";
 import { requireAuth } from "@/lib/auth-utils";
 import { Plus } from "lucide-react";
 import Link from "next/link";
-import { getStrategyMatrices } from "../../../../prisma/query/strategy-matrix.query";
+import {
+  getAllCharactersGroupedByGame,
+  getGameOptions,
+  getStrategyMatrices,
+} from "../../../../prisma/query/strategy-matrix.query";
 
-export default async function StrategyMatrixListPage() {
+export default async function StrategyMatrixListPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ gameId?: string; characterId?: string }>;
+}) {
   const user = await requireAuth();
-  const matrices = await getStrategyMatrices({ userId: user.id });
+  const params = await searchParams;
+  const filters = {
+    gameId: params.gameId,
+    characterId: params.characterId,
+  };
+
+  const [matrices, games, charactersByGame] = await Promise.all([
+    getStrategyMatrices({ userId: user.id, filters }),
+    getGameOptions(),
+    getAllCharactersGroupedByGame(),
+  ]);
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 px-4 py-8">
@@ -25,6 +44,13 @@ export default async function StrategyMatrixListPage() {
           </Link>
         </Button>
       </div>
+
+      <StrategyMatrixFilters
+        games={games}
+        charactersByGame={charactersByGame}
+        selectedGameId={filters.gameId}
+        selectedCharacterId={filters.characterId}
+      />
 
       <StrategyMatrixList matrices={matrices} />
     </div>

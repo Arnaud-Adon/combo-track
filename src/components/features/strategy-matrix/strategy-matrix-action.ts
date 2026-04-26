@@ -18,6 +18,9 @@ export const createStrategyMatrixAction = authActionClient
         userId: ctx.user.id,
         title: parsedInput.title,
         description: parsedInput.description,
+        gameId: parsedInput.gameId ?? null,
+        myCharacterId: parsedInput.myCharacterId ?? null,
+        opponentCharacterId: parsedInput.opponentCharacterId ?? null,
         myAxis: parsedInput.myAxis as unknown as Prisma.InputJsonValue,
         opponentAxis:
           parsedInput.opponentAxis as unknown as Prisma.InputJsonValue,
@@ -46,6 +49,9 @@ export const updateStrategyMatrixAction = authActionClient
       data: {
         title: parsedInput.title,
         description: parsedInput.description,
+        gameId: parsedInput.gameId ?? null,
+        myCharacterId: parsedInput.myCharacterId ?? null,
+        opponentCharacterId: parsedInput.opponentCharacterId ?? null,
         myAxis: parsedInput.myAxis as unknown as Prisma.InputJsonValue,
         opponentAxis:
           parsedInput.opponentAxis as unknown as Prisma.InputJsonValue,

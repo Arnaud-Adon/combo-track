@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 
 ### Added: Strategy Matrix V1 (matrice État × Action standalone)
 
+### Added: Strategy Matrix V2 — matchup context (jeu, mon perso, perso adverse) + filtres liste
+
 ### Changed: Dashboard CTA "Nouvelle note personnelle" redirige vers la création de matrice de stratégie
 
 ## 2026-04-20

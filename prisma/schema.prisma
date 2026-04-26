@@ -103,29 +103,32 @@ model Tag {
 }
 
 model Game {
-  id         String      @id @default(cuid())
-  slug       String      @unique
-  name       String
-  iconUrl    String?
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
-  characters Character[]
-  combos     Combo[]
+  id               String           @id @default(cuid())
+  slug             String           @unique
+  name             String
+  iconUrl          String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  characters       Character[]
+  combos           Combo[]
+  strategyMatrices StrategyMatrix[]
 
   @@index([slug])
 }
 
 model Character {
-  id        String   @id @default(cuid())
-  gameId    String
-  game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
-  slug      String
-  name      String
-  iconUrl   String?
-  notes     Note[]
-  combos    Combo[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                       String           @id @default(cuid())
+  gameId                   String
+  game                     Game             @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  slug                     String
+  name                     String
+  iconUrl                  String?
+  notes                    Note[]
+  combos                   Combo[]
+  myStrategyMatrices       StrategyMatrix[] @relation("MyCharacterMatrices")
+  opponentStrategyMatrices StrategyMatrix[] @relation("OpponentCharacterMatrices")
+  createdAt                DateTime         @default(now())
+  updatedAt                DateTime         @updatedAt
 
   @@unique([gameId, slug])
   @@index([gameId])
@@ -157,19 +160,27 @@ model Combo {
 }
 
 model StrategyMatrix {
-  id           String   @id @default(cuid())
-  userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  title        String
-  description  String?
-  myAxis       Json
-  opponentAxis Json
-  cells        Json
-  pinned       Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id                  String     @id @default(cuid())
+  userId              String
+  user                User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title               String
+  description         String?
+  gameId              String?
+  game                Game?      @relation(fields: [gameId], references: [id], onDelete: SetNull)
+  myCharacterId       String?
+  myCharacter         Character? @relation("MyCharacterMatrices", fields: [myCharacterId], references: [id], onDelete: SetNull)
+  opponentCharacterId String?
+  opponentCharacter   Character? @relation("OpponentCharacterMatrices", fields: [opponentCharacterId], references: [id], onDelete: SetNull)
+  myAxis              Json
+  opponentAxis        Json
+  cells               Json
+  pinned              Boolean    @default(false)
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
 
   @@index([userId])
+  @@index([userId, gameId])
+  @@index([userId, myCharacterId, opponentCharacterId])
 }
 
 model GlossaryArticle {
