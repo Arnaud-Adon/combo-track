@@ -46,6 +46,7 @@ model User {
   accounts         Account[]
   role             UserRole           @default(USER)
   glossaryArticles GlossaryArticle[]  @relation("GlossaryArticles")
+  combos           Combo[]
 
   @@map("user")
 }
@@ -78,20 +79,80 @@ model MatchReport {
 }
 
 model Note {
-  id        String   @id @default(cuid())
-  matchId   String
-  match     Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
-  timestamp Int // timecode en secondes
-  content   String
-  tags      Tag[]
-  createdAt DateTime @default(now())
+  id              String     @id @default(cuid())
+  matchId         String
+  match           Match      @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  timestamp       Int // timecode en secondes
+  content         String
+  tags            Tag[]
+  characterId     String?
+  character       Character? @relation(fields: [characterId], references: [id], onDelete: SetNull)
+  extractedCombos Combo[]    @relation("ComboFromNote")
+  createdAt       DateTime   @default(now())
+
+  @@index([characterId])
 }
 
 model Tag {
   id        String   @id @default(cuid())
   name      String   @unique
   notes     Note[]
+  combos    Combo[]
   createdAt DateTime @default(now())
+}
+
+model Game {
+  id         String      @id @default(cuid())
+  slug       String      @unique
+  name       String
+  iconUrl    String?
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  characters Character[]
+  combos     Combo[]
+
+  @@index([slug])
+}
+
+model Character {
+  id        String   @id @default(cuid())
+  gameId    String
+  game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  slug      String
+  name      String
+  iconUrl   String?
+  notes     Note[]
+  combos    Combo[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([gameId, slug])
+  @@index([gameId])
+}
+
+model Combo {
+  id           String    @id @default(cuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  gameId       String
+  game         Game      @relation(fields: [gameId], references: [id])
+  characterId  String
+  character    Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  title        String
+  notation     String    @db.Text
+  damage       Int?
+  meterUsed    Int?
+  difficulty   Int?
+  notes        String?   @db.Text
+  tags         Tag[]
+  sourceNoteId String?
+  sourceNote   Note?     @relation("ComboFromNote", fields: [sourceNoteId], references: [id], onDelete: SetNull)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([characterId])
+  @@index([gameId])
 }
 
 model GlossaryArticle {
