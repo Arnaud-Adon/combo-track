@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2026-04-26
+
+### Added: Strategy Matrix V1 (matrice État × Action standalone)
+
+### Changed: Dashboard CTA "Nouvelle note personnelle" redirige vers la création de matrice de stratégie
+
 ## 2026-04-20
 
 ### Added: Prisma models Game, Character, Combo (phase 1)

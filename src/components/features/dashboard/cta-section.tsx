@@ -23,15 +23,16 @@ export function CTASection() {
         <span className="text-foreground font-medium">Get good, faster.</span>
       </p>
       <div className="flex justify-center gap-4">
-        <Button
-          className="rounded-full font-semibold backdrop-blur transition-all hover:scale-105 hover:bg-zinc-200"
-          variant="secondary"
-          size="lg"
-          onClick={() => {}}
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          Nouvelle note personnelle
-        </Button>
+        <Link href="/notes/strategy/new">
+          <Button
+            className="rounded-full font-semibold backdrop-blur transition-all hover:scale-105 hover:bg-zinc-200"
+            variant="secondary"
+            size="lg"
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Nouvelle matrice de stratégie
+          </Button>
+        </Link>
         <Link href="/videos/new">
           <Button
             className="rounded-full font-semibold backdrop-blur transition-all hover:scale-105"

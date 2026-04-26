@@ -47,6 +47,7 @@ model User {
   role             UserRole           @default(USER)
   glossaryArticles GlossaryArticle[]  @relation("GlossaryArticles")
   combos           Combo[]
+  strategyMatrices StrategyMatrix[]
 
   @@map("user")
 }
@@ -153,6 +154,22 @@ model Combo {
   @@index([userId])
   @@index([characterId])
   @@index([gameId])
+}
+
+model StrategyMatrix {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title        String
+  description  String?
+  myAxis       Json
+  opponentAxis Json
+  cells        Json
+  pinned       Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([userId])
 }
 
 model GlossaryArticle {
