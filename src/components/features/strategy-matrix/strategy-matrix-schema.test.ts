@@ -112,4 +112,38 @@ describe("strategyMatrixCreateSchema", () => {
     });
     expect(result.success).toBe(false);
   });
+
+  it("accepts gameId + characterIds together", () => {
+    const result = strategyMatrixCreateSchema.safeParse({
+      title: baseTemplate.title,
+      gameId: "game-1",
+      myCharacterId: "char-1",
+      opponentCharacterId: "char-2",
+      myAxis: baseTemplate.myAxis,
+      opponentAxis: baseTemplate.opponentAxis,
+      cells: baseTemplate.cells,
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("rejects characterId without gameId", () => {
+    const result = strategyMatrixCreateSchema.safeParse({
+      title: baseTemplate.title,
+      myCharacterId: "char-1",
+      myAxis: baseTemplate.myAxis,
+      opponentAxis: baseTemplate.opponentAxis,
+      cells: baseTemplate.cells,
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it("accepts no matchup context (V1 backward compat)", () => {
+    const result = strategyMatrixCreateSchema.safeParse({
+      title: baseTemplate.title,
+      myAxis: baseTemplate.myAxis,
+      opponentAxis: baseTemplate.opponentAxis,
+      cells: baseTemplate.cells,
+    });
+    expect(result.success).toBe(true);
+  });
 });

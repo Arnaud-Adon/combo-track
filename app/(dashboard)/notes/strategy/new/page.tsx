@@ -1,9 +1,17 @@
 import { StrategyMatrixForm } from "@/components/features/strategy-matrix/strategy-matrix-form";
 import { StrategyMatrixHelpDialog } from "@/components/features/strategy-matrix/strategy-matrix-help-dialog";
 import { requireAuth } from "@/lib/auth-utils";
+import {
+  getAllCharactersGroupedByGame,
+  getGameOptions,
+} from "../../../../../prisma/query/strategy-matrix.query";
 
 export default async function NewStrategyMatrixPage() {
   await requireAuth();
+  const [games, charactersByGame] = await Promise.all([
+    getGameOptions(),
+    getAllCharactersGroupedByGame(),
+  ]);
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 px-4 py-8">
@@ -18,7 +26,11 @@ export default async function NewStrategyMatrixPage() {
         <StrategyMatrixHelpDialog />
       </div>
 
-      <StrategyMatrixForm mode="create" />
+      <StrategyMatrixForm
+        mode="create"
+        games={games}
+        charactersByGame={charactersByGame}
+      />
     </div>
   );
 }

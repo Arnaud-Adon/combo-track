@@ -18,6 +18,10 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import type {
+  CharacterOption,
+  GameOption,
+} from "../../../../prisma/query/strategy-matrix.query";
 import {
   createStrategyMatrixAction,
   updateStrategyMatrixAction,
@@ -25,6 +29,7 @@ import {
 import { StrategyMatrixAxisBuilder } from "./strategy-matrix-axis-builder";
 import { StrategyMatrixCellEditor } from "./strategy-matrix-cell-editor";
 import { StrategyMatrixGrid } from "./strategy-matrix-grid";
+import { StrategyMatrixMatchupSelector } from "./strategy-matrix-matchup-selector";
 import {
   strategyMatrixCreateSchema,
   type Axis,
@@ -41,19 +46,26 @@ import {
   reconcileCells,
 } from "./strategy-matrix-types";
 
-type Props =
-  | {
-      mode: "create";
-      initialTemplate?: StrategyMatrixTemplate;
-      matrixId?: undefined;
-      initialData?: undefined;
-    }
-  | {
-      mode: "edit";
-      matrixId: string;
-      initialData: StrategyMatrixCreateInput;
-      initialTemplate?: undefined;
-    };
+type CommonProps = {
+  games: GameOption[];
+  charactersByGame: Record<string, CharacterOption[]>;
+};
+
+type Props = CommonProps &
+  (
+    | {
+        mode: "create";
+        initialTemplate?: StrategyMatrixTemplate;
+        matrixId?: undefined;
+        initialData?: undefined;
+      }
+    | {
+        mode: "edit";
+        matrixId: string;
+        initialData: StrategyMatrixCreateInput;
+        initialTemplate?: undefined;
+      }
+  );
 
 type EditingCell = {
   myLevelId: string;
@@ -69,6 +81,9 @@ export function StrategyMatrixForm(props: Props) {
       : {
           title: fallback.title,
           description: undefined,
+          gameId: undefined,
+          myCharacterId: undefined,
+          opponentCharacterId: undefined,
           myAxis: fallback.myAxis,
           opponentAxis: fallback.opponentAxis,
           cells: fallback.cells,
@@ -86,6 +101,9 @@ export function StrategyMatrixForm(props: Props) {
   const myAxis = form.watch("myAxis");
   const opponentAxis = form.watch("opponentAxis");
   const cells = form.watch("cells");
+  const gameId = form.watch("gameId");
+  const myCharacterId = form.watch("myCharacterId");
+  const opponentCharacterId = form.watch("opponentCharacterId");
 
   const createAction = useAction(createStrategyMatrixAction, {
     onSuccess: ({ data }) => {
@@ -113,11 +131,26 @@ export function StrategyMatrixForm(props: Props) {
     form.reset({
       title: template.title,
       description: undefined,
+      gameId,
+      myCharacterId,
+      opponentCharacterId,
       myAxis: template.myAxis,
       opponentAxis: template.opponentAxis,
       cells: template.cells,
     });
     setShowTemplatePicker(false);
+  };
+
+  const handleMatchupChange = (next: {
+    gameId?: string;
+    myCharacterId?: string;
+    opponentCharacterId?: string;
+  }) => {
+    form.setValue("gameId", next.gameId, { shouldDirty: true });
+    form.setValue("myCharacterId", next.myCharacterId, { shouldDirty: true });
+    form.setValue("opponentCharacterId", next.opponentCharacterId, {
+      shouldDirty: true,
+    });
   };
 
   const handleAxisChange = (
@@ -222,6 +255,13 @@ export function StrategyMatrixForm(props: Props) {
               <FormMessage />
             </FormItem>
           )}
+        />
+
+        <StrategyMatrixMatchupSelector
+          games={props.games}
+          charactersByGame={props.charactersByGame}
+          value={{ gameId, myCharacterId, opponentCharacterId }}
+          onChange={handleMatchupChange}
         />
 
         <div className="grid gap-4 md:grid-cols-2">

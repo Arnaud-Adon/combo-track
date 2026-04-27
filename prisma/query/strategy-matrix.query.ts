@@ -8,9 +8,33 @@ import { prisma } from "@/lib/prisma";
 import z from "zod";
 import { Prisma } from "../../generated/prisma";
 
-export const getStrategyMatrices = async ({ userId }: { userId: string }) =>
-  await prisma.strategyMatrix.findMany({
-    where: { userId },
+type ListFilters = {
+  gameId?: string;
+  characterId?: string;
+};
+
+export const getStrategyMatrices = async ({
+  userId,
+  filters,
+}: {
+  userId: string;
+  filters?: ListFilters;
+}) => {
+  const where: Prisma.StrategyMatrixWhereInput = {
+    userId,
+    ...(filters?.gameId ? { gameId: filters.gameId } : {}),
+    ...(filters?.characterId
+      ? {
+          OR: [
+            { myCharacterId: filters.characterId },
+            { opponentCharacterId: filters.characterId },
+          ],
+        }
+      : {}),
+  };
+
+  return await prisma.strategyMatrix.findMany({
+    where,
     select: {
       id: true,
       title: true,
@@ -20,9 +44,17 @@ export const getStrategyMatrices = async ({ userId }: { userId: string }) =>
       pinned: true,
       createdAt: true,
       updatedAt: true,
+      game: { select: { id: true, name: true, slug: true, iconUrl: true } },
+      myCharacter: {
+        select: { id: true, name: true, slug: true, iconUrl: true },
+      },
+      opponentCharacter: {
+        select: { id: true, name: true, slug: true, iconUrl: true },
+      },
     },
     orderBy: [{ pinned: "desc" }, { updatedAt: "desc" }],
   });
+};
 
 export type StrategyMatrixListItem = Prisma.PromiseReturnType<
   typeof getStrategyMatrices
@@ -37,6 +69,15 @@ export const getStrategyMatrixById = async ({
 }) => {
   const matrix = await prisma.strategyMatrix.findFirst({
     where: { id, userId },
+    include: {
+      game: { select: { id: true, name: true, slug: true, iconUrl: true } },
+      myCharacter: {
+        select: { id: true, name: true, slug: true, iconUrl: true },
+      },
+      opponentCharacter: {
+        select: { id: true, name: true, slug: true, iconUrl: true },
+      },
+    },
   });
 
   if (!matrix) return null;
@@ -53,10 +94,70 @@ export const getStrategyMatrixById = async ({
     pinned: matrix.pinned,
     createdAt: matrix.createdAt,
     updatedAt: matrix.updatedAt,
+    gameId: matrix.gameId,
+    game: matrix.game,
+    myCharacterId: matrix.myCharacterId,
+    myCharacter: matrix.myCharacter,
+    opponentCharacterId: matrix.opponentCharacterId,
+    opponentCharacter: matrix.opponentCharacter,
     myAxis,
     opponentAxis,
     cells,
   };
+};
+
+export const getGameOptions = async () =>
+  await prisma.game.findMany({
+    select: { id: true, name: true, slug: true, iconUrl: true },
+    orderBy: { name: "asc" },
+  });
+
+export type GameOption = Prisma.PromiseReturnType<typeof getGameOptions>[number];
+
+export const getCharactersByGame = async ({ gameId }: { gameId: string }) =>
+  await prisma.character.findMany({
+    where: { gameId },
+    select: { id: true, name: true, slug: true, iconUrl: true },
+    orderBy: { name: "asc" },
+  });
+
+export type CharacterOption = Prisma.PromiseReturnType<
+  typeof getCharactersByGame
+>[number];
+
+export const getAllCharactersGroupedByGame = async () => {
+  const characters = await prisma.character.findMany({
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      iconUrl: true,
+      gameId: true,
+    },
+    orderBy: { name: "asc" },
+  });
+
+  const grouped: Record<string, CharacterOption[]> = {};
+  for (const char of characters) {
+    const { gameId, ...rest } = char;
+    if (!grouped[gameId]) grouped[gameId] = [];
+    grouped[gameId].push(rest);
+  }
+  return grouped;
+};
+
+export const getDistinctUserGames = async ({ userId }: { userId: string }) => {
+  const matrices = await prisma.strategyMatrix.findMany({
+    where: { userId, gameId: { not: null } },
+    select: {
+      game: { select: { id: true, name: true, slug: true, iconUrl: true } },
+    },
+    distinct: ["gameId"],
+  });
+  return matrices
+    .map((m) => m.game)
+    .filter((g): g is NonNullable<typeof g> => g !== null)
+    .sort((a, b) => a.name.localeCompare(b.name));
 };
 
 export type StrategyMatrixDetail = NonNullable<

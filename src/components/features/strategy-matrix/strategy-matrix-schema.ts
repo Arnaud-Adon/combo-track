@@ -52,6 +52,9 @@ const matrixBaseSchema = z
       .string()
       .max(500, { error: "Maximum 500 caractères" })
       .optional(),
+    gameId: z.string().min(1).optional(),
+    myCharacterId: z.string().min(1).optional(),
+    opponentCharacterId: z.string().min(1).optional(),
     myAxis: axisSchema,
     opponentAxis: axisSchema,
     cells: z.array(cellSchema),
@@ -65,6 +68,14 @@ const matrixBaseSchema = z
       );
     },
     { error: "Cellules orphelines détectées" },
+  )
+  .refine(
+    (data) => {
+      if (data.myCharacterId && !data.gameId) return false;
+      if (data.opponentCharacterId && !data.gameId) return false;
+      return true;
+    },
+    { error: "Un jeu doit être sélectionné pour associer un personnage" },
   );
 
 export const strategyMatrixCreateSchema = matrixBaseSchema;

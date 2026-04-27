@@ -55,10 +55,30 @@ export function StrategyMatrixList({ matrices }: Props) {
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {matrices.map((matrix) => (
+      {matrices.map((matrix) => {
+        const matchupBadges = [
+          matrix.game?.name,
+          matrix.myCharacter?.name,
+          matrix.opponentCharacter?.name &&
+            `vs ${matrix.opponentCharacter.name}`,
+        ].filter(Boolean) as string[];
+
+        return (
         <Card key={matrix.id} className="flex flex-col gap-3 p-4">
           <div className="space-y-1">
             <h3 className="line-clamp-1 font-semibold">{matrix.title}</h3>
+            {matchupBadges.length > 0 && (
+              <div className="flex flex-wrap gap-1">
+                {matchupBadges.map((label) => (
+                  <span
+                    key={label}
+                    className="bg-muted text-muted-foreground rounded-full px-2 py-0.5 text-[10px]"
+                  >
+                    {label}
+                  </span>
+                ))}
+              </div>
+            )}
             {matrix.description && (
               <p className="text-muted-foreground line-clamp-2 text-sm">
                 {matrix.description}
@@ -97,7 +117,8 @@ export function StrategyMatrixList({ matrices }: Props) {
             </AlertDialog>
           </div>
         </Card>
-      ))}
+        );
+      })}
     </div>
   );
 }
