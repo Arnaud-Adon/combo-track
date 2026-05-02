@@ -20,11 +20,27 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Eye, Pencil } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { MAX_CELL_LENGTH } from "./strategy-matrix-types";
+import { frameDataComponents } from "./frame-data-renderer";
+import {
+  FGC_ACTIONS,
+  FGC_BUTTONS,
+  FGC_POSITIONS,
+  FRAME_OPTIONS,
+  MAX_CELL_LENGTH,
+} from "./strategy-matrix-types";
 
 type Props = {
   open: boolean;
@@ -46,6 +62,9 @@ export function StrategyMatrixCellEditor({
   const [content, setContent] = useState(initialContent);
   const [showPreview, setShowPreview] = useState(false);
   const [confirmCloseOpen, setConfirmCloseOpen] = useState(false);
+  const [notationKey, setNotationKey] = useState(0);
+  const [frameKey, setFrameKey] = useState(0);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if (open) {
@@ -54,6 +73,27 @@ export function StrategyMatrixCellEditor({
       setConfirmCloseOpen(false);
     }
   }, [open, initialContent]);
+
+  const insertAtCursor = (text: string, cursorOffset?: number) => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const before = content.slice(0, start);
+    const after = content.slice(end);
+    const newContent = (before + text + after).slice(0, MAX_CELL_LENGTH);
+
+    setContent(newContent);
+
+    const newCursorPos =
+      cursorOffset !== undefined ? start + cursorOffset : start + text.length;
+
+    requestAnimationFrame(() => {
+      textarea.focus();
+      textarea.setSelectionRange(newCursorPos, newCursorPos);
+    });
+  };
 
   const isDirty = content !== initialContent;
 
@@ -142,14 +182,84 @@ export function StrategyMatrixCellEditor({
               </Button>
             </div>
 
+            {!showPreview && (
+              <div className="flex items-center gap-2">
+                <Select
+                  key={`notation-${notationKey}`}
+                  onValueChange={(v) => {
+                    insertAtCursor(v);
+                    setNotationKey((k) => k + 1);
+                  }}
+                >
+                  <SelectTrigger size="sm" className="w-auto text-xs">
+                    <SelectValue placeholder="Notation..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Positions</SelectLabel>
+                      {FGC_POSITIONS.map((item) => (
+                        <SelectItem key={item.value} value={item.value}>
+                          {item.label}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                    <SelectGroup>
+                      <SelectLabel>Boutons</SelectLabel>
+                      {FGC_BUTTONS.map((item) => (
+                        <SelectItem key={item.value} value={item.value}>
+                          {item.label}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                    <SelectGroup>
+                      <SelectLabel>Actions</SelectLabel>
+                      {FGC_ACTIONS.map((item) => (
+                        <SelectItem key={item.value} value={item.value}>
+                          {item.label}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+
+                <Select
+                  key={`frame-${frameKey}`}
+                  onValueChange={(v) => {
+                    const option = FRAME_OPTIONS.find((o) => o.value === v);
+                    const offset =
+                      option && "cursorOffset" in option
+                        ? (option as { cursorOffset: number }).cursorOffset
+                        : undefined;
+                    insertAtCursor(v, offset);
+                    setFrameKey((k) => k + 1);
+                  }}
+                >
+                  <SelectTrigger size="sm" className="w-auto text-xs">
+                    <SelectValue placeholder="Frames..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {FRAME_OPTIONS.map((item) => (
+                      <SelectItem key={item.value} value={item.value}>
+                        {item.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
             {showPreview ? (
               <div className="prose prose-invert border-border bg-muted text-foreground min-h-[200px] max-w-none rounded-md border p-3 text-sm">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={frameDataComponents}
+                >
                   {content || "*Aucun contenu*"}
                 </ReactMarkdown>
               </div>
             ) : (
               <Textarea
+                ref={textareaRef}
                 value={content}
                 onChange={(e) =>
                   setContent(e.target.value.slice(0, MAX_CELL_LENGTH))
