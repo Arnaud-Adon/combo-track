@@ -26,6 +26,7 @@ import {
   createStrategyMatrixAction,
   updateStrategyMatrixAction,
 } from "./strategy-matrix-action";
+import { StrategyMatrixAiFillButton } from "./strategy-matrix-ai-fill-button";
 import { StrategyMatrixAxisBuilder } from "./strategy-matrix-axis-builder";
 import { StrategyMatrixCellEditor } from "./strategy-matrix-cell-editor";
 import { StrategyMatrixGrid } from "./strategy-matrix-grid";
@@ -176,6 +177,16 @@ export function StrategyMatrixForm(props: Props) {
     form.setValue("cells", Array.from(lookup.values()), { shouldDirty: true });
   };
 
+  const handleAiCellsGenerated = (
+    generated: { myLevelId: string; opponentLevelId: string; content: string }[],
+  ) => {
+    const lookup = buildCellLookup(form.getValues("cells"));
+    for (const cell of generated) {
+      lookup.set(cellKey(cell.myLevelId, cell.opponentLevelId), cell);
+    }
+    form.setValue("cells", Array.from(lookup.values()), { shouldDirty: true });
+  };
+
   const onSubmit = (data: StrategyMatrixCreateInput) => {
     const reconciled = reconcileCells(
       data.cells,
@@ -278,7 +289,20 @@ export function StrategyMatrixForm(props: Props) {
         </div>
 
         <div className="space-y-2">
-          <FormLabel>Matrice</FormLabel>
+          <div className="flex items-center justify-between gap-2">
+            <FormLabel>Matrice</FormLabel>
+            <StrategyMatrixAiFillButton
+              title={form.watch("title")}
+              description={form.watch("description")}
+              gameId={gameId}
+              myCharacterId={myCharacterId}
+              opponentCharacterId={opponentCharacterId}
+              myAxis={myAxis}
+              opponentAxis={opponentAxis}
+              cells={cells}
+              onCellsGenerated={handleAiCellsGenerated}
+            />
+          </div>
           <FormDescription>
             Cliquez sur une cellule pour éditer son contenu en markdown.
           </FormDescription>
