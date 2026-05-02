@@ -60,6 +60,43 @@ export type StrategyMatrixListItem = Prisma.PromiseReturnType<
   typeof getStrategyMatrices
 >[number];
 
+export const getRecentStrategyMatrices = async ({
+  userId,
+}: {
+  userId: string;
+}) => {
+  const matrices = await prisma.strategyMatrix.findMany({
+    where: { userId },
+    select: {
+      id: true,
+      title: true,
+      createdAt: true,
+      cells: true,
+      game: { select: { id: true, name: true, slug: true, iconUrl: true } },
+      myCharacter: {
+        select: { id: true, name: true, slug: true, iconUrl: true },
+      },
+      opponentCharacter: {
+        select: { id: true, name: true, slug: true, iconUrl: true },
+      },
+    },
+    orderBy: [{ pinned: "desc" }, { updatedAt: "desc" }],
+    take: 5,
+  });
+
+  return matrices.map(({ cells, ...rest }) => {
+    const parsed = z.array(cellSchema).safeParse(cells);
+    const filledCellCount = parsed.success
+      ? parsed.data.filter((c) => c.content.trim().length > 0).length
+      : 0;
+    return { ...rest, filledCellCount };
+  });
+};
+
+export type RecentStrategyMatrices = Awaited<
+  ReturnType<typeof getRecentStrategyMatrices>
+>;
+
 export const getStrategyMatrixById = async ({
   id,
   userId,
