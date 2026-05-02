@@ -22,6 +22,7 @@ export function AuthenticatedNav({ user }: AuthenticatedNavProps) {
         <>
           <NavLink href="/admin/glossary">Admin</NavLink>
           <NavLink href="/admin/games">Jeux</NavLink>
+          <NavLink href="/admin/characters">Personnages</NavLink>
         </>
       )}
       <UserProfileDropdown user={user} />

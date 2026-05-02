@@ -143,45 +143,12 @@ export const getStrategyMatrixById = async ({
   };
 };
 
-export const getGameOptions = async () =>
-  await prisma.game.findMany({
-    select: { id: true, name: true, slug: true, iconUrl: true },
-    orderBy: { name: "asc" },
-  });
-
-export type GameOption = Prisma.PromiseReturnType<typeof getGameOptions>[number];
-
-export const getCharactersByGame = async ({ gameId }: { gameId: string }) =>
-  await prisma.character.findMany({
-    where: { gameId },
-    select: { id: true, name: true, slug: true, iconUrl: true },
-    orderBy: { name: "asc" },
-  });
-
-export type CharacterOption = Prisma.PromiseReturnType<
-  typeof getCharactersByGame
->[number];
-
-export const getAllCharactersGroupedByGame = async () => {
-  const characters = await prisma.character.findMany({
-    select: {
-      id: true,
-      name: true,
-      slug: true,
-      iconUrl: true,
-      gameId: true,
-    },
-    orderBy: { name: "asc" },
-  });
-
-  const grouped: Record<string, CharacterOption[]> = {};
-  for (const char of characters) {
-    const { gameId, ...rest } = char;
-    if (!grouped[gameId]) grouped[gameId] = [];
-    grouped[gameId].push(rest);
-  }
-  return grouped;
-};
+export { getGameOptions, type GameOption } from "./game.query";
+export {
+  getCharactersByGame,
+  getAllCharactersGroupedByGame,
+  type CharacterOption,
+} from "./character.query";
 
 export const getDistinctUserGames = async ({ userId }: { userId: string }) => {
   const matrices = await prisma.strategyMatrix.findMany({
