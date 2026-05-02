@@ -17,64 +17,84 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-import { gameFormSchema, GameFormSchemaType } from "./game-schema";
-import { createGameAction, updateGameAction } from "./game-action";
-import { AdminGameDetail } from "@/../prisma/query/admin-game.query";
+import {
+  characterFormSchema,
+  CharacterFormSchemaType,
+} from "./character-schema";
+import {
+  createCharacterAction,
+  updateCharacterAction,
+} from "./character-action";
+import { AdminCharacterDetail } from "@/../prisma/query/admin-character.query";
+import { GameOption } from "@/../prisma/query/game.query";
 import { generateSlug } from "@/lib/slug";
 
-interface GameFormProps {
+interface CharacterFormProps {
   mode: "create" | "edit";
-  game?: NonNullable<AdminGameDetail>;
+  character?: NonNullable<AdminCharacterDetail>;
+  games: GameOption[];
 }
 
-export function GameForm({ mode, game }: GameFormProps) {
+export function CharacterForm({ mode, character, games }: CharacterFormProps) {
   const router = useRouter();
 
   const { execute: createExecute, isPending: isCreating } = useAction(
-    createGameAction,
+    createCharacterAction,
     {
       onSuccess: () => {
-        toast.success("Jeu créé avec succès");
-        router.push("/admin/games");
+        toast.success("Personnage créé avec succès");
+        router.push("/admin/characters");
         router.refresh();
       },
       onError: ({ error }) => {
-        toast.error(error.serverError ?? "Erreur lors de la création du jeu");
+        toast.error(
+          error.serverError ?? "Erreur lors de la création du personnage",
+        );
       },
     },
   );
 
   const { execute: updateExecute, isPending: isUpdating } = useAction(
-    updateGameAction,
+    updateCharacterAction,
     {
       onSuccess: () => {
-        toast.success("Jeu mis à jour avec succès");
-        router.push("/admin/games");
+        toast.success("Personnage mis à jour avec succès");
+        router.push("/admin/characters");
         router.refresh();
       },
       onError: ({ error }) => {
-        toast.error(error.serverError ?? "Erreur lors de la mise à jour du jeu");
+        toast.error(
+          error.serverError ?? "Erreur lors de la mise à jour du personnage",
+        );
       },
     },
   );
 
-  const form = useForm<GameFormSchemaType>({
-    resolver: zodResolver(gameFormSchema),
+  const form = useForm<CharacterFormSchemaType>({
+    resolver: zodResolver(characterFormSchema),
     defaultValues: {
-      name: game?.name ?? "",
-      slug: game?.slug ?? "",
-      iconUrl: game?.iconUrl ?? "",
+      gameId: character?.gameId ?? "",
+      name: character?.name ?? "",
+      slug: character?.slug ?? "",
+      iconUrl: character?.iconUrl ?? "",
     },
   });
 
   const isPending = isCreating || isUpdating;
 
-  const onSubmit = (data: GameFormSchemaType) => {
+  const onSubmit = (data: CharacterFormSchemaType) => {
     if (mode === "create") {
       createExecute(data);
     } else {
-      updateExecute({ ...data, id: game!.id });
+      updateExecute({ ...data, id: character!.id });
     }
   };
 
@@ -88,7 +108,39 @@ export function GameForm({ mode, game }: GameFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-xl space-y-6">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="max-w-xl space-y-6"
+      >
+        <FormField
+          control={form.control}
+          name="gameId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Jeu</FormLabel>
+              <Select
+                value={field.value}
+                onValueChange={field.onChange}
+                disabled={isPending}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Sélectionner un jeu" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {games.map((game) => (
+                    <SelectItem key={game.id} value={game.id}>
+                      {game.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="name"
@@ -98,7 +150,7 @@ export function GameForm({ mode, game }: GameFormProps) {
               <FormControl>
                 <Input
                   {...field}
-                  placeholder="Ex : Street Fighter 6"
+                  placeholder="Ex : Ryu"
                   onBlur={handleNameBlur}
                 />
               </FormControl>
@@ -114,7 +166,7 @@ export function GameForm({ mode, game }: GameFormProps) {
             <FormItem>
               <FormLabel>Slug</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="street-fighter-6" />
+                <Input {...field} placeholder="ryu" />
               </FormControl>
               <FormDescription>
                 Identifiant URL-friendly (auto-généré depuis le nom)
@@ -146,7 +198,7 @@ export function GameForm({ mode, game }: GameFormProps) {
           <Button
             type="button"
             variant="outline"
-            onClick={() => router.push("/admin/games")}
+            onClick={() => router.push("/admin/characters")}
             disabled={isPending}
           >
             Annuler
@@ -157,7 +209,7 @@ export function GameForm({ mode, game }: GameFormProps) {
                 ? "Création..."
                 : "Mise à jour..."
               : mode === "create"
-                ? "Créer le jeu"
+                ? "Créer le personnage"
                 : "Mettre à jour"}
           </Button>
         </div>

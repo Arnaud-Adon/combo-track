@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## 2026-05-02
 
+### Added: Admin management for characters (CRUD)
+
+### Refactor: Extract generateSlug util to src/lib/slug.ts
+
+### Refactor: Migrate Character queries from strategy-matrix to dedicated character.query.ts
+
 ### Added: Cell editor quick insert — selects notation FGC et frame data avec rendu coloré dans le preview
 
 ### Added: Dashboard — liste des dernières matrices de stratégie de l'utilisateur sous forme de cards

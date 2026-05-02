@@ -13,3 +13,11 @@ export const getAllGames = async () =>
   });
 
 export type GameList = Prisma.PromiseReturnType<typeof getAllGames>;
+
+export const getGameOptions = async () =>
+  await prisma.game.findMany({
+    select: { id: true, name: true, slug: true, iconUrl: true },
+    orderBy: { name: "asc" },
+  });
+
+export type GameOption = Prisma.PromiseReturnType<typeof getGameOptions>[number];
