@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## 2026-05-02
 
+### Added: Cell editor quick insert — selects notation FGC et frame data avec rendu coloré dans le preview
+
 ### Added: Dashboard — liste des dernières matrices de stratégie de l'utilisateur sous forme de cards
 
 ### Changed: Dashboard — cards matrices alignées (min-height) avec compteur de cellules remplies et plus d'espacement
