@@ -12,6 +12,22 @@ export type CharacterOption = Prisma.PromiseReturnType<
   typeof getCharactersByGame
 >[number];
 
+export const getAllCharactersWithGame = async () =>
+  await prisma.character.findMany({
+    select: {
+      id: true,
+      slug: true,
+      name: true,
+      iconUrl: true,
+      game: { select: { id: true, slug: true, name: true } },
+    },
+    orderBy: [{ game: { name: "asc" } }, { name: "asc" }],
+  });
+
+export type CharacterWithGame = Prisma.PromiseReturnType<
+  typeof getAllCharactersWithGame
+>[number];
+
 export const getAllCharactersGroupedByGame = async () => {
   const characters = await prisma.character.findMany({
     select: {

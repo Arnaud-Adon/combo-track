@@ -1,10 +1,12 @@
 import { CTASection } from "@/components/features/dashboard/cta-section";
 import { HeroCarousel } from "@/components/features/dashboard/hero-carousel";
+import { RecentCombosSection } from "@/components/features/dashboard/recent-combos-section";
 import { RecentMatchesSection } from "@/components/features/dashboard/recent-matches-section";
 import { RecentStrategyMatricesSection } from "@/components/features/dashboard/recent-strategy-matrices-section";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { getRecentCombosForUser } from "../../../prisma/query/combo.query";
 import { getRecentMatches } from "../../../prisma/query/match.query";
 import { getRecentStrategyMatrices } from "../../../prisma/query/strategy-matrix.query";
 
@@ -15,10 +17,12 @@ export default async function DashboardPage() {
 
   if (!session?.user) redirect("/sign-in");
 
-  const [recentMatches, recentStrategyMatrices] = await Promise.all([
-    getRecentMatches({ userId: session.user.id }),
-    getRecentStrategyMatrices({ userId: session.user.id }),
-  ]);
+  const [recentMatches, recentStrategyMatrices, recentCombos] =
+    await Promise.all([
+      getRecentMatches({ userId: session.user.id }),
+      getRecentStrategyMatrices({ userId: session.user.id }),
+      getRecentCombosForUser({ userId: session.user.id }),
+    ]);
 
   return (
     <div className="mx-auto max-w-7xl space-y-12 px-4 py-8">
@@ -30,6 +34,7 @@ export default async function DashboardPage() {
         <RecentStrategyMatricesSection matrices={recentStrategyMatrices} />
         <RecentMatchesSection matches={recentMatches} />
       </div>
+      <RecentCombosSection combos={recentCombos} />
     </div>
   );
 }
