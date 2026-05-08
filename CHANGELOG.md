@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2026-05-08
+
+### Changed: Combo form — pick game first, then filter characters by selected game
+
+### Added: Responsive burger menu in header below lg breakpoint (1024px)
+
+### Changed: Group admin nav links (Glossaire, Jeux, Personnages) under an Admin dropdown
+
+## 2026-05-03
+
+### Added: Personal combo notebook (CRUD) scoped per user with character + tags + notation
+
+### Added: Extract-to-combo button on video notes — prefills combo form from a note
+
+### Added: Recent combos section on dashboard
+
+### Added: User nav link to /combos
+
 ## 2026-05-02
 
 ### Added: Admin management for characters (CRUD)

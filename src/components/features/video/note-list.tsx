@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { Trash2 } from "lucide-react";
+import Link from "next/link";
+import { Swords, Trash2 } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 
 import { Note, Tag } from "@/../generated/prisma";
@@ -70,15 +71,29 @@ function NoteItem({ note, isActive, onClick, onDelete }: NoteItemProps) {
         >
           {formatTime(note.timestamp)}
         </div>
-        <button
-          type="button"
-          onClick={() => onDelete(note)}
-          className="hover:bg-destructive/10 hover:text-destructive rounded-md p-1.5 transition-colors"
-          aria-label="Supprimer la note"
-        >
-          <Trash2 className="h-4 w-4" />
-          <span className="sr-only">Supprimer la note</span>
-        </button>
+        <div className="flex items-center gap-1">
+          <Link
+            href={`/combos/new?fromNote=${note.id}`}
+            onClick={(e) => e.stopPropagation()}
+            className="hover:bg-primary/10 hover:text-primary rounded-md p-1.5 transition-colors"
+            aria-label="Extraire en combo"
+          >
+            <Swords className="h-4 w-4" />
+            <span className="sr-only">Extraire en combo</span>
+          </Link>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete(note);
+            }}
+            className="hover:bg-destructive/10 hover:text-destructive rounded-md p-1.5 transition-colors"
+            aria-label="Supprimer la note"
+          >
+            <Trash2 className="h-4 w-4" />
+            <span className="sr-only">Supprimer la note</span>
+          </button>
+        </div>
       </div>
       <p className="text-sm leading-relaxed font-medium text-black">
         {note.content}
