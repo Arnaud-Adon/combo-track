@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## 2026-05-24
 
+### Changed: Replace strategy matrix card actions (Ouvrir, Visualiser, Supprimer) with icon buttons + tooltips
+
+### Added: Visualize strategy matrix in a read-only modal from the matrix list
+
 ### Added: List all user replays on /videos page
 
 ## 2026-05-08

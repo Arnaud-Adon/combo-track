@@ -13,10 +13,17 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { FolderOpen, Trash2 } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { StrategyMatrixVisualizeDialog } from "./strategy-matrix-visualize-dialog";
 import { axisSchema } from "./strategy-matrix-schema";
 import type { StrategyMatrixListItem } from "../../../../prisma/query/strategy-matrix.query";
 import { deleteStrategyMatrixAction } from "./strategy-matrix-action";
@@ -89,16 +96,42 @@ export function StrategyMatrixList({ matrices }: Props) {
             {safeAxisLabel(matrix.myAxis)} ×{" "}
             {safeAxisLabel(matrix.opponentAxis)}
           </div>
-          <div className="mt-auto flex gap-2">
-            <Button asChild size="sm" className="flex-1">
-              <Link href={`/notes/strategy/${matrix.id}`}>Ouvrir</Link>
-            </Button>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button variant="outline" size="sm" disabled={isPending}>
-                  Supprimer
+          <div className="mt-auto flex justify-end gap-2">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button asChild size="icon" variant="outline">
+                  <Link
+                    href={`/notes/strategy/${matrix.id}`}
+                    aria-label="Ouvrir"
+                  >
+                    <FolderOpen className="h-4 w-4" />
+                  </Link>
                 </Button>
-              </AlertDialogTrigger>
+              </TooltipTrigger>
+              <TooltipContent>Ouvrir</TooltipContent>
+            </Tooltip>
+            <StrategyMatrixVisualizeDialog
+              title={matrix.title}
+              myAxis={matrix.myAxis}
+              opponentAxis={matrix.opponentAxis}
+              cells={matrix.cells}
+            />
+            <AlertDialog>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      disabled={isPending}
+                      aria-label="Supprimer"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </AlertDialogTrigger>
+                </TooltipTrigger>
+                <TooltipContent>Supprimer</TooltipContent>
+              </Tooltip>
               <AlertDialogContent>
                 <AlertDialogHeader>
                   <AlertDialogTitle>Supprimer cette matrice ?</AlertDialogTitle>
