@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2026-05-24
+
+### Added: List all user replays on /videos page
+
 ## 2026-05-08
 
 ### Changed: Combo form — pick game first, then filter characters by selected game

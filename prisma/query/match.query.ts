@@ -24,3 +24,26 @@ export const getRecentMatches = async ({ userId }: { userId: string }) =>
   });
 
 export type RecentMatches = Prisma.PromiseReturnType<typeof getRecentMatches>;
+
+export const getMatchesByUser = async ({ userId }: { userId: string }) =>
+  await prisma.match.findMany({
+    where: {
+      userId,
+    },
+    select: {
+      id: true,
+      title: true,
+      matchType: true,
+      status: true,
+      duration: true,
+      createdAt: true,
+      _count: {
+        select: {
+          notes: true,
+        },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
+export type UserMatches = Prisma.PromiseReturnType<typeof getMatchesByUser>;
