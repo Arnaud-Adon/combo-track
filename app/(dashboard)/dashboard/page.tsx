@@ -27,7 +27,17 @@ export default async function DashboardPage() {
   return (
     <div className="mx-auto max-w-7xl space-y-12 px-4 py-8">
       <div className="mx-auto w-full max-w-2xl">
-        <HeroCarousel slides={[]} />
+        <HeroCarousel
+          slides={[
+            {
+              image: "",
+              link: "https://fullmeter.com/fatonline/#/quicksearch",
+              title: "Full meter",
+              description:
+                "Site complet pour la frame data de street fighter 6 et autre proposition",
+            },
+          ]}
+        />
       </div>
       <CTASection />
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">

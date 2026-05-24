@@ -48,7 +48,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
       <CarouselContent>
         {slides.map((slide, index) => (
           <CarouselItem key={index}>
-            <Link href={slide.link}>
+            <Link href={slide.link} target="_blank">
               <div className="flex h-[400px] cursor-pointer flex-col items-center justify-center rounded-3xl bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 p-12 text-center text-white transition-transform duration-300 hover:scale-[1.02]">
                 <h2 className="mb-4 text-4xl font-bold">{slide.title}</h2>
                 {slide.description && (

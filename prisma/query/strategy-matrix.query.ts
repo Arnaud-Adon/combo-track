@@ -41,6 +41,7 @@ export const getStrategyMatrices = async ({
       description: true,
       myAxis: true,
       opponentAxis: true,
+      cells: true,
       pinned: true,
       createdAt: true,
       updatedAt: true,
