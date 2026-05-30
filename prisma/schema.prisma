@@ -5,13 +5,15 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  provider        = "prisma-client-js"
+  output          = "../generated/prisma"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [vector]
 }
 
 enum MatchStatus {
@@ -80,16 +82,19 @@ model MatchReport {
 }
 
 model Note {
-  id              String     @id @default(cuid())
+  id              String                       @id @default(cuid())
   matchId         String
-  match           Match      @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  match           Match                        @relation(fields: [matchId], references: [id], onDelete: Cascade)
   timestamp       Int // timecode en secondes
   content         String
   tags            Tag[]
   characterId     String?
-  character       Character? @relation(fields: [characterId], references: [id], onDelete: SetNull)
-  extractedCombos Combo[]    @relation("ComboFromNote")
-  createdAt       DateTime   @default(now())
+  character       Character?                   @relation(fields: [characterId], references: [id], onDelete: SetNull)
+  extractedCombos Combo[]                      @relation("ComboFromNote")
+  embedding       Unsupported("vector(1536)")?
+  contentHash     String?
+  embeddingModel  String?
+  createdAt       DateTime                     @default(now())
 
   @@index([characterId])
 }
@@ -184,16 +189,19 @@ model StrategyMatrix {
 }
 
 model GlossaryArticle {
-  id        String   @id @default(cuid())
-  slug      String   @unique
-  title     String
-  content   String   @db.Text
-  excerpt   String?
-  category  String?
-  published Boolean  @default(false)
+  id             String                       @id @default(cuid())
+  slug           String                       @unique
+  title          String
+  content        String                       @db.Text
+  excerpt        String?
+  category       String?
+  published      Boolean                      @default(false)
+  embedding      Unsupported("vector(1536)")?
+  contentHash    String?
+  embeddingModel String?
 
   createdBy String
-  creator   User     @relation("GlossaryArticles", fields: [createdBy], references: [id], onDelete: Cascade)
+  creator   User   @relation("GlossaryArticles", fields: [createdBy], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

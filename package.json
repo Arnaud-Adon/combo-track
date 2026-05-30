@@ -17,6 +17,7 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:all": "pnpm test:run && pnpm test:e2e",
+    "backfill:embeddings": "tsx --env-file=.env scripts/backfill-embeddings.ts",
     "sync-main": "git checkout main && git pull origin main",
     "commit": "cz",
     "commit:done": "cz && git push && pnpm sync-main && pnpm cleanup",
