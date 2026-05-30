@@ -2,7 +2,9 @@
 
 import { prisma } from "@/lib/prisma";
 import { adminActionClient } from "@/lib/admin-action";
+import { embedGlossaryArticleIfNeeded } from "@/lib/rag/embed-content";
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
 import { createArticleSchema, updateArticleSchema } from "./article-schema";
 import z from "zod";
 
@@ -30,6 +32,14 @@ export const createArticleAction = adminActionClient
         published,
         createdBy: ctx.user.id,
       },
+    });
+
+    after(async () => {
+      await embedGlossaryArticleIfNeeded(
+        article.id,
+        article.title,
+        article.content,
+      );
     });
 
     revalidatePath("/glossary");
@@ -66,6 +76,14 @@ export const updateArticleAction = adminActionClient
         category,
         published,
       },
+    });
+
+    after(async () => {
+      await embedGlossaryArticleIfNeeded(
+        article.id,
+        article.title,
+        article.content,
+      );
     });
 
     revalidatePath("/glossary");

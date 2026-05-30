@@ -1,6 +1,8 @@
 "use server";
 import { prisma } from "@/lib/prisma";
+import { embedNoteIfNeeded } from "@/lib/rag/embed-content";
 import { actionClient } from "@/lib/safe-action";
+import { after } from "next/server";
 import z from "zod";
 
 export const createNoteAction = actionClient
@@ -20,7 +22,7 @@ export const createNoteAction = actionClient
   .action(async ({ parsedInput }) => {
     const { content, timestamp, matchId, tagIds } = parsedInput;
 
-    return await prisma.note.create({
+    const note = await prisma.note.create({
       data: {
         content,
         timestamp,
@@ -33,6 +35,36 @@ export const createNoteAction = actionClient
         tags: true,
       },
     });
+
+    after(async () => {
+      await embedNoteIfNeeded(note.id, note.content);
+    });
+
+    return note;
+  });
+
+export const updateNoteAction = actionClient
+  .inputSchema(
+    z.object({
+      noteId: z.string().min(1, { error: "L'ID de la note est requis" }),
+      content: z
+        .string()
+        .min(2, { error: "Note must be at least 2 characters" }),
+    }),
+  )
+  .action(async ({ parsedInput }) => {
+    const { noteId, content } = parsedInput;
+
+    const note = await prisma.note.update({
+      where: { id: noteId },
+      data: { content },
+    });
+
+    after(async () => {
+      await embedNoteIfNeeded(note.id, note.content);
+    });
+
+    return note;
   });
 
 export const deleteNoteAction = actionClient

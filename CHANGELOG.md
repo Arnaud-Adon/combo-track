@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2026-05-25
+
+### Added: Semantic search infrastructure with pgvector and OpenAI embeddings
+
+### Added: Semantic search page on /search for notes and glossary
+
+### Added: Backfill script for existing notes and glossary embeddings
+
 ## 2026-05-24
 
 ### Changed: Replace strategy matrix card actions (Ouvrir, Visualiser, Supprimer) with icon buttons + tooltips
