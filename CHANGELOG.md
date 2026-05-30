@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 
 ### Added: Cmd+K spotlight dialog for semantic search from anywhere in the dashboard
 
+### Fixed: Load .env in backfill:embeddings script so t3-env validation passes when run via tsx
+
 ## 2026-05-25
 
 ### Added: Semantic search infrastructure with pgvector and OpenAI embeddings
