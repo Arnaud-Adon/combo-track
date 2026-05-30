@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2026-05-30
+
+### Added: Cmd+K spotlight dialog for semantic search from anywhere in the dashboard
+
 ## 2026-05-25
 
 ### Added: Semantic search infrastructure with pgvector and OpenAI embeddings

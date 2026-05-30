@@ -11,7 +11,15 @@ import { SemanticSearchResults } from "./semantic-search-results";
 const DEBOUNCE_MS = 400;
 const MIN_QUERY_LENGTH = 2;
 
-export function SemanticSearchBar() {
+type SemanticSearchBarProps = {
+  autoFocus?: boolean;
+  onResultClick?: () => void;
+};
+
+export function SemanticSearchBar({
+  autoFocus = false,
+  onResultClick,
+}: SemanticSearchBarProps = {}) {
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
 
@@ -44,6 +52,7 @@ export function SemanticSearchBar() {
           placeholder="Recherche sémantique dans tes notes et le glossaire…"
           className="pl-10"
           aria-label="Recherche sémantique"
+          autoFocus={autoFocus}
         />
       </div>
 
@@ -56,6 +65,7 @@ export function SemanticSearchBar() {
         isPending={isPending}
         notes={notes}
         glossary={glossary}
+        onResultClick={onResultClick}
       />
     </div>
   );

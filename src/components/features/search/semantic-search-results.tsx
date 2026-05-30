@@ -12,6 +12,7 @@ type SemanticSearchResultsProps = {
   isPending: boolean;
   notes: NoteSearchResult[];
   glossary: GlossarySearchResult[];
+  onResultClick?: () => void;
 };
 
 function SimilarityBadge({ similarity }: { similarity: number }) {
@@ -23,7 +24,7 @@ function SimilarityBadge({ similarity }: { similarity: number }) {
 }
 
 export function SemanticSearchResults(props: SemanticSearchResultsProps) {
-  const { query, isPending, notes, glossary } = props;
+  const { query, isPending, notes, glossary, onResultClick } = props;
 
   if (query.trim().length < 2) {
     return (
@@ -60,6 +61,7 @@ export function SemanticSearchResults(props: SemanticSearchResultsProps) {
               <li key={note.id}>
                 <Link
                   href={`/videos/${note.matchId}#t=${note.timestamp}`}
+                  onClick={onResultClick}
                   className="bg-card hover:border-primary/50 block rounded-lg border-2 p-4 shadow-sm transition-all hover:shadow-md"
                 >
                   <div className="mb-2 flex items-center justify-between gap-2">
@@ -89,6 +91,7 @@ export function SemanticSearchResults(props: SemanticSearchResultsProps) {
               <li key={article.id}>
                 <Link
                   href={`/glossary/${article.slug}`}
+                  onClick={onResultClick}
                   className="bg-card hover:border-primary/50 block rounded-lg border-2 p-4 shadow-sm transition-all hover:shadow-md"
                 >
                   <div className="mb-2 flex items-center justify-between gap-2">
