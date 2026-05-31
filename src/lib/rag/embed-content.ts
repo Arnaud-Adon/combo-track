@@ -44,6 +44,46 @@ export async function embedNoteIfNeeded(
   }
 }
 
+export async function embedMemoIfNeeded(
+  memoId: string,
+  title: string,
+  content: string,
+): Promise<void> {
+  try {
+    const composed = `${title}\n\n${content}`;
+    const hash = hashContent(composed);
+
+    const existing = await prisma.memo.findUnique({
+      where: { id: memoId },
+      select: { contentHash: true, embeddingModel: true },
+    });
+
+    if (
+      existing?.contentHash === hash &&
+      existing.embeddingModel === EMBEDDING_MODEL
+    ) {
+      return;
+    }
+
+    const embedding = await generateEmbedding(composed);
+    if (!embedding) {
+      return;
+    }
+
+    const vectorLiteral = toVectorLiteral(embedding);
+
+    await prisma.$executeRaw`
+      UPDATE "Memo"
+      SET "embedding" = ${Prisma.raw(`'${vectorLiteral}'::vector`)},
+          "contentHash" = ${hash},
+          "embeddingModel" = ${EMBEDDING_MODEL}
+      WHERE "id" = ${memoId}
+    `;
+  } catch (error) {
+    console.error("[rag] embedMemoIfNeeded failed", { memoId, error });
+  }
+}
+
 export async function embedGlossaryArticleIfNeeded(
   articleId: string,
   title: string,

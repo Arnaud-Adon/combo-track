@@ -50,8 +50,24 @@ model User {
   glossaryArticles GlossaryArticle[]  @relation("GlossaryArticles")
   combos           Combo[]
   strategyMatrices StrategyMatrix[]
+  memos            Memo[]
 
   @@map("user")
+}
+
+model Memo {
+  id             String                       @id @default(cuid())
+  userId         String
+  user           User                         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title          String
+  content        String                       @db.Text
+  embedding      Unsupported("vector(1536)")?
+  contentHash    String?
+  embeddingModel String?
+  createdAt      DateTime                     @default(now())
+  updatedAt      DateTime                     @updatedAt
+
+  @@index([userId])
 }
 
 model Match {

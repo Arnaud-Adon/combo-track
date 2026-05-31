@@ -10,6 +10,7 @@ describe("SemanticSearchResults", () => {
         isPending={false}
         notes={[]}
         glossary={[]}
+        memos={[]}
       />,
     );
     expect(screen.getByText(/au moins 2 caractères/i)).toBeInTheDocument();
@@ -22,6 +23,7 @@ describe("SemanticSearchResults", () => {
         isPending
         notes={[]}
         glossary={[]}
+        memos={[]}
       />,
     );
     expect(screen.getByText(/recherche en cours/i)).toBeInTheDocument();
@@ -52,6 +54,7 @@ describe("SemanticSearchResults", () => {
             similarity: 0.91,
           },
         ]}
+        memos={[]}
       />,
     );
 
@@ -68,6 +71,7 @@ describe("SemanticSearchResults", () => {
         isPending={false}
         notes={[]}
         glossary={[]}
+        memos={[]}
       />,
     );
     expect(screen.getByText(/aucun résultat/i)).toBeInTheDocument();
