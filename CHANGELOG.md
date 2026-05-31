@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2026-05-31
+
+### Added: Personal memo notes with notation and frame data selectors, accessible from dashboard CTA
+
+### Added: Memos indexed and searchable via semantic search (RAG) alongside notes and glossary
+
+### Fixed: Memo RAG columns missing in DB by splitting add_memo migration and adding add_memo_embedding
+
+### Added: Eye icon on memo list to preview content in a dialog
+
 ## 2026-05-30
 
 ### Added: Cmd+K spotlight dialog for semantic search from anywhere in the dashboard

@@ -86,10 +86,47 @@ async function backfillGlossary(): Promise<void> {
   }
 }
 
+async function backfillMemos(): Promise<void> {
+  const memos = await prisma.memo.findMany({
+    where: { contentHash: null },
+    select: { id: true, title: true, content: true },
+  });
+
+  console.log(`[backfill] memos to process: ${memos.length}`);
+
+  for (let start = 0; start < memos.length; start += BATCH_SIZE) {
+    const chunk = memos.slice(start, start + BATCH_SIZE);
+    const composed = chunk.map((m) => `${m.title}\n\n${m.content}`);
+    const embeddings = await generateEmbeddingsBatch(composed);
+
+    for (let i = 0; i < chunk.length; i += 1) {
+      const memo = chunk[i];
+      const embedding = embeddings[i];
+      if (!embedding) {
+        continue;
+      }
+      const vectorLiteral = toVectorLiteral(embedding);
+      await prisma.$executeRaw`
+        UPDATE "Memo"
+        SET "embedding" = ${Prisma.raw(`'${vectorLiteral}'::vector`)},
+            "contentHash" = ${hashContent(composed[i])},
+            "embeddingModel" = ${EMBEDDING_MODEL}
+        WHERE "id" = ${memo.id}
+      `;
+    }
+
+    console.log(
+      `[backfill] memos batch ${start + chunk.length}/${memos.length}`,
+    );
+    await sleep(SLEEP_BETWEEN_BATCHES_MS);
+  }
+}
+
 async function main(): Promise<void> {
   console.log(`[backfill] starting with model ${EMBEDDING_MODEL}`);
   await backfillNotes();
   await backfillGlossary();
+  await backfillMemos();
   console.log("[backfill] done");
 }
 

@@ -35,11 +35,12 @@ export function SemanticSearchBar({
     if (trimmed.length < MIN_QUERY_LENGTH) {
       return;
     }
-    execute({ query: trimmed, scope: "both", limit: 10 });
+    execute({ query: trimmed, scope: "all", limit: 10 });
   }, [debouncedQuery, execute]);
 
   const notes = result.data?.notes ?? [];
   const glossary = result.data?.glossary ?? [];
+  const memos = result.data?.memos ?? [];
 
   return (
     <div className="space-y-6">
@@ -65,6 +66,7 @@ export function SemanticSearchBar({
         isPending={isPending}
         notes={notes}
         glossary={glossary}
+        memos={memos}
         onResultClick={onResultClick}
       />
     </div>

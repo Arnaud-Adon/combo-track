@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import type { GlossarySearchResult } from "@/lib/rag/search-glossary";
+import type { MemoSearchResult } from "@/lib/rag/search-memos";
 import type { NoteSearchResult } from "@/lib/rag/search-notes";
 import { formatTime } from "@/utils";
 
@@ -12,6 +13,7 @@ type SemanticSearchResultsProps = {
   isPending: boolean;
   notes: NoteSearchResult[];
   glossary: GlossarySearchResult[];
+  memos: MemoSearchResult[];
   onResultClick?: () => void;
 };
 
@@ -24,7 +26,7 @@ function SimilarityBadge({ similarity }: { similarity: number }) {
 }
 
 export function SemanticSearchResults(props: SemanticSearchResultsProps) {
-  const { query, isPending, notes, glossary, onResultClick } = props;
+  const { query, isPending, notes, glossary, memos, onResultClick } = props;
 
   if (query.trim().length < 2) {
     return (
@@ -42,7 +44,8 @@ export function SemanticSearchResults(props: SemanticSearchResultsProps) {
     );
   }
 
-  const hasResults = notes.length > 0 || glossary.length > 0;
+  const hasResults =
+    notes.length > 0 || glossary.length > 0 || memos.length > 0;
   if (!hasResults) {
     return (
       <p className="text-muted-foreground py-8 text-center text-sm">
@@ -76,6 +79,33 @@ export function SemanticSearchResults(props: SemanticSearchResultsProps) {
                     <SimilarityBadge similarity={note.similarity} />
                   </div>
                   <p className="text-sm leading-relaxed">{note.content}</p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {memos.length > 0 && (
+        <section>
+          <h2 className="mb-3 text-lg font-semibold">Mémos</h2>
+          <ul className="space-y-2">
+            {memos.map((memo) => (
+              <li key={memo.id}>
+                <Link
+                  href={`/notes/memo/${memo.id}`}
+                  onClick={onResultClick}
+                  className="bg-card hover:border-primary/50 block rounded-lg border-2 p-4 shadow-sm transition-all hover:shadow-md"
+                >
+                  <div className="mb-2 flex items-center justify-between gap-2">
+                    <span className="font-semibold">{memo.title}</span>
+                    <SimilarityBadge similarity={memo.similarity} />
+                  </div>
+                  {memo.content && (
+                    <p className="text-muted-foreground line-clamp-2 text-sm leading-relaxed whitespace-pre-wrap">
+                      {memo.content}
+                    </p>
+                  )}
                 </Link>
               </li>
             ))}

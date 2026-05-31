@@ -1,6 +1,6 @@
 # RAG / Semantic Search
 
-Semantic search infrastructure for `Note` and `GlossaryArticle`.
+Semantic search infrastructure for `Note`, `Memo` and `GlossaryArticle`.
 
 ## Stack
 
@@ -13,8 +13,9 @@ Semantic search infrastructure for `Note` and `GlossaryArticle`.
 
 - `src/lib/ai/openai.ts` — `generateEmbedding`, `generateEmbeddingsBatch` (null-safe like Groq client)
 - `src/lib/rag/content-hash.ts` — sha256 hash for change detection
-- `src/lib/rag/embed-content.ts` — `embedNoteIfNeeded`, `embedGlossaryArticleIfNeeded` (skip when hash + model unchanged)
+- `src/lib/rag/embed-content.ts` — `embedNoteIfNeeded`, `embedMemoIfNeeded`, `embedGlossaryArticleIfNeeded` (skip when hash + model unchanged)
 - `src/lib/rag/search-notes.ts` — cosine search scoped by `Match.userId`
+- `src/lib/rag/search-memos.ts` — cosine search scoped by `Memo.userId`
 - `src/lib/rag/search-glossary.ts` — cosine search on `published = true` articles
 - `src/components/features/search/` — `semanticSearchAction` (authActionClient) + UI
 - `app/(dashboard)/search/page.tsx` — entry page

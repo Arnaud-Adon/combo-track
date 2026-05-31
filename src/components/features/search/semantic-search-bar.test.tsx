@@ -47,7 +47,7 @@ describe("SemanticSearchBar", () => {
       () => {
         expect(executeMock).toHaveBeenCalledWith({
           query: "punish",
-          scope: "both",
+          scope: "all",
           limit: 10,
         });
       },

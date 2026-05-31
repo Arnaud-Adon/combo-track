@@ -55,7 +55,7 @@ export function SearchCommandDialog() {
           <DialogHeader>
             <DialogTitle>Recherche sémantique</DialogTitle>
             <DialogDescription>
-              Cherche par sens dans tes notes et le glossaire.
+              Cherche par sens dans tes notes, tes mémos et le glossaire.
             </DialogDescription>
           </DialogHeader>
           <SemanticSearchBar autoFocus onResultClick={() => setOpen(false)} />
