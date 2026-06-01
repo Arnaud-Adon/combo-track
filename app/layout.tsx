@@ -3,7 +3,8 @@ import { Header } from "@/components/features/landing/header";
 import { ThemeProvider } from "@/components/theme-provider";
 import { websiteConfig } from "@/config/website-config";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -11,9 +12,16 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
+});
+
+const departureMono = localFont({
+  src: "../public/fonts/DepartureMono-Regular.woff2",
+  variable: "--font-display",
+  display: "swap",
+  weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -27,10 +35,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="fr" suppressHydrationWarning>
       <head />
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${jetbrainsMono.variable} ${departureMono.variable} antialiased`}
       >
         <ThemeProvider>
           <div className="flex min-h-screen flex-col">
