@@ -42,7 +42,7 @@ export function Header() {
           <Link href="/" className="flex items-center gap-2.5">
             <span
               aria-hidden
-              className="border-accent-fgc/40 bg-accent-fgc/10 text-accent-fgc font-mono-fgc relative flex size-7 items-center justify-center rounded-sm border text-[11px] font-bold"
+              className="border-fgc-accent/40 bg-fgc-accent/10 text-fgc-accent font-mono-fgc relative flex size-7 items-center justify-center rounded-sm border text-[11px] font-bold"
             >
               CT
             </span>

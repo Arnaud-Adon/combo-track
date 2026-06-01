@@ -46,7 +46,7 @@ export function ProductWalkthroughSection(
     >
       <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 md:py-32 lg:px-8">
         <div className="mb-16 max-w-3xl md:mb-24">
-          <span className="font-mono-fgc text-accent-fgc mb-4 inline-block text-[10px] tracking-[0.3em] uppercase">
+          <span className="font-mono-fgc text-fgc-accent mb-4 inline-block text-[10px] tracking-[0.3em] uppercase">
             {"// Produit"}
           </span>
           <h2 className="marketing-h1 text-fgc-text text-4xl md:text-5xl lg:text-6xl">
@@ -67,7 +67,7 @@ export function ProductWalkthroughSection(
             >
               <div className="flex flex-col">
                 <div className="text-fgc-muted font-mono-fgc mb-4 flex items-center gap-3 text-[10px] tracking-[0.3em] uppercase">
-                  <span className="text-accent-fgc font-display text-3xl tracking-normal">
+                  <span className="text-fgc-accent font-display text-3xl tracking-normal">
                     {step.step}
                   </span>
                   <span className="bg-fgc-border h-px w-12" />
@@ -83,7 +83,7 @@ export function ProductWalkthroughSection(
 
               <div className="relative">
                 <div
-                  className="bg-accent-fgc-soft absolute -inset-6 -z-10 rounded-3xl blur-3xl"
+                  className="bg-fgc-accent-soft absolute -inset-6 -z-10 rounded-3xl blur-3xl"
                   aria-hidden
                 />
                 {step.mock}
@@ -103,14 +103,14 @@ function MatchNotebookMock() {
         <span className="font-mono-fgc text-fgc-muted text-[10px] tracking-wider">
           MATCH · sf6 · luke vs jp
         </span>
-        <span className="text-accent-fgc font-mono-fgc text-[10px]">REC</span>
+        <span className="text-fgc-accent font-mono-fgc text-[10px]">REC</span>
       </div>
       <div className="bg-fgc-bg relative aspect-video">
         <div className="bg-scanlines absolute inset-0 opacity-50" />
         <div className="from-fgc-bg via-fgc-surface to-fgc-bg absolute inset-0 bg-gradient-to-tr opacity-80" />
         <div className="absolute inset-x-0 bottom-3 px-4">
           <div className="bg-fgc-border h-1 overflow-hidden rounded-full">
-            <div className="bg-accent-fgc h-full w-[38%]" />
+            <div className="bg-fgc-accent h-full w-[38%]" />
           </div>
         </div>
       </div>
@@ -124,7 +124,7 @@ function MatchNotebookMock() {
             key={row.t}
             className="border-fgc-border bg-fgc-bg flex items-start gap-3 rounded-md border px-3 py-2"
           >
-            <span className="text-accent-fgc font-mono-fgc shrink-0 text-[10px] tracking-wider">
+            <span className="text-fgc-accent font-mono-fgc shrink-0 text-[10px] tracking-wider">
               {row.t}
             </span>
             <span className="text-fgc-text text-xs">{row.n}</span>
@@ -148,7 +148,7 @@ function StrategyMatrixMock() {
     <div className="border-fgc-border bg-fgc-surface relative overflow-hidden rounded-xl border p-5 shadow-xl">
       <div className="text-fgc-muted font-mono-fgc mb-4 flex items-center justify-between text-[10px] tracking-wider uppercase">
         <span>Luke vs JP — ressource matrix</span>
-        <span className="text-accent-fgc">IA</span>
+        <span className="text-fgc-accent">IA</span>
       </div>
       <div
         className="grid gap-px"
@@ -173,7 +173,7 @@ function StrategyMatrixMock() {
                 key={`${rIdx}-${cIdx}`}
                 className={cn(
                   "border-fgc-border bg-fgc-bg flex aspect-square items-center justify-center border p-2 text-[10px] leading-tight",
-                  rIdx === 1 && cIdx === 1 && "border-accent-fgc/50 bg-accent-fgc-soft text-accent-fgc",
+                  rIdx === 1 && cIdx === 1 && "border-fgc-accent/50 bg-fgc-accent-soft text-fgc-accent",
                 )}
               >
                 {cell}
@@ -190,7 +190,7 @@ function AiReportMock() {
   return (
     <div className="border-fgc-border bg-fgc-surface relative overflow-hidden rounded-xl border shadow-xl">
       <div className="border-fgc-border bg-fgc-bg/60 flex items-center gap-2 border-b px-4 py-2.5">
-        <Sparkles className="text-accent-fgc size-3.5" />
+        <Sparkles className="text-fgc-accent size-3.5" />
         <span className="font-mono-fgc text-fgc-muted text-[10px] tracking-wider uppercase">
           ai match report · llama 3.3
         </span>
@@ -210,7 +210,7 @@ function AiReportMock() {
           <div className="text-fgc-muted font-mono-fgc mb-2 text-[9px] tracking-[0.2em] uppercase">
             Point faible prioritaire
           </div>
-          <div className="border-accent-fgc/40 bg-accent-fgc-soft border-l-2 py-2 pl-3">
+          <div className="border-fgc-accent/40 bg-fgc-accent-soft border-l-2 py-2 pl-3">
             <p className="text-fgc-text text-xs">
               Drive Rush 5MK abusé sur knockdown — adversaire DI 2 fois sur 3.
             </p>
@@ -230,7 +230,7 @@ function AiReportMock() {
                 key={e}
                 className="text-fgc-text flex items-start gap-2 text-xs"
               >
-                <span className="text-accent-fgc font-mono-fgc mt-0.5 text-[10px]">
+                <span className="text-fgc-accent font-mono-fgc mt-0.5 text-[10px]">
                   →
                 </span>
                 {e}

@@ -32,7 +32,7 @@ export function MobileCtaBar(props: MobileCtaBarProps) {
     >
       <div className="flex items-center gap-3 px-4 py-3">
         <div className="min-w-0 flex-1">
-          <div className="font-mono-fgc text-accent-fgc text-[10px] tracking-widest uppercase">
+          <div className="font-mono-fgc text-fgc-accent text-[10px] tracking-widest uppercase">
             Free forever
           </div>
           <div className="text-fgc-text truncate text-sm font-medium">
@@ -41,7 +41,7 @@ export function MobileCtaBar(props: MobileCtaBarProps) {
         </div>
         <Button
           asChild
-          className="bg-accent-fgc hover:bg-accent-fgc-strong h-10 shrink-0 text-sm text-white"
+          className="bg-fgc-accent hover:bg-fgc-accent-strong h-10 shrink-0 text-sm text-white"
         >
           <Link href="/signup" className="flex items-center gap-1.5">
             Commencer

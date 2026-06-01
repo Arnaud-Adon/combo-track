@@ -42,7 +42,7 @@ export function NotionVsCombotrackSection(
     >
       <div className="relative mx-auto max-w-5xl px-4 py-24 sm:px-6 md:py-32 lg:px-8">
         <div className="mb-12 max-w-2xl md:mb-16">
-          <span className="font-mono-fgc text-accent-fgc mb-4 inline-block text-[10px] tracking-[0.3em] uppercase">
+          <span className="font-mono-fgc text-fgc-accent mb-4 inline-block text-[10px] tracking-[0.3em] uppercase">
             {"// Comparatif"}
           </span>
           <h2 className="marketing-h1 text-fgc-text text-4xl md:text-5xl lg:text-6xl">
@@ -66,7 +66,7 @@ export function NotionVsCombotrackSection(
             <span className="text-fgc-muted font-mono-fgc w-16 text-center text-[10px] tracking-wider uppercase md:w-24">
               Notion
             </span>
-            <span className="text-accent-fgc font-mono-fgc w-20 text-center text-[10px] font-bold tracking-wider uppercase md:w-28">
+            <span className="text-fgc-accent font-mono-fgc w-20 text-center text-[10px] font-bold tracking-wider uppercase md:w-28">
               ComboTrack
             </span>
           </div>
@@ -89,8 +89,8 @@ export function NotionVsCombotrackSection(
                 </span>
                 <span className="flex w-20 justify-center md:w-28">
                   {row.combotrack ? (
-                    <span className="border-accent-fgc/40 bg-accent-fgc-soft inline-flex size-7 items-center justify-center rounded-sm border">
-                      <Check className="text-accent-fgc size-4" strokeWidth={2.5} />
+                    <span className="border-fgc-accent/40 bg-fgc-accent-soft inline-flex size-7 items-center justify-center rounded-sm border">
+                      <Check className="text-fgc-accent size-4" strokeWidth={2.5} />
                     </span>
                   ) : (
                     <X className="text-fgc-muted/40 size-5" strokeWidth={2} />

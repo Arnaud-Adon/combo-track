@@ -88,7 +88,7 @@ export function PricingSection(props: PricingSectionProps) {
     >
       <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 md:py-32 lg:px-8">
         <div className="mb-12 text-center md:mb-16">
-          <span className="font-mono-fgc text-accent-fgc mb-4 inline-block text-[10px] tracking-[0.3em] uppercase">
+          <span className="font-mono-fgc text-fgc-accent mb-4 inline-block text-[10px] tracking-[0.3em] uppercase">
             {"// Pricing"}
           </span>
           <h2 className="marketing-h1 text-fgc-text mx-auto max-w-3xl text-balance text-4xl md:text-5xl lg:text-6xl">
@@ -116,12 +116,12 @@ export function PricingSection(props: PricingSectionProps) {
               className={cn(
                 "font-mono-fgc rounded-full px-4 py-1.5 text-[11px] tracking-wider uppercase transition-colors",
                 yearly
-                  ? "bg-accent-fgc text-white"
+                  ? "bg-fgc-accent text-white"
                   : "text-fgc-muted hover:text-fgc-text",
               )}
             >
               Annuel
-              <span className="text-accent-fgc ml-1.5 text-[9px]">−29%</span>
+              <span className="text-fgc-accent ml-1.5 text-[9px]">−29%</span>
             </button>
           </div>
         </div>
@@ -135,12 +135,12 @@ export function PricingSection(props: PricingSectionProps) {
                 className={cn(
                   "relative flex flex-col rounded-xl border p-6 md:p-7",
                   tier.highlight
-                    ? "border-accent-fgc bg-fgc-surface shadow-[0_30px_80px_-20px_var(--fgc-accent-soft)] md:-translate-y-3 md:scale-[1.02]"
+                    ? "border-fgc-accent bg-fgc-surface shadow-[0_30px_80px_-20px_var(--fgc-accent-soft)] md:-translate-y-3 md:scale-[1.02]"
                     : "border-fgc-border bg-fgc-surface/40",
                 )}
               >
                 {tier.badge && (
-                  <span className="bg-accent-fgc font-mono-fgc absolute -top-2.5 left-1/2 inline-flex -translate-x-1/2 items-center gap-1 rounded-full px-3 py-1 text-[9px] font-bold tracking-widest text-white uppercase">
+                  <span className="bg-fgc-accent font-mono-fgc absolute -top-2.5 left-1/2 inline-flex -translate-x-1/2 items-center gap-1 rounded-full px-3 py-1 text-[9px] font-bold tracking-widest text-white uppercase">
                     <Sparkles className="size-3" />
                     {tier.badge}
                   </span>
@@ -169,7 +169,7 @@ export function PricingSection(props: PricingSectionProps) {
                   className={cn(
                     "mb-6 h-11 text-sm",
                     tier.highlight
-                      ? "bg-accent-fgc hover:bg-accent-fgc-strong text-white"
+                      ? "bg-fgc-accent hover:bg-fgc-accent-strong text-white"
                       : "border-fgc-border bg-fgc-surface text-fgc-text hover:bg-fgc-bg border",
                   )}
                 >
@@ -186,7 +186,7 @@ export function PricingSection(props: PricingSectionProps) {
                         className={cn(
                           "mt-0.5 size-4 shrink-0",
                           tier.highlight
-                            ? "text-accent-fgc"
+                            ? "text-fgc-accent"
                             : "text-fgc-muted",
                         )}
                         strokeWidth={2.5}
@@ -201,7 +201,7 @@ export function PricingSection(props: PricingSectionProps) {
         </div>
 
         <div className="border-fgc-border bg-fgc-surface/40 text-fgc-muted mx-auto mt-12 flex max-w-2xl items-center gap-3 rounded-xl border px-5 py-4 text-sm md:mt-16">
-          <ShieldCheck className="text-accent-fgc size-5 shrink-0" />
+          <ShieldCheck className="text-fgc-accent size-5 shrink-0" />
           <span>
             Pas satisfait dans les{" "}
             <span className="text-fgc-text font-semibold">7 premiers jours</span>{" "}

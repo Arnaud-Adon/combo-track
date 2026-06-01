@@ -84,13 +84,13 @@ export function CmdkShowcaseSection(props: CmdkShowcaseSectionProps) {
 
       <div className="relative mx-auto max-w-5xl px-4 py-24 sm:px-6 md:py-32 lg:px-8">
         <div className="mb-12 text-center md:mb-16">
-          <span className="font-mono-fgc text-accent-fgc mb-4 inline-block text-[10px] tracking-[0.3em] uppercase">
+          <span className="font-mono-fgc text-fgc-accent mb-4 inline-block text-[10px] tracking-[0.3em] uppercase">
             {"// ⌘K"}
           </span>
           <h2 className="marketing-h1 text-fgc-text mx-auto max-w-3xl text-balance text-4xl md:text-5xl lg:text-6xl">
             Tout ton labo,
             <br />
-            <span className="text-accent-fgc">à une frappe.</span>
+            <span className="text-fgc-accent">à une frappe.</span>
           </h2>
           <p className="text-fgc-muted mx-auto mt-6 max-w-xl text-base leading-relaxed md:text-lg">
             Recherche sémantique. Tape une idée — pas un mot-clé. Indexe tes
@@ -118,20 +118,20 @@ export function CmdkShowcaseSection(props: CmdkShowcaseSectionProps) {
                   className={cn(
                     "flex items-center gap-3 px-4 py-3 transition-colors",
                     idx === 0
-                      ? "bg-accent-fgc-soft border-accent-fgc/30 border-l-2"
+                      ? "bg-fgc-accent-soft border-fgc-accent/30 border-l-2"
                       : "hover:bg-fgc-bg/60",
                   )}
                 >
                   <span
                     className={cn(
                       "border-fgc-border bg-fgc-bg flex size-8 shrink-0 items-center justify-center rounded-sm border",
-                      idx === 0 && "border-accent-fgc/40 bg-accent-fgc-soft",
+                      idx === 0 && "border-fgc-accent/40 bg-fgc-accent-soft",
                     )}
                   >
                     <Icon
                       className={cn(
                         "size-3.5",
-                        idx === 0 ? "text-accent-fgc" : "text-fgc-muted",
+                        idx === 0 ? "text-fgc-accent" : "text-fgc-muted",
                       )}
                     />
                   </span>
@@ -140,7 +140,7 @@ export function CmdkShowcaseSection(props: CmdkShowcaseSectionProps) {
                       <span
                         className={cn(
                           "font-mono-fgc text-[9px] tracking-widest uppercase",
-                          idx === 0 ? "text-accent-fgc" : "text-fgc-muted",
+                          idx === 0 ? "text-fgc-accent" : "text-fgc-muted",
                         )}
                       >
                         {result.badge}
@@ -154,7 +154,7 @@ export function CmdkShowcaseSection(props: CmdkShowcaseSectionProps) {
                     </div>
                   </div>
                   {idx === 0 && (
-                    <CornerDownLeft className="text-accent-fgc size-3.5 shrink-0" />
+                    <CornerDownLeft className="text-fgc-accent size-3.5 shrink-0" />
                   )}
                 </div>
               );

@@ -84,7 +84,7 @@ export function BenefitsBento(props: BenefitsBentoProps) {
       <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 md:py-32 lg:px-8">
         <div className="mb-12 flex flex-col items-start gap-3 md:mb-16 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
-            <span className="font-mono-fgc text-accent-fgc mb-4 inline-block text-[10px] tracking-[0.3em] uppercase">
+            <span className="font-mono-fgc text-fgc-accent mb-4 inline-block text-[10px] tracking-[0.3em] uppercase">
               {"// Bénéfices"}
             </span>
             <h2 className="marketing-h1 text-fgc-text text-4xl md:text-5xl lg:text-6xl">
@@ -109,7 +109,7 @@ export function BenefitsBento(props: BenefitsBentoProps) {
                   "border-fgc-border bg-fgc-surface/40 hover:bg-fgc-surface group relative flex flex-col gap-4 border p-6 transition-colors md:p-8",
                   benefit.span,
                   benefit.accent &&
-                    "hover:border-accent-fgc/40 [&_.bento-tag]:text-accent-fgc",
+                    "hover:border-fgc-accent/40 [&_.bento-tag]:text-fgc-accent",
                 )}
               >
                 <span className="font-mono-fgc text-fgc-muted absolute top-5 right-6 text-[10px] tracking-widest">
@@ -119,13 +119,13 @@ export function BenefitsBento(props: BenefitsBentoProps) {
                   <span
                     className={cn(
                       "border-fgc-border bg-fgc-bg flex size-9 items-center justify-center rounded-sm border",
-                      benefit.accent && "border-accent-fgc/40 bg-accent-fgc-soft",
+                      benefit.accent && "border-fgc-accent/40 bg-fgc-accent-soft",
                     )}
                   >
                     <Icon
                       className={cn(
                         "text-fgc-text size-4",
-                        benefit.accent && "text-accent-fgc",
+                        benefit.accent && "text-fgc-accent",
                       )}
                       strokeWidth={1.6}
                     />
