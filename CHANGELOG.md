@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2026-06-01
+
+### Changed: Remap shadcn dark-mode design tokens to FGC palette in globals.css so the entire app inherits the Frame-Perfect identity in dark mode
+
+### Added: Design system Claude rule in .claude/rules/design-system.md scoped to app and components
+
+### Changed: Rename landing utilities from `accent-fgc` to `fgc-accent` for native Tailwind theme alignment
+
+### Removed: Ad-hoc `.text-accent-fgc` / `.bg-accent-fgc` utilities from globals.css now superseded by Tailwind-generated `fgc-accent` utilities
+
 ## 2026-05-31
 
 ### Changed: Landing page redesigned with Frame-Perfect FGC identity (Departure Mono display font, red punish accent, dark training-room aesthetic)

@@ -25,13 +25,13 @@ export function SolutionSection(props: SolutionSectionProps) {
         }}
       />
       <div className="relative mx-auto max-w-4xl px-4 py-24 text-center sm:px-6 md:py-32 lg:px-8">
-        <span className="font-mono-fgc text-accent-fgc mb-4 inline-block text-[10px] tracking-[0.3em] uppercase">
+        <span className="font-mono-fgc text-fgc-accent mb-4 inline-block text-[10px] tracking-[0.3em] uppercase">
           {"// Solution"}
         </span>
         <h2 className="marketing-h1 text-fgc-text mx-auto max-w-3xl text-balance text-4xl md:text-5xl lg:text-6xl">
           Un seul endroit pour
           <br />
-          <span className="text-accent-fgc">tout ce qui te fait progresser.</span>
+          <span className="text-fgc-accent">tout ce qui te fait progresser.</span>
         </h2>
 
         <p className="text-fgc-muted mx-auto mt-8 max-w-2xl text-base leading-relaxed md:text-lg">

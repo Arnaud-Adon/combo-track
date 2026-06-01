@@ -51,7 +51,7 @@ export function FgcTerm(props: FgcTermProps) {
         <TooltipTrigger asChild>
           <span
             className={cn(
-              "decoration-accent-fgc/60 hover:decoration-accent-fgc cursor-help underline decoration-dotted underline-offset-4 transition-colors",
+              "decoration-fgc-accent/60 hover:decoration-fgc-accent cursor-help underline decoration-dotted underline-offset-4 transition-colors",
               className,
             )}
           >
@@ -60,9 +60,9 @@ export function FgcTerm(props: FgcTermProps) {
         </TooltipTrigger>
         <TooltipContent
           side="top"
-          className="border-accent-fgc/30 bg-fgc-surface text-fgc-text max-w-xs border font-sans text-xs leading-relaxed"
+          className="border-fgc-accent/30 bg-fgc-surface text-fgc-text max-w-xs border font-sans text-xs leading-relaxed"
         >
-          <div className="text-accent-fgc font-mono-fgc mb-1 text-[10px] tracking-widest uppercase">
+          <div className="text-fgc-accent font-mono-fgc mb-1 text-[10px] tracking-widest uppercase">
             {term}
           </div>
           {definition}

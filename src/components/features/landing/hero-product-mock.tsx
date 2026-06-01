@@ -41,9 +41,9 @@ export function HeroProductMock(props: HeroProductMockProps) {
           <div className="bg-grain absolute inset-0 opacity-[0.06] mix-blend-overlay" />
 
           <div className="relative flex h-full items-center justify-center">
-            <div className="border-accent-fgc/40 bg-accent-fgc/10 flex size-16 items-center justify-center rounded-full border backdrop-blur-sm">
+            <div className="border-fgc-accent/40 bg-fgc-accent/10 flex size-16 items-center justify-center rounded-full border backdrop-blur-sm">
               <Play
-                className="text-accent-fgc ml-1 size-7"
+                className="text-fgc-accent ml-1 size-7"
                 fill="currentColor"
               />
             </div>
@@ -55,8 +55,8 @@ export function HeroProductMock(props: HeroProductMockProps) {
                 01:47
               </span>
               <div className="bg-fgc-border relative h-1 flex-1 overflow-hidden rounded-full">
-                <div className="bg-accent-fgc absolute inset-y-0 left-0 w-[42%]" />
-                <span className="bg-accent-fgc absolute top-1/2 left-[42%] size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full ring-2 ring-white/20" />
+                <div className="bg-fgc-accent absolute inset-y-0 left-0 w-[42%]" />
+                <span className="bg-fgc-accent absolute top-1/2 left-[42%] size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full ring-2 ring-white/20" />
               </div>
               <span className="font-mono-fgc text-fgc-muted text-[10px] tracking-wider">
                 04:12
@@ -70,7 +70,7 @@ export function HeroProductMock(props: HeroProductMockProps) {
             <span className="font-mono-fgc text-fgc-muted text-[10px] tracking-[0.2em] uppercase">
               Notes timestampées
             </span>
-            <span className="text-accent-fgc font-mono-fgc text-[10px]">
+            <span className="text-fgc-accent font-mono-fgc text-[10px]">
               {TIMESTAMPS.length}
             </span>
           </div>
@@ -81,7 +81,7 @@ export function HeroProductMock(props: HeroProductMockProps) {
                 key={note.time}
                 className={cn(
                   "fgc-rise border-fgc-border bg-fgc-surface flex items-start gap-2 rounded-md border px-2.5 py-2",
-                  note.accent && "border-accent-fgc/40 bg-accent-fgc-soft",
+                  note.accent && "border-fgc-accent/40 bg-fgc-accent-soft",
                 )}
                 style={{
                   animationDelay: `${0.4 + idx * 0.12}s`,
@@ -90,7 +90,7 @@ export function HeroProductMock(props: HeroProductMockProps) {
                 <span
                   className={cn(
                     "font-mono-fgc shrink-0 text-[10px] tracking-wider",
-                    note.accent ? "text-accent-fgc" : "text-fgc-muted",
+                    note.accent ? "text-fgc-accent" : "text-fgc-muted",
                   )}
                 >
                   {note.time}
@@ -103,10 +103,10 @@ export function HeroProductMock(props: HeroProductMockProps) {
           </ul>
 
           <div
-            className="fgc-rise border-accent-fgc/30 bg-accent-fgc-soft mt-auto flex items-center gap-2 rounded-md border px-2.5 py-2"
+            className="fgc-rise border-fgc-accent/30 bg-fgc-accent-soft mt-auto flex items-center gap-2 rounded-md border px-2.5 py-2"
             style={{ animationDelay: "1s" }}
           >
-            <Sparkles className="text-accent-fgc size-3.5 shrink-0" />
+            <Sparkles className="text-fgc-accent size-3.5 shrink-0" />
             <span className="text-fgc-text text-[11px] leading-snug">
               Génère le rapport IA
             </span>

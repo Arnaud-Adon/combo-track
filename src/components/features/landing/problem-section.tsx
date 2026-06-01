@@ -40,7 +40,7 @@ export function ProblemSection(props: ProblemSectionProps) {
 
       <div className="relative mx-auto max-w-6xl px-4 py-24 sm:px-6 md:py-32 lg:px-8">
         <div className="mb-16 max-w-3xl">
-          <span className="font-mono-fgc text-accent-fgc mb-4 inline-block text-[10px] tracking-[0.3em] uppercase">
+          <span className="font-mono-fgc text-fgc-accent mb-4 inline-block text-[10px] tracking-[0.3em] uppercase">
             {"// Problème"}
           </span>
           <h2 className="marketing-h1 text-fgc-text text-4xl md:text-5xl lg:text-6xl">
@@ -62,7 +62,7 @@ export function ProblemSection(props: ProblemSectionProps) {
                 <span className="font-mono-fgc text-fgc-muted absolute top-4 right-5 text-[10px] tracking-widest">
                   0{idx + 1}
                 </span>
-                <Icon className="text-accent-fgc mb-5 size-6" strokeWidth={1.5} />
+                <Icon className="text-fgc-accent mb-5 size-6" strokeWidth={1.5} />
                 <h3 className="text-fgc-text mb-3 text-lg font-semibold">
                   {pain.title}
                 </h3>
@@ -74,7 +74,7 @@ export function ProblemSection(props: ProblemSectionProps) {
           })}
         </div>
 
-        <div className="border-accent-fgc/40 bg-fgc-surface/40 relative mt-12 border-l-2 py-5 pr-6 pl-6 md:mt-16">
+        <div className="border-fgc-accent/40 bg-fgc-surface/40 relative mt-12 border-l-2 py-5 pr-6 pl-6 md:mt-16">
           <p className="text-fgc-text text-base leading-relaxed md:text-lg">
             Le problème, c&apos;est pas le manque de motivation. Tu regardes des
             VODs, tu lab, tu analyses. Le problème, c&apos;est que tout ce

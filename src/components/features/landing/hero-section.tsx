@@ -42,8 +42,8 @@ export function HeroSection(props: HeroSectionProps) {
             className="fgc-rise border-fgc-border bg-fgc-surface/70 text-fgc-muted mb-6 inline-flex w-fit items-center gap-2 rounded-full border px-3 py-1 backdrop-blur"
             style={{ animationDelay: "0.05s" }}
           >
-            <span className="bg-accent-fgc relative flex size-1.5 rounded-full">
-              <span className="bg-accent-fgc absolute inset-0 animate-ping rounded-full opacity-60" />
+            <span className="bg-fgc-accent relative flex size-1.5 rounded-full">
+              <span className="bg-fgc-accent absolute inset-0 animate-ping rounded-full opacity-60" />
             </span>
             <span className="font-mono-fgc text-[10px] tracking-[0.2em] uppercase">
               SF6 · Tekken 8 · GG Strive
@@ -58,7 +58,7 @@ export function HeroSection(props: HeroSectionProps) {
             <br />
             <span className="text-fgc-muted">Retiens chaque combo.</span>
             <br />
-            <span className="text-accent-fgc">Monte en ranked.</span>
+            <span className="text-fgc-accent">Monte en ranked.</span>
           </h1>
 
           <p
@@ -79,7 +79,7 @@ export function HeroSection(props: HeroSectionProps) {
             <Button
               asChild
               size="lg"
-              className="bg-accent-fgc hover:bg-accent-fgc-strong h-12 text-base text-white shadow-[0_0_0_1px_rgba(255,255,255,0.08)_inset,0_20px_40px_-10px_var(--fgc-accent-soft)]"
+              className="bg-fgc-accent hover:bg-fgc-accent-strong h-12 text-base text-white shadow-[0_0_0_1px_rgba(255,255,255,0.08)_inset,0_20px_40px_-10px_var(--fgc-accent-soft)]"
             >
               <Link href="/signup" className="flex items-center gap-2">
                 Commencer gratuitement
@@ -133,7 +133,7 @@ export function HeroSection(props: HeroSectionProps) {
           style={{ animationDelay: "0.4s" }}
         >
           <div
-            className="bg-accent-fgc-soft absolute -inset-4 -z-10 rounded-3xl blur-2xl"
+            className="bg-fgc-accent-soft absolute -inset-4 -z-10 rounded-3xl blur-2xl"
             aria-hidden
           />
           <HeroProductMock />
