@@ -40,17 +40,114 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* FGC marketing palette */
+  --fgc-bg: oklch(0.12 0 0);
+  --fgc-surface: oklch(0.17 0 0);
+  --fgc-border: oklch(0.28 0 0);
+  --fgc-muted: oklch(0.62 0 0);
+  --fgc-text: oklch(0.98 0 0);
+  --fgc-accent: oklch(0.66 0.22 25);
+  --fgc-accent-strong: oklch(0.72 0.24 25);
+  --fgc-accent-soft: oklch(0.66 0.22 25 / 0.12);
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans, Arial, Helvetica, sans-serif);
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* Display font for marketing headlines */
+  .font-display {
+    font-family: var(--font-display), "JetBrains Mono", ui-monospace, monospace;
+    letter-spacing: 0;
+  }
+
+  .font-mono-fgc {
+    font-family: var(--font-mono), ui-monospace, monospace;
+  }
+
+  /* Training-mode grain overlay */
+  .bg-grain {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    background-size: 160px 160px;
+  }
+
+  /* Subtle CRT scanlines for training-room blocks */
+  .bg-scanlines {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.025) 0,
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  }
+
+  /* Reusable FGC accent color helpers */
+  .text-accent-fgc {
+    color: var(--fgc-accent);
+  }
+  .bg-accent-fgc {
+    background-color: var(--fgc-accent);
+  }
+  .bg-accent-fgc-soft {
+    background-color: var(--fgc-accent-soft);
+  }
+  .border-accent-fgc {
+    border-color: var(--fgc-accent);
+  }
+  .ring-accent-fgc {
+    --tw-ring-color: var(--fgc-accent);
+  }
+
+  /* Hero/Section staggered reveal — like a combo input log */
+  @keyframes fgc-rise {
+    0% {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .fgc-rise {
+    opacity: 0;
+    animation: fgc-rise 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+
+  @keyframes fgc-blink {
+    0%,
+    49% {
+      opacity: 1;
+    }
+    50%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .fgc-cursor::after {
+    content: "▍";
+    margin-left: 0.15em;
+    animation: fgc-blink 1s steps(1, end) infinite;
+    color: var(--fgc-accent);
+  }
+
+  /* Display heading defaults for the marketing surface */
+  .marketing-h1 {
+    font-family: var(--font-display), "JetBrains Mono", ui-monospace, monospace;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
   }
 }
 
@@ -90,6 +187,15 @@ body {
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-sans: var(--font-geist-sans);
+  --color-fgc-bg: var(--fgc-bg);
+  --color-fgc-surface: var(--fgc-surface);
+  --color-fgc-border: var(--fgc-border);
+  --color-fgc-muted: var(--fgc-muted);
+  --color-fgc-text: var(--fgc-text);
+  --color-fgc-accent: var(--fgc-accent);
+  --color-fgc-accent-strong: var(--fgc-accent-strong);
 }
 
 .dark {

@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## 2026-05-31
 
+### Changed: Landing page redesigned with Frame-Perfect FGC identity (Departure Mono display font, red punish accent, dark training-room aesthetic)
+
+### Added: New landing sections — Problem, Solution, Benefits Bento, Product Walkthrough, ⌘K Showcase, Notion comparative, Testimonials, Pricing, FAQ
+
+### Added: FgcTerm inline glossary tooltips and AnimatedComboNotation typing effect on the marketing surface
+
+### Added: Mobile sticky CTA bar appearing after scroll on the landing page
+
 ### Added: Personal memo notes with notation and frame data selectors, accessible from dashboard CTA
 
 ### Added: Memos indexed and searchable via semantic search (RAG) alongside notes and glossary
@@ -11,6 +19,8 @@ All notable changes to this project will be documented in this file.
 ### Fixed: Memo RAG columns missing in DB by splitting add_memo migration and adding add_memo_embedding
 
 ### Added: Eye icon on memo list to preview content in a dialog
+
+### Docs: Update PRD, ARCHI, LANDING_PAGE, PRICING to cover memos + ⌘K semantic search
 
 ## 2026-05-30
 
