@@ -12,21 +12,21 @@ function highlightFrameData(children: ReactNode): ReactNode {
     return parts.map((part, i) => {
       if (/^\(\+\d{1,2}\)$/.test(part)) {
         return (
-          <span key={i} className="font-semibold text-blue-400">
+          <span key={i} className="text-frame-positive font-semibold">
             {part}
           </span>
         );
       }
       if (/^\(-\d{1,2}\)$/.test(part)) {
         return (
-          <span key={i} className="font-semibold text-red-400">
+          <span key={i} className="text-frame-negative font-semibold">
             {part}
           </span>
         );
       }
       if (part === "(0)") {
         return (
-          <span key={i} className="font-semibold text-yellow-400">
+          <span key={i} className="text-frame-neutral font-semibold">
             {part}
           </span>
         );

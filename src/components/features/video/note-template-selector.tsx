@@ -25,12 +25,12 @@ const CATEGORY_COLORS: Record<
   (typeof NOTE_TEMPLATE_CATEGORIES)[number],
   string
 > = {
-  Offense: "bg-red-500/15 text-red-700 dark:text-red-400",
-  Defense: "bg-blue-500/15 text-blue-700 dark:text-blue-400",
-  Neutral: "bg-green-500/15 text-green-700 dark:text-green-400",
-  Mental: "bg-purple-500/15 text-purple-700 dark:text-purple-400",
-  Execution: "bg-orange-500/15 text-orange-700 dark:text-orange-400",
-  Okizeme: "bg-yellow-500/15 text-yellow-700 dark:text-yellow-400",
+  Offense: "bg-tag-offense/15 text-tag-offense",
+  Defense: "bg-tag-defense/15 text-tag-defense",
+  Neutral: "bg-tag-neutral/15 text-tag-neutral",
+  Mental: "bg-tag-mental/15 text-tag-mental",
+  Execution: "bg-tag-execution/15 text-tag-execution",
+  Okizeme: "bg-tag-okizeme/15 text-tag-okizeme",
 };
 
 type NoteTemplateSelectorProps = {

@@ -33,7 +33,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
 
   if (slides.length === 0) {
     return (
-      <div className="flex h-[400px] items-center justify-center rounded-3xl bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 p-12">
+      <div className="flex h-[400px] items-center justify-center rounded-3xl bg-gradient-to-br from-fgc-accent via-fgc-accent-strong to-fgc-accent p-12">
         <div className="text-center text-white">
           <p className="text-2xl font-semibold">
             Aucune slide configurée pour le moment
@@ -49,7 +49,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
         {slides.map((slide, index) => (
           <CarouselItem key={index}>
             <Link href={slide.link} target="_blank">
-              <div className="flex h-[400px] cursor-pointer flex-col items-center justify-center rounded-3xl bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 p-12 text-center text-white transition-transform duration-300 hover:scale-[1.02]">
+              <div className="flex h-[400px] cursor-pointer flex-col items-center justify-center rounded-3xl bg-gradient-to-br from-fgc-accent via-fgc-accent-strong to-fgc-accent p-12 text-center text-white transition-transform duration-300 hover:scale-[1.02]">
                 <h2 className="mb-4 text-4xl font-bold">{slide.title}</h2>
                 {slide.description && (
                   <p className="text-lg opacity-90">{slide.description}</p>

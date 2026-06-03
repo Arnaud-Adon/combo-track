@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2026-06-03
+
+### Added: Design tokens for frame advantage (--frame-positive/negative/neutral), match status (--status-draft/in-progress/completed/analyzed) and note template categories (--tag-offense/defense/neutral/mental/execution/okizeme)
+
+### Refactor: Frame data renderer now uses --frame-* tokens instead of hardcoded text-blue/red/yellow
+
+### Refactor: Note template selector uses --tag-* tokens with single-color semantic styling (drops dark: modifier on color)
+
+### Refactor: Dashboard hero carousel gradient uses FGC accent palette instead of orange-red-pink
+
+### Refactor: Replay card status and duration badges use --status-* and --fgc-accent tokens
+
+### Fixed: Glossary article detail footer border uses --border instead of hardcoded zinc-800
+
 ## 2026-06-01
 
 ### Changed: Remap shadcn dark-mode design tokens to FGC palette in globals.css so the entire app inherits the Frame-Perfect identity in dark mode

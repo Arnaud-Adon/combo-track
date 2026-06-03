@@ -47,7 +47,7 @@ export function ReplayCard({ match }: ReplayCardProps) {
             <div className="flex items-center gap-2">
               {match.duration && (
                 <Badge
-                  className="border border-violet-500/20 bg-violet-500/10 text-violet-400"
+                  className="border-fgc-accent/20 bg-fgc-accent/10 text-fgc-accent border"
                   variant="outline"
                 >
                   {formatTime(match.duration)}
@@ -65,13 +65,13 @@ export function ReplayCard({ match }: ReplayCardProps) {
             <div className="flex items-center gap-2">
               <Badge
                 className={cn("rounded-full border", {
-                  "border-emerald-500/20 bg-emerald-500/10 text-emerald-400":
+                  "border-status-completed/20 bg-status-completed/10 text-status-completed":
                     match.status === "COMPLETED",
-                  "border-violet-500/20 bg-violet-500/10 text-violet-400":
+                  "border-status-analyzed/20 bg-status-analyzed/10 text-status-analyzed":
                     match.status === "ANALYZED",
-                  "border-red-500/20 bg-red-500/10 text-red-400":
+                  "border-status-in-progress/20 bg-status-in-progress/10 text-status-in-progress":
                     match.status === "IN_PROGRESS",
-                  "border-gray-500/20 bg-gray-500/10 text-gray-400":
+                  "border-status-draft/20 bg-status-draft/10 text-status-draft":
                     match.status === "DRAFT",
                 })}
               >
