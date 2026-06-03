@@ -26,7 +26,7 @@ export default async function EditComboPage({ params }: EditComboPageProps) {
 
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
-      <h1 className="mb-6 text-3xl font-bold">Modifier le combo</h1>
+      <h1 className="mb-6 text-3xl font-bold font-display">Modifier le combo</h1>
       <ComboForm
         mode="edit"
         combo={combo}

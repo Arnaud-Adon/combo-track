@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2026-06-04
+
+### Added: Branded CT favicon (app/icon.svg + multi-size favicon.ico) matching the header logo badge
+
+### Refactor: Rebuild footer to match header identity (CT logo badge, font-display title, fgc-* palette, mono link columns, hairline accent)
+
+### Added: Dashboard command-center hero with FGC training-room identity (eyebrow, font-display greeting, ⌘K trigger, resource panel)
+
+### Added: Dashboard module launcher (Replays, Combos, Matrices, Mémos, Glossaire) to drive multi-module activation
+
+### Refactor: Dashboard recompose with shared SectionHeader (mono index + display + hairline) and staggered fgc-rise reveals
+
+### Refactor: Polish replay, strategy-matrix and combo cards (mono dates via formatDate, accent left-rail hover, drop raw violet-500 for tokens)
+
+### Removed: Generic violet-gradient dashboard CTA section and oversized red hero carousel blob
+
+### Refactor: Add font-display to dashboard and admin page titles for Frame-Perfect identity consistency
+
+## 2026-06-03
+
+### Added: Design tokens for frame advantage (--frame-positive/negative/neutral), match status (--status-draft/in-progress/completed/analyzed) and note template categories (--tag-offense/defense/neutral/mental/execution/okizeme)
+
+### Refactor: Frame data renderer now uses --frame-* tokens instead of hardcoded text-blue/red/yellow
+
+### Refactor: Note template selector uses --tag-* tokens with single-color semantic styling (drops dark: modifier on color)
+
+### Refactor: Dashboard hero carousel gradient uses FGC accent palette instead of orange-red-pink
+
+### Refactor: Replay card status and duration badges use --status-* and --fgc-accent tokens
+
+### Fixed: Glossary article detail footer border uses --border instead of hardcoded zinc-800
+
 ## 2026-06-01
 
 ### Changed: Remap shadcn dark-mode design tokens to FGC palette in globals.css so the entire app inherits the Frame-Perfect identity in dark mode

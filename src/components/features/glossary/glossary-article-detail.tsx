@@ -35,7 +35,7 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
         </ReactMarkdown>
       </div>
 
-      <footer className="border-t border-zinc-800 pt-6">
+      <footer className="border-border border-t pt-6">
         <div className="flex items-center gap-3">
           <Avatar className="h-10 w-10">
             <AvatarImage src={article.creator.image ?? undefined} />

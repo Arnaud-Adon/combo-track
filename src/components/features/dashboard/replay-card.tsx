@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { formatTime } from "@/utils";
+import { formatDate, formatTime } from "@/utils";
 import Link from "next/link";
 import type { MatchStatus, MatchType } from "../../../../generated/prisma";
 import { RecentMatches } from "../../../../prisma/query/match.query";
@@ -41,22 +41,24 @@ function getStatusLabel(status: MatchStatus): string {
 export function ReplayCard({ match }: ReplayCardProps) {
   return (
     <Link href={`/videos/${match.id}`}>
-      <Card className="text-muted-foreground border-border bg-card/50 hover:border-border/80 hover:bg-card cursor-pointer rounded-xl border px-1 py-4 backdrop-blur transition-all hover:-translate-y-0.5 hover:shadow-lg">
+      <Card className="text-muted-foreground border-border bg-card/50 hover:border-primary/40 hover:bg-card cursor-pointer rounded-xl border border-l-2 border-l-transparent px-1 py-4 backdrop-blur transition-all hover:-translate-y-0.5 hover:border-l-primary hover:shadow-lg">
         <CardHeader>
-          <CardTitle className="flex w-full items-center justify-between">
-            <div className="flex items-center gap-2">
+          <CardTitle className="flex w-full items-center justify-between gap-3">
+            <div className="flex min-w-0 items-center gap-2">
               {match.duration && (
                 <Badge
-                  className="border border-violet-500/20 bg-violet-500/10 text-violet-400"
+                  className="border-primary/20 bg-accent text-primary border font-mono"
                   variant="outline"
                 >
                   {formatTime(match.duration)}
                 </Badge>
               )}
-              <span className="text-foreground text-lg">{match.title}</span>
+              <span className="text-foreground truncate text-lg">
+                {match.title}
+              </span>
             </div>
-            <div className="text-sm font-light">
-              {new Date(match.createdAt).toLocaleDateString()}
+            <div className="text-muted-foreground shrink-0 font-mono text-xs">
+              {formatDate(match.createdAt)}
             </div>
           </CardTitle>
         </CardHeader>
@@ -65,24 +67,24 @@ export function ReplayCard({ match }: ReplayCardProps) {
             <div className="flex items-center gap-2">
               <Badge
                 className={cn("rounded-full border", {
-                  "border-emerald-500/20 bg-emerald-500/10 text-emerald-400":
+                  "border-status-completed/20 bg-status-completed/10 text-status-completed":
                     match.status === "COMPLETED",
-                  "border-violet-500/20 bg-violet-500/10 text-violet-400":
+                  "border-status-analyzed/20 bg-status-analyzed/10 text-status-analyzed":
                     match.status === "ANALYZED",
-                  "border-red-500/20 bg-red-500/10 text-red-400":
+                  "border-status-in-progress/20 bg-status-in-progress/10 text-status-in-progress":
                     match.status === "IN_PROGRESS",
-                  "border-gray-500/20 bg-gray-500/10 text-gray-400":
+                  "border-status-draft/20 bg-status-draft/10 text-status-draft":
                     match.status === "DRAFT",
                 })}
               >
                 {getStatusLabel(match.status)}
               </Badge>
-              <span className="text-xs">
+              <span className="font-mono text-[11px] tracking-wider uppercase">
                 {getMatchTypeLabel(match.matchType)}
               </span>
             </div>
 
-            <p className="text-sm">
+            <p className="font-mono text-xs">
               {match._count.notes} note{match._count.notes > 1 ? "s" : ""}
             </p>
           </div>

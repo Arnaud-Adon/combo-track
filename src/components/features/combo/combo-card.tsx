@@ -4,6 +4,7 @@ import { Gauge, Heart, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ComboListItem } from "@/../prisma/query/combo.query";
+import { formatDate } from "@/utils";
 
 interface ComboCardProps {
   combo: ComboListItem;
@@ -12,17 +13,19 @@ interface ComboCardProps {
 export function ComboCard({ combo }: ComboCardProps) {
   return (
     <Link href={`/combos/${combo.id}`}>
-      <Card className="border-border bg-card/50 hover:border-border/80 hover:bg-card cursor-pointer rounded-xl border backdrop-blur transition-all hover:-translate-y-0.5 hover:shadow-lg">
+      <Card className="border-border bg-card/50 hover:border-primary/40 hover:bg-card h-full cursor-pointer rounded-xl border border-l-2 border-l-transparent backdrop-blur transition-all hover:-translate-y-0.5 hover:border-l-primary hover:shadow-lg">
         <CardHeader>
           <div className="flex items-start justify-between gap-3">
             <CardTitle className="text-lg">{combo.title}</CardTitle>
-            <div className="text-muted-foreground text-xs">
-              {new Date(combo.createdAt).toLocaleDateString()}
+            <div className="text-muted-foreground shrink-0 font-mono text-xs">
+              {formatDate(combo.createdAt)}
             </div>
           </div>
-          <div className="text-muted-foreground flex items-center gap-2 text-xs">
-            <span className="font-medium">{combo.character.name}</span>
-            <span>•</span>
+          <div className="text-muted-foreground flex items-center gap-2 font-mono text-xs">
+            <span className="text-foreground font-medium">
+              {combo.character.name}
+            </span>
+            <span className="text-primary">·</span>
             <span>{combo.character.game.name}</span>
           </div>
         </CardHeader>

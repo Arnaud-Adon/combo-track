@@ -13,7 +13,7 @@ export default async function AdminGlossaryPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Gestion du Glossaire</h1>
+          <h1 className="text-3xl font-bold font-display">Gestion du Glossaire</h1>
           <p className="text-muted-foreground mt-1">
             {articles.length} article{articles.length > 1 ? "s" : ""}
           </p>

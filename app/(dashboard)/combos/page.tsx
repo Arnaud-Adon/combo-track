@@ -14,7 +14,7 @@ export default async function CombosPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Mes combos</h1>
+          <h1 className="text-3xl font-bold font-display">Mes combos</h1>
           <p className="text-muted-foreground mt-1">
             {combos.length} combo{combos.length > 1 ? "s" : ""}
           </p>

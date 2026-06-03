@@ -41,7 +41,7 @@ export default async function NewComboPage({ searchParams }: NewComboPageProps) 
 
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
-      <h1 className="mb-6 text-3xl font-bold">Créer un nouveau combo</h1>
+      <h1 className="mb-6 text-3xl font-bold font-display">Créer un nouveau combo</h1>
       <ComboForm
         mode="create"
         characters={characters}

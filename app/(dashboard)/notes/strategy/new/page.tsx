@@ -17,7 +17,7 @@ export default async function NewStrategyMatrixPage() {
     <div className="mx-auto max-w-7xl space-y-6 px-4 py-8">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Nouvelle matrice de stratégie</h1>
+          <h1 className="text-3xl font-bold font-display">Nouvelle matrice de stratégie</h1>
           <p className="text-muted-foreground mt-1">
             Définissez vos axes (mes ressources × ressources adverses) et
             remplissez chaque cellule avec votre stratégie.

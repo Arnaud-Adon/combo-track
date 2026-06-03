@@ -8,3 +8,11 @@ export function formatTime(seconds: number): string {
   const remainingSeconds = Math.floor(seconds % 60);
   return `${minutes}:${String(remainingSeconds).padStart(2, "0")}`;
 }
+
+export function formatDate(date: Date | string): string {
+  return new Date(date).toLocaleDateString("fr-FR", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+}
