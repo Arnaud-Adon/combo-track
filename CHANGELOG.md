@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 ## 2026-06-04
 
+### Added: Branded CT favicon (app/icon.svg + multi-size favicon.ico) matching the header logo badge
+
+### Refactor: Rebuild footer to match header identity (CT logo badge, font-display title, fgc-* palette, mono link columns, hairline accent)
+
+### Added: Dashboard command-center hero with FGC training-room identity (eyebrow, font-display greeting, ⌘K trigger, resource panel)
+
+### Added: Dashboard module launcher (Replays, Combos, Matrices, Mémos, Glossaire) to drive multi-module activation
+
+### Refactor: Dashboard recompose with shared SectionHeader (mono index + display + hairline) and staggered fgc-rise reveals
+
+### Refactor: Polish replay, strategy-matrix and combo cards (mono dates via formatDate, accent left-rail hover, drop raw violet-500 for tokens)
+
+### Removed: Generic violet-gradient dashboard CTA section and oversized red hero carousel blob
+
 ### Refactor: Add font-display to dashboard and admin page titles for Frame-Perfect identity consistency
 
 ## 2026-06-03

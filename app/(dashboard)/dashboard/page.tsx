@@ -1,5 +1,5 @@
-import { CTASection } from "@/components/features/dashboard/cta-section";
-import { HeroCarousel } from "@/components/features/dashboard/hero-carousel";
+import { DashboardHero } from "@/components/features/dashboard/dashboard-hero";
+import { QuickActions } from "@/components/features/dashboard/quick-actions";
 import { RecentCombosSection } from "@/components/features/dashboard/recent-combos-section";
 import { RecentMatchesSection } from "@/components/features/dashboard/recent-matches-section";
 import { RecentStrategyMatricesSection } from "@/components/features/dashboard/recent-strategy-matrices-section";
@@ -24,27 +24,42 @@ export default async function DashboardPage() {
       getRecentCombosForUser({ userId: session.user.id }),
     ]);
 
+  const firstName = session.user.name?.trim().split(/\s+/)[0] ?? "joueur";
+
   return (
-    <div className="mx-auto max-w-7xl space-y-12 px-4 py-8">
-      <div className="mx-auto w-full max-w-2xl">
-        <HeroCarousel
+    <div className="relative">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[420px]"
+        style={{
+          background:
+            "radial-gradient(ellipse 55% 60% at 50% 0%, var(--fgc-accent-soft) 0%, transparent 70%)",
+        }}
+      />
+
+      <div className="mx-auto max-w-7xl space-y-16 px-4 py-10 sm:px-6 lg:px-8">
+        <DashboardHero
+          userName={firstName}
           slides={[
             {
               image: "",
               link: "https://fullmeter.com/fatonline/#/quicksearch",
-              title: "Full meter",
+              title: "Full Meter",
               description:
-                "Site complet pour la frame data de street fighter 6 et autre proposition",
+                "Frame data complète SF6 et autres jeux — la référence pour vérifier tes punishs.",
             },
           ]}
         />
+
+        <QuickActions />
+
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
+          <RecentStrategyMatricesSection matrices={recentStrategyMatrices} />
+          <RecentMatchesSection matches={recentMatches} />
+        </div>
+
+        <RecentCombosSection combos={recentCombos} />
       </div>
-      <CTASection />
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <RecentStrategyMatricesSection matrices={recentStrategyMatrices} />
-        <RecentMatchesSection matches={recentMatches} />
-      </div>
-      <RecentCombosSection combos={recentCombos} />
     </div>
   );
 }

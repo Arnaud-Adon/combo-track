@@ -1,0 +1,5 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="32" height="32" rx="7" fill="#0d0d0d"/>
+  <rect x="1.5" y="1.5" width="29" height="29" rx="5.5" fill="#fc4447" fill-opacity="0.10" stroke="#fc4447" stroke-opacity="0.45" stroke-width="1.5"/>
+  <text x="16" y="17" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="13" font-weight="700" letter-spacing="0.5" fill="#fc4447" text-anchor="middle" dominant-baseline="central">CT</text>
+</svg>
