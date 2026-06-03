@@ -13,7 +13,7 @@ export default async function AdminGamesPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Gestion des jeux</h1>
+          <h1 className="text-3xl font-bold font-display">Gestion des jeux</h1>
           <p className="text-muted-foreground mt-1">
             {games.length} jeu{games.length > 1 ? "x" : ""}
           </p>

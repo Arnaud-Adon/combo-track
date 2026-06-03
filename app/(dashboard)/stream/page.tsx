@@ -25,7 +25,7 @@ export default async function StreamPage({ searchParams }: StreamPageProps) {
     <div className="mx-auto max-w-7xl space-y-8 px-4 py-8">
       <div className="flex items-center gap-3">
         <Radio className="h-6 w-6 text-red-500" />
-        <h1 className="text-3xl font-bold">Streams SF6</h1>
+        <h1 className="text-3xl font-bold font-display">Streams SF6</h1>
         {streams.length > 0 && (
           <Badge
             variant="outline"

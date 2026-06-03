@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2026-06-04
+
+### Refactor: Add font-display to dashboard and admin page titles for Frame-Perfect identity consistency
+
 ## 2026-06-03
 
 ### Added: Design tokens for frame advantage (--frame-positive/negative/neutral), match status (--status-draft/in-progress/completed/analyzed) and note template categories (--tag-offense/defense/neutral/mental/execution/okizeme)

@@ -13,7 +13,7 @@ export default async function MemoListPage() {
     <div className="mx-auto max-w-7xl space-y-6 px-4 py-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Mémos</h1>
+          <h1 className="text-3xl font-bold font-display">Mémos</h1>
           <p className="text-muted-foreground mt-1">
             Vos aide-mémoires personnels : notations, frame data, situations.
           </p>

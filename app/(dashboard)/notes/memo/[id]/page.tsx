@@ -20,7 +20,7 @@ export default async function MemoDetailPage({
   return (
     <div className="mx-auto max-w-3xl space-y-6 px-4 py-8">
       <div>
-        <h1 className="text-3xl font-bold">Modifier le mémo</h1>
+        <h1 className="text-3xl font-bold font-display">Modifier le mémo</h1>
         <p className="text-muted-foreground mt-1">
           Mis à jour le{" "}
           {new Date(memo.updatedAt).toLocaleDateString("fr-FR", {

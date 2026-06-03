@@ -34,7 +34,7 @@ export default async function StrategyMatrixDetailPage({
     <div className="mx-auto max-w-7xl space-y-6 px-4 py-8">
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold">{matrix.title}</h1>
+          <h1 className="text-3xl font-bold font-display">{matrix.title}</h1>
           {matchupBadges.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {matchupBadges.map((label) => (
