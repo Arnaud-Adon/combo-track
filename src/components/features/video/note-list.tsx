@@ -54,18 +54,17 @@ function NoteItem({ note, isActive, onClick, onDelete }: NoteItemProps) {
       ref={ref}
       onClick={() => onClick(note.timestamp)}
       className={cn(
-        "w-full rounded-lg border-2 p-4 shadow-sm transition-all hover:shadow-md",
-        "bg-card border-border hover:border-primary/50",
-        isActive && "ring-primary border-primary bg-primary/5 shadow-lg ring-2",
+        "group bg-card border-border hover:border-primary/40 w-full cursor-pointer rounded-xl border border-l-2 border-l-transparent p-4 transition-all hover:shadow-md",
+        isActive && "border-primary/40 border-l-primary bg-accent shadow-md",
       )}
     >
       <div className="mb-2 flex items-center justify-between gap-2">
         <div
           className={cn(
-            "rounded-md px-2.5 py-1 font-mono text-xs font-bold",
+            "rounded-md px-2.5 py-1 font-mono text-xs font-bold tabular-nums",
             isActive
               ? "bg-primary text-primary-foreground"
-              : "bg-primary/10 text-primary",
+              : "bg-accent text-primary",
           )}
           aria-label={`Aller à ${formatTime(note.timestamp)}`}
         >
@@ -75,7 +74,7 @@ function NoteItem({ note, isActive, onClick, onDelete }: NoteItemProps) {
           <Link
             href={`/combos/new?fromNote=${note.id}`}
             onClick={(e) => e.stopPropagation()}
-            className="hover:bg-primary/10 hover:text-primary rounded-md p-1.5 transition-colors"
+            className="text-muted-foreground hover:bg-accent hover:text-primary rounded-md p-1.5 transition-colors"
             aria-label="Extraire en combo"
           >
             <Swords className="h-4 w-4" />
@@ -87,7 +86,7 @@ function NoteItem({ note, isActive, onClick, onDelete }: NoteItemProps) {
               e.stopPropagation();
               onDelete(note);
             }}
-            className="hover:bg-destructive/10 hover:text-destructive rounded-md p-1.5 transition-colors"
+            className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive rounded-md p-1.5 transition-colors"
             aria-label="Supprimer la note"
           >
             <Trash2 className="h-4 w-4" />
@@ -95,13 +94,15 @@ function NoteItem({ note, isActive, onClick, onDelete }: NoteItemProps) {
           </button>
         </div>
       </div>
-      <p className="text-sm leading-relaxed font-medium text-black">
-        {note.content}
-      </p>
+      <p className="text-foreground text-sm leading-relaxed">{note.content}</p>
       {note.tags && note.tags.length > 0 && (
-        <div className="mt-2 flex flex-wrap gap-1.5">
+        <div className="mt-3 flex flex-wrap gap-1.5">
           {note.tags.map((tag) => (
-            <Badge key={tag.id} variant="secondary" className="text-xs">
+            <Badge
+              key={tag.id}
+              variant="secondary"
+              className="font-mono text-xs"
+            >
               {tag.name}
             </Badge>
           ))}
@@ -159,8 +160,11 @@ export function NoteList(props: NoteListProps) {
 
   if (notes.length === 0) {
     return (
-      <div className="text-muted-foreground py-8 text-center">
-        Aucune note disponible pour cette vidéo
+      <div className="border-border text-muted-foreground flex flex-col items-center gap-2 rounded-xl border border-dashed py-10 text-center">
+        <p className="font-mono text-sm">Aucune note pour l&apos;instant.</p>
+        <p className="text-sm">
+          Pause au bon moment et pose ta première note.
+        </p>
       </div>
     );
   }

@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## 2026-06-04
 
+### Refactor: Redesign /videos/[id] match view with FGC training-room layout (command-bar header, framed player with accent rail, polished note form and notes list)
+
+### Added: Live video timecode HUD bar on the match page (replaces the unused StatusBar component)
+
+### Added: Shared match labels module (FR status/type labels + token-based MatchStatusBadge)
+
+### Fixed: Note content invisible in dark mode on the match page (hardcoded text-black → text-foreground)
+
+### Refactor: Match report content uses status/primary tokens instead of raw green-500/orange-400/blue-500
+
 ### Added: Branded CT favicon (app/icon.svg + multi-size favicon.ico) matching the header logo badge
 
 ### Refactor: Rebuild footer to match header identity (CT logo badge, font-display title, fgc-* palette, mono link columns, hairline accent)

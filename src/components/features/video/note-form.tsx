@@ -14,6 +14,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useSpeechRecognition } from "@/hooks/use-speech-recognition";
 import { useVideoPlayerStore } from "@/stores/video-player";
+import { formatTime } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
@@ -168,7 +169,12 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center justify-between">
-                <FormLabel>Note</FormLabel>
+                <div className="flex items-center gap-2">
+                  <FormLabel>Note</FormLabel>
+                  <span className="bg-accent text-primary rounded font-mono text-xs font-bold tabular-nums px-2 py-0.5">
+                    {formatTime(currentTime)}
+                  </span>
+                </div>
                 <div className="flex items-center gap-1">
                   <NoteTemplateSelector onSelect={handleSelectTemplate} />
                   {isSupported && (
@@ -262,7 +268,9 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
           className="w-full"
           disabled={isPending || selectedTagIds.length === 0}
         >
-          {isPending ? "Ajout en cours..." : "Ajouter la note"}
+          {isPending
+            ? "Ajout en cours..."
+            : `Poser la note à ${formatTime(currentTime)}`}
         </Button>
         {result.serverError && (
           <p className="text-destructive mt-2 text-sm">{result.serverError}</p>

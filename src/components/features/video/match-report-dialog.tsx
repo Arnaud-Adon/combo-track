@@ -174,42 +174,48 @@ function ReportContent({
   onTimestampClick: (seconds: number) => void;
 }) {
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <section>
-        <h3 className="mb-2 text-sm font-semibold">Résumé</h3>
-        <p className="text-muted-foreground text-sm leading-relaxed">
+        <h3 className="text-muted-foreground mb-2 font-mono text-[10px] tracking-[0.2em] uppercase">
+          Résumé
+        </h3>
+        <p className="text-foreground text-sm leading-relaxed">
           {report.summary}
         </p>
       </section>
 
       <section>
-        <h3 className="mb-2 text-sm font-semibold">Points forts</h3>
+        <h3 className="text-muted-foreground mb-2 font-mono text-[10px] tracking-[0.2em] uppercase">
+          Points forts
+        </h3>
         <ul className="space-y-1.5">
           {report.strengths.map((strength, i) => (
             <li key={i} className="flex items-start gap-2 text-sm">
-              <CheckCircle className="mt-0.5 size-4 shrink-0 text-green-500" />
+              <CheckCircle className="text-status-completed mt-0.5 size-4 shrink-0" />
               <span>{strength}</span>
             </li>
           ))}
         </ul>
       </section>
 
-      <section>
-        <div className="border-l-4 border-orange-400 pl-4">
-          <h3 className="mb-1 text-sm font-semibold">Point à améliorer</h3>
-          <p className="text-muted-foreground text-sm">{report.weakness}</p>
-        </div>
+      <section className="border-l-primary bg-accent rounded-r-md border-l-2 px-4 py-3">
+        <h3 className="text-primary mb-1 font-mono text-[10px] tracking-[0.2em] uppercase">
+          Point à améliorer
+        </h3>
+        <p className="text-foreground text-sm">{report.weakness}</p>
       </section>
 
       <section>
-        <h3 className="mb-2 text-sm font-semibold">Moments clés</h3>
+        <h3 className="text-muted-foreground mb-2 font-mono text-[10px] tracking-[0.2em] uppercase">
+          Moments clés
+        </h3>
         <ul className="space-y-1.5">
           {report.keyMoments.map((moment, i) => (
             <li key={i} className="flex items-start gap-2 text-sm">
               <button
                 type="button"
                 onClick={() => onTimestampClick(moment.timestamp)}
-                className="bg-primary/10 text-primary mt-0.5 shrink-0 rounded-md px-2 py-0.5 font-mono text-xs font-bold hover:bg-primary/20"
+                className="bg-accent text-primary hover:bg-primary/20 mt-0.5 shrink-0 rounded-md px-2 py-0.5 font-mono text-xs font-bold tabular-nums transition-colors"
               >
                 {formatTime(moment.timestamp)}
               </button>
@@ -220,11 +226,13 @@ function ReportContent({
       </section>
 
       <section>
-        <h3 className="mb-2 text-sm font-semibold">Recommandations</h3>
+        <h3 className="text-muted-foreground mb-2 font-mono text-[10px] tracking-[0.2em] uppercase">
+          Recommandations
+        </h3>
         <ol className="list-inside list-decimal space-y-1.5">
           {report.recommendations.map((rec, i) => (
             <li key={i} className="text-sm">
-              <Target className="mb-0.5 mr-1.5 inline size-3.5 text-blue-500" />
+              <Target className="text-primary mr-1.5 mb-0.5 inline size-3.5" />
               {rec}
             </li>
           ))}
