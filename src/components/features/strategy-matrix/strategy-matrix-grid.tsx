@@ -33,19 +33,20 @@ export function StrategyMatrixGrid({
   return (
     <div className="overflow-x-auto">
       <div
-        className="bg-border grid min-w-fit gap-px rounded-lg border"
+        className="bg-border grid min-w-fit gap-px overflow-hidden rounded-xl border"
         style={{
           gridTemplateColumns: `minmax(140px, 200px) repeat(${columnCount}, minmax(160px, 1fr))`,
         }}
       >
-        <div className="bg-muted text-muted-foreground flex items-center justify-center p-3 text-xs font-semibold">
-          {opponentAxis.label} ↓ / {myAxis.label} →
+        <div className="bg-secondary flex flex-col justify-center gap-0.5 p-3 font-mono text-[10px] uppercase">
+          <span className="text-muted-foreground">↓ {opponentAxis.label}</span>
+          <span className="text-primary">{myAxis.label} →</span>
         </div>
 
         {myAxis.levels.map((my) => (
           <div
             key={my.id}
-            className="bg-muted text-foreground flex items-center justify-center p-3 text-center text-sm font-semibold"
+            className="bg-accent text-primary flex items-center justify-center p-3 text-center font-mono text-xs font-semibold uppercase"
           >
             {my.label}
           </div>
@@ -53,7 +54,7 @@ export function StrategyMatrixGrid({
 
         {opponentAxis.levels.map((opp) => (
           <div key={opp.id} className="contents">
-            <div className="bg-muted text-foreground flex items-center justify-center p-3 text-center text-sm font-semibold">
+            <div className="bg-secondary text-foreground flex items-center justify-center p-3 text-center font-mono text-xs font-semibold">
               {opp.label}
             </div>
             {myAxis.levels.map((my) => {
@@ -67,14 +68,17 @@ export function StrategyMatrixGrid({
                   onClick={() => !readOnly && onCellClick?.(my.id, opp.id)}
                   disabled={readOnly}
                   className={cn(
-                    "bg-card text-foreground min-h-[100px] p-3 text-left text-sm transition-colors",
-                    !readOnly && "hover:bg-accent cursor-pointer",
+                    "bg-card text-foreground min-h-[110px] p-3 text-left text-sm leading-relaxed transition-colors",
+                    !readOnly &&
+                      "hover:border-primary/40 hover:bg-accent cursor-pointer border border-transparent",
                     readOnly && "cursor-default",
-                    isEmpty && "text-muted-foreground italic",
+                    isEmpty && "text-muted-foreground/70 italic",
                   )}
                 >
                   {isEmpty
-                    ? "Vide — cliquez pour éditer"
+                    ? readOnly
+                      ? "—"
+                      : "Vide · clique pour éditer"
                     : previewContent(content)}
                 </button>
               );

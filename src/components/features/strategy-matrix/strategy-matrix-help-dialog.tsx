@@ -26,7 +26,9 @@ export function StrategyMatrixHelpDialog() {
       </DialogTrigger>
       <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Comment utiliser une matrice de stratégie ?</DialogTitle>
+          <DialogTitle className="font-display uppercase">
+            Comment utiliser une matrice ?
+          </DialogTitle>
           <DialogDescription>
             Une matrice croise <strong>votre état</strong> (colonnes) et{" "}
             <strong>l&apos;état adverse</strong> (lignes). Chaque cellule
@@ -37,7 +39,7 @@ export function StrategyMatrixHelpDialog() {
 
         <div className="space-y-6 text-sm">
           <section className="space-y-2">
-            <h3 className="text-base font-semibold">Étapes</h3>
+            <h3 className="font-display text-sm uppercase">Étapes</h3>
             <ol className="text-muted-foreground list-decimal space-y-1.5 pl-5">
               <li>
                 <strong className="text-foreground">Choisir un modèle</strong>{" "}
@@ -66,7 +68,7 @@ export function StrategyMatrixHelpDialog() {
           </section>
 
           <section className="space-y-2">
-            <h3 className="text-base font-semibold">Exemple concret</h3>
+            <h3 className="font-display text-sm uppercase">Exemple concret</h3>
             <p className="text-muted-foreground">
               Matrice : <em>Mon Drive Gauge</em> (colonnes) ×{" "}
               <em>Position adversaire</em> (lignes).
@@ -76,12 +78,8 @@ export function StrategyMatrixHelpDialog() {
                 <thead className="bg-muted">
                   <tr>
                     <th className="p-2 text-left font-semibold"></th>
-                    <th className="p-2 text-left font-semibold">
-                      Drive plein
-                    </th>
-                    <th className="p-2 text-left font-semibold">
-                      Drive moyen
-                    </th>
+                    <th className="p-2 text-left font-semibold">Drive plein</th>
+                    <th className="p-2 text-left font-semibold">Drive moyen</th>
                     <th className="p-2 text-left font-semibold">Burnout</th>
                   </tr>
                 </thead>
@@ -118,7 +116,7 @@ export function StrategyMatrixHelpDialog() {
           </section>
 
           <section className="space-y-2">
-            <h3 className="text-base font-semibold">Bonnes pratiques</h3>
+            <h3 className="font-display text-sm uppercase">Bonnes pratiques</h3>
             <ul className="text-muted-foreground list-disc space-y-1 pl-5">
               <li>
                 Une matrice = <strong>une situation</strong> précise (un

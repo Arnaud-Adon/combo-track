@@ -36,10 +36,7 @@ export function StrategyMatrixFilters({
     ? (charactersByGame[selectedGameId] ?? [])
     : [];
 
-  const updateParams = (next: {
-    gameId?: string;
-    characterId?: string;
-  }) => {
+  const updateParams = (next: { gameId?: string; characterId?: string }) => {
     const params = new URLSearchParams(searchParams.toString());
     if (next.gameId) params.set("gameId", next.gameId);
     else params.delete("gameId");
@@ -109,11 +106,7 @@ export function StrategyMatrixFilters({
       </div>
 
       {hasFilter && (
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => updateParams({})}
-        >
+        <Button variant="ghost" size="sm" onClick={() => updateParams({})}>
           Réinitialiser
         </Button>
       )}

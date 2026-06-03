@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 import { Plus, Trash2 } from "lucide-react";
 import type { Axis, Level, ResourceType } from "./strategy-matrix-schema";
 import { RESOURCE_TYPES } from "./strategy-matrix-schema";
@@ -23,13 +24,19 @@ type Props = {
   axis: Axis;
   onChange: (axis: Axis) => void;
   heading: string;
+  tone?: "mine" | "opponent";
 };
 
 function generateLevelId(): string {
   return `lvl-${Math.random().toString(36).slice(2, 10)}`;
 }
 
-export function StrategyMatrixAxisBuilder({ axis, onChange, heading }: Props) {
+export function StrategyMatrixAxisBuilder({
+  axis,
+  onChange,
+  heading,
+  tone = "mine",
+}: Props) {
   const updateLabel = (label: string) => onChange({ ...axis, label });
 
   const updateResource = (resource: ResourceType) =>
@@ -61,8 +68,16 @@ export function StrategyMatrixAxisBuilder({ axis, onChange, heading }: Props) {
   };
 
   return (
-    <div className="space-y-3 rounded-lg border p-4">
-      <h3 className="text-sm font-semibold">{heading}</h3>
+    <div className="border-border bg-card space-y-3 rounded-xl border p-4">
+      <div className="flex items-center gap-2">
+        <span
+          className={cn(
+            "size-2 rounded-full",
+            tone === "mine" ? "bg-primary" : "bg-muted-foreground",
+          )}
+        />
+        <h3 className="font-display text-sm uppercase">{heading}</h3>
+      </div>
 
       <div className="space-y-2">
         <Label htmlFor={`axis-label-${heading}`}>Libellé de l&apos;axe</Label>
