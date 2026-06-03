@@ -33,9 +33,7 @@ export function StrategyMatrixMatchupSelector({
   value,
   onChange,
 }: Props) {
-  const characters = value.gameId
-    ? (charactersByGame[value.gameId] ?? [])
-    : [];
+  const characters = value.gameId ? (charactersByGame[value.gameId] ?? []) : [];
 
   const handleGameChange = (raw: string) => {
     const gameId = raw === NONE_VALUE ? undefined : raw;
@@ -57,79 +55,73 @@ export function StrategyMatrixMatchupSelector({
   };
 
   return (
-    <div className="space-y-3 rounded-md border p-4">
+    <div className="grid gap-3 md:grid-cols-3">
       <div className="space-y-1">
-        <h3 className="text-sm font-semibold">Contexte matchup (optionnel)</h3>
-        <p className="text-muted-foreground text-xs">
-          Associez cette matrice à un jeu et à des personnages pour pouvoir la
-          retrouver par matchup.
-        </p>
+        <label className="text-muted-foreground font-mono text-[10px] tracking-[0.2em] uppercase">
+          Jeu
+        </label>
+        <Select
+          value={value.gameId ?? NONE_VALUE}
+          onValueChange={handleGameChange}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Aucun" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value={NONE_VALUE}>Aucun</SelectItem>
+            {games.map((g) => (
+              <SelectItem key={g.id} value={g.id}>
+                {g.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
-      <div className="grid gap-3 md:grid-cols-3">
-        <div className="space-y-1">
-          <label className="text-xs font-medium">Jeu</label>
-          <Select
-            value={value.gameId ?? NONE_VALUE}
-            onValueChange={handleGameChange}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Aucun" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value={NONE_VALUE}>Aucun</SelectItem>
-              {games.map((g) => (
-                <SelectItem key={g.id} value={g.id}>
-                  {g.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+      <div className="space-y-1">
+        <label className="text-muted-foreground font-mono text-[10px] tracking-[0.2em] uppercase">
+          Mon personnage
+        </label>
+        <Select
+          value={value.myCharacterId ?? NONE_VALUE}
+          onValueChange={(v) => handleCharacterChange("myCharacterId", v)}
+          disabled={!value.gameId || characters.length === 0}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Aucun" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value={NONE_VALUE}>Aucun</SelectItem>
+            {characters.map((c) => (
+              <SelectItem key={c.id} value={c.id}>
+                {c.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
 
-        <div className="space-y-1">
-          <label className="text-xs font-medium">Mon personnage</label>
-          <Select
-            value={value.myCharacterId ?? NONE_VALUE}
-            onValueChange={(v) => handleCharacterChange("myCharacterId", v)}
-            disabled={!value.gameId || characters.length === 0}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Aucun" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value={NONE_VALUE}>Aucun</SelectItem>
-              {characters.map((c) => (
-                <SelectItem key={c.id} value={c.id}>
-                  {c.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="space-y-1">
-          <label className="text-xs font-medium">Personnage adverse</label>
-          <Select
-            value={value.opponentCharacterId ?? NONE_VALUE}
-            onValueChange={(v) =>
-              handleCharacterChange("opponentCharacterId", v)
-            }
-            disabled={!value.gameId || characters.length === 0}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Aucun" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value={NONE_VALUE}>Aucun</SelectItem>
-              {characters.map((c) => (
-                <SelectItem key={c.id} value={c.id}>
-                  {c.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+      <div className="space-y-1">
+        <label className="text-muted-foreground font-mono text-[10px] tracking-[0.2em] uppercase">
+          Personnage adverse
+        </label>
+        <Select
+          value={value.opponentCharacterId ?? NONE_VALUE}
+          onValueChange={(v) => handleCharacterChange("opponentCharacterId", v)}
+          disabled={!value.gameId || characters.length === 0}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Aucun" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value={NONE_VALUE}>Aucun</SelectItem>
+            {characters.map((c) => (
+              <SelectItem key={c.id} value={c.id}>
+                {c.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
     </div>
   );

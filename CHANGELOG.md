@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## 2026-06-04
 
+### Refactor: Redesign strategy matrix create/edit pages into numbered FGC sections (Modèle, Identité, Matchup, Axes, Matrice) with eyebrow/display headings, page glow and sticky action bar
+
+### Changed: Strategy matrix grid color-codes mine=accent columns / opponent=neutral rows with explicit orientation corner for readability
+
+### Added: Frame-data legend (avantage/désavantage/neutre) on the matrix builder and cell editor
+
+### Changed: Promote AI fill to an accent primary action and restyle templates, axis builders, matchup selector and cell editor to FGC tokens
+
 ### Refactor: Redesign /videos/[id] match view with FGC training-room layout (command-bar header, framed player with accent rail, polished note form and notes list)
 
 ### Added: Live video timecode HUD bar on the match page (replaces the unused StatusBar component)

@@ -84,7 +84,6 @@ export function StrategyMatrixAiFillButton({
     <>
       <Button
         type="button"
-        variant="outline"
         size="sm"
         onClick={handleClick}
         disabled={isPending || !hasTitle}
@@ -94,7 +93,7 @@ export function StrategyMatrixAiFillButton({
         ) : (
           <Sparkles className="mr-2 h-4 w-4" />
         )}
-        {isPending ? "Génération…" : "Remplir avec IA"}
+        {isPending ? "Génération…" : "Remplir avec l'IA"}
       </Button>
 
       <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>

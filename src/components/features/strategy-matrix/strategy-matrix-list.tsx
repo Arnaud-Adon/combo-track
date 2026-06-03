@@ -71,85 +71,89 @@ export function StrategyMatrixList({ matrices }: Props) {
         ].filter(Boolean) as string[];
 
         return (
-        <Card key={matrix.id} className="flex flex-col gap-3 p-4">
-          <div className="space-y-1">
-            <h3 className="line-clamp-1 font-semibold">{matrix.title}</h3>
-            {matchupBadges.length > 0 && (
-              <div className="flex flex-wrap gap-1">
-                {matchupBadges.map((label) => (
-                  <span
-                    key={label}
-                    className="bg-muted text-muted-foreground rounded-full px-2 py-0.5 text-[10px]"
-                  >
-                    {label}
-                  </span>
-                ))}
-              </div>
-            )}
-            {matrix.description && (
-              <p className="text-muted-foreground line-clamp-2 text-sm">
-                {matrix.description}
-              </p>
-            )}
-          </div>
-          <div className="text-muted-foreground text-xs">
-            {safeAxisLabel(matrix.myAxis)} ×{" "}
-            {safeAxisLabel(matrix.opponentAxis)}
-          </div>
-          <div className="mt-auto flex justify-end gap-2">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button asChild size="icon" variant="outline">
-                  <Link
-                    href={`/notes/strategy/${matrix.id}`}
-                    aria-label="Ouvrir"
-                  >
-                    <FolderOpen className="h-4 w-4" />
-                  </Link>
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Ouvrir</TooltipContent>
-            </Tooltip>
-            <StrategyMatrixVisualizeDialog
-              title={matrix.title}
-              myAxis={matrix.myAxis}
-              opponentAxis={matrix.opponentAxis}
-              cells={matrix.cells}
-            />
-            <AlertDialog>
+          <Card key={matrix.id} className="flex flex-col gap-3 p-4">
+            <div className="space-y-1">
+              <h3 className="line-clamp-1 font-semibold">{matrix.title}</h3>
+              {matchupBadges.length > 0 && (
+                <div className="flex flex-wrap gap-1">
+                  {matchupBadges.map((label) => (
+                    <span
+                      key={label}
+                      className="bg-muted text-muted-foreground rounded-full px-2 py-0.5 text-[10px]"
+                    >
+                      {label}
+                    </span>
+                  ))}
+                </div>
+              )}
+              {matrix.description && (
+                <p className="text-muted-foreground line-clamp-2 text-sm">
+                  {matrix.description}
+                </p>
+              )}
+            </div>
+            <div className="text-muted-foreground text-xs">
+              {safeAxisLabel(matrix.myAxis)} ×{" "}
+              {safeAxisLabel(matrix.opponentAxis)}
+            </div>
+            <div className="mt-auto flex justify-end gap-2">
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <AlertDialogTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      disabled={isPending}
-                      aria-label="Supprimer"
+                  <Button asChild size="icon" variant="outline">
+                    <Link
+                      href={`/notes/strategy/${matrix.id}`}
+                      aria-label="Ouvrir"
                     >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </AlertDialogTrigger>
+                      <FolderOpen className="h-4 w-4" />
+                    </Link>
+                  </Button>
                 </TooltipTrigger>
-                <TooltipContent>Supprimer</TooltipContent>
+                <TooltipContent>Ouvrir</TooltipContent>
               </Tooltip>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Supprimer cette matrice ?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    Cette action est irréversible. La matrice « {matrix.title} »
-                    sera définitivement supprimée.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Annuler</AlertDialogCancel>
-                  <AlertDialogAction onClick={() => execute({ id: matrix.id })}>
-                    Supprimer
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </div>
-        </Card>
+              <StrategyMatrixVisualizeDialog
+                title={matrix.title}
+                myAxis={matrix.myAxis}
+                opponentAxis={matrix.opponentAxis}
+                cells={matrix.cells}
+              />
+              <AlertDialog>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        disabled={isPending}
+                        aria-label="Supprimer"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </AlertDialogTrigger>
+                  </TooltipTrigger>
+                  <TooltipContent>Supprimer</TooltipContent>
+                </Tooltip>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Supprimer cette matrice ?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Cette action est irréversible. La matrice « {matrix.title}{" "}
+                      » sera définitivement supprimée.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Annuler</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => execute({ id: matrix.id })}
+                    >
+                      Supprimer
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
+          </Card>
         );
       })}
     </div>

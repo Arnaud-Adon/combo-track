@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -15,7 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type {
@@ -26,6 +25,7 @@ import {
   createStrategyMatrixAction,
   updateStrategyMatrixAction,
 } from "./strategy-matrix-action";
+import { FrameLegend } from "./frame-legend";
 import { StrategyMatrixAiFillButton } from "./strategy-matrix-ai-fill-button";
 import { StrategyMatrixAxisBuilder } from "./strategy-matrix-axis-builder";
 import { StrategyMatrixCellEditor } from "./strategy-matrix-cell-editor";
@@ -72,6 +72,38 @@ type EditingCell = {
   myLevelId: string;
   opponentLevelId: string;
 } | null;
+
+type MatrixSectionProps = {
+  index: string;
+  title: string;
+  description?: string;
+  action?: ReactNode;
+  children: ReactNode;
+};
+
+function MatrixSection(props: MatrixSectionProps) {
+  const { index, title, description, action, children } = props;
+
+  return (
+    <section className="border-border bg-card rounded-xl border p-5">
+      <div className="mb-4 flex items-start justify-between gap-4">
+        <div>
+          <div className="flex items-baseline gap-3">
+            <span className="text-primary font-mono text-xs">{index}</span>
+            <h2 className="font-display text-lg uppercase">{title}</h2>
+          </div>
+          {description && (
+            <p className="text-muted-foreground mt-1.5 text-sm">
+              {description}
+            </p>
+          )}
+        </div>
+        {action}
+      </div>
+      {children}
+    </section>
+  );
+}
 
 export function StrategyMatrixForm(props: Props) {
   const router = useRouter();
@@ -178,7 +210,11 @@ export function StrategyMatrixForm(props: Props) {
   };
 
   const handleAiCellsGenerated = (
-    generated: { myLevelId: string; opponentLevelId: string; content: string }[],
+    generated: {
+      myLevelId: string;
+      opponentLevelId: string;
+      content: string;
+    }[],
   ) => {
     const lookup = buildCellLookup(form.getValues("cells"));
     for (const cell of generated) {
@@ -220,77 +256,114 @@ export function StrategyMatrixForm(props: Props) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         {props.mode === "create" && (
-          <div className="space-y-2">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => setShowTemplatePicker((v) => !v)}
-            >
-              {showTemplatePicker ? "Masquer les modèles" : "Choisir un modèle"}
-            </Button>
-            {showTemplatePicker && (
-              <StrategyMatrixTemplateSelector onSelect={handleSelectTemplate} />
-            )}
-          </div>
+          <MatrixSection
+            index="00"
+            title="Pars d'un modèle"
+            description="Un point de départ rapide pour ne pas démarrer d'une page blanche. Tu personnalises tout ensuite."
+          >
+            <div className="space-y-4">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setShowTemplatePicker((v) => !v)}
+              >
+                {showTemplatePicker
+                  ? "Masquer les modèles"
+                  : "Voir les modèles"}
+              </Button>
+              {showTemplatePicker && (
+                <StrategyMatrixTemplateSelector
+                  onSelect={handleSelectTemplate}
+                />
+              )}
+            </div>
+          </MatrixSection>
         )}
 
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Titre</FormLabel>
-              <FormControl>
-                <Input placeholder="Ex: Stratégie défensive Ken" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <MatrixSection
+          index="01"
+          title="Identité"
+          description="Nomme ta matrice pour la retrouver d'un coup d'œil avant un set."
+        >
+          <div className="space-y-4">
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Titre</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Ex: Ken vs Juri — défense en burnout"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description (optionnelle)</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Contexte ou conditions générales d'utilisation de cette matrice"
-                  value={field.value ?? ""}
-                  onChange={field.onChange}
-                  className="min-h-[60px]"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description (optionnelle)</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Contexte ou conditions d'utilisation de cette matrice"
+                      value={field.value ?? ""}
+                      onChange={field.onChange}
+                      className="min-h-[60px]"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </MatrixSection>
 
-        <StrategyMatrixMatchupSelector
-          games={props.games}
-          charactersByGame={props.charactersByGame}
-          value={{ gameId, myCharacterId, opponentCharacterId }}
-          onChange={handleMatchupChange}
-        />
-
-        <div className="grid gap-4 md:grid-cols-2">
-          <StrategyMatrixAxisBuilder
-            heading="Mon état (colonnes)"
-            axis={myAxis}
-            onChange={(next) => handleAxisChange("myAxis", next)}
+        <MatrixSection
+          index="02"
+          title="Matchup"
+          description="Associe un jeu et des persos pour retrouver la matrice par matchup (optionnel)."
+        >
+          <StrategyMatrixMatchupSelector
+            games={props.games}
+            charactersByGame={props.charactersByGame}
+            value={{ gameId, myCharacterId, opponentCharacterId }}
+            onChange={handleMatchupChange}
           />
-          <StrategyMatrixAxisBuilder
-            heading="État adversaire (lignes)"
-            axis={opponentAxis}
-            onChange={(next) => handleAxisChange("opponentAxis", next)}
-          />
-        </div>
+        </MatrixSection>
 
-        <div className="space-y-2">
-          <div className="flex items-center justify-between gap-2">
-            <FormLabel>Matrice</FormLabel>
+        <MatrixSection
+          index="03"
+          title="Axes"
+          description="Tes ressources en colonnes, celles de l'adversaire en lignes. 2 à 5 niveaux par axe."
+        >
+          <div className="grid gap-4 md:grid-cols-2">
+            <StrategyMatrixAxisBuilder
+              tone="mine"
+              heading="Mon état (colonnes →)"
+              axis={myAxis}
+              onChange={(next) => handleAxisChange("myAxis", next)}
+            />
+            <StrategyMatrixAxisBuilder
+              tone="opponent"
+              heading="État adverse (lignes ↓)"
+              axis={opponentAxis}
+              onChange={(next) => handleAxisChange("opponentAxis", next)}
+            />
+          </div>
+        </MatrixSection>
+
+        <MatrixSection
+          index="04"
+          title="Matrice"
+          description="Clique une cellule pour décrire la stratégie optimale — ou laisse l'IA remplir toute la grille."
+          action={
             <StrategyMatrixAiFillButton
               title={form.watch("title")}
               description={form.watch("description")}
@@ -302,21 +375,22 @@ export function StrategyMatrixForm(props: Props) {
               cells={cells}
               onCellsGenerated={handleAiCellsGenerated}
             />
+          }
+        >
+          <div className="space-y-3">
+            <FrameLegend />
+            <StrategyMatrixGrid
+              myAxis={myAxis}
+              opponentAxis={opponentAxis}
+              cells={cells}
+              onCellClick={(myLevelId, opponentLevelId) =>
+                setEditingCell({ myLevelId, opponentLevelId })
+              }
+            />
           </div>
-          <FormDescription>
-            Cliquez sur une cellule pour éditer son contenu en markdown.
-          </FormDescription>
-          <StrategyMatrixGrid
-            myAxis={myAxis}
-            opponentAxis={opponentAxis}
-            cells={cells}
-            onCellClick={(myLevelId, opponentLevelId) =>
-              setEditingCell({ myLevelId, opponentLevelId })
-            }
-          />
-        </div>
+        </MatrixSection>
 
-        <div className="flex justify-end gap-2">
+        <div className="border-border bg-background/80 sticky bottom-0 z-10 flex items-center justify-end gap-2 rounded-xl border px-4 py-3 backdrop-blur">
           <Button
             type="button"
             variant="outline"

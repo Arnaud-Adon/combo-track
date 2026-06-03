@@ -34,6 +34,7 @@ import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { frameDataComponents } from "./frame-data-renderer";
+import { FrameLegend } from "./frame-legend";
 import {
   FGC_ACTIONS,
   FGC_BUTTONS,
@@ -148,18 +149,23 @@ export function StrategyMatrixCellEditor({
           }}
         >
           <DialogHeader>
-            <DialogTitle>
-              {myLevelLabel} × {opponentLevelLabel}
+            <div className="text-muted-foreground font-mono text-[10px] tracking-[0.2em] uppercase">
+              Cellule de stratégie
+            </div>
+            <DialogTitle className="font-display flex items-center gap-2 uppercase">
+              <span className="text-primary">{myLevelLabel}</span>
+              <span className="text-muted-foreground">×</span>
+              <span>{opponentLevelLabel}</span>
             </DialogTitle>
             <DialogDescription>
-              Décrivez votre stratégie pour cette combinaison d&apos;états.
-              Markdown supporté.
+              Décris ta stratégie pour cette combinaison d&apos;états. Markdown
+              supporté.
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-xs">
+              <span className="text-muted-foreground font-mono text-xs tabular-nums">
                 {content.length} / {MAX_CELL_LENGTH}
               </span>
               <Button
@@ -268,6 +274,8 @@ export function StrategyMatrixCellEditor({
                 className="min-h-[200px]"
               />
             )}
+
+            <FrameLegend className="pt-1" />
           </div>
 
           <DialogFooter>
