@@ -1,6 +1,9 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { frameDataComponents } from "./frame-data-renderer";
 import type { Axis, Cell } from "./strategy-matrix-schema";
 import { buildCellLookup, cellKey } from "./strategy-matrix-types";
 
@@ -11,14 +14,6 @@ type Props = {
   onCellClick?: (myLevelId: string, opponentLevelId: string) => void;
   readOnly?: boolean;
 };
-
-const PREVIEW_LENGTH = 80;
-
-function previewContent(content: string): string {
-  if (!content) return "";
-  if (content.length <= PREVIEW_LENGTH) return content;
-  return content.slice(0, PREVIEW_LENGTH).trimEnd() + "…";
-}
 
 export function StrategyMatrixGrid({
   myAxis,
@@ -61,26 +56,45 @@ export function StrategyMatrixGrid({
               const cell = lookup.get(cellKey(my.id, opp.id));
               const content = cell?.content ?? "";
               const isEmpty = !content;
+              const interactive = !readOnly;
               return (
-                <button
+                <div
                   key={cellKey(my.id, opp.id)}
-                  type="button"
-                  onClick={() => !readOnly && onCellClick?.(my.id, opp.id)}
-                  disabled={readOnly}
+                  role={interactive ? "button" : undefined}
+                  tabIndex={interactive ? 0 : undefined}
+                  onClick={() => interactive && onCellClick?.(my.id, opp.id)}
+                  onKeyDown={(event) => {
+                    if (!interactive) return;
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      onCellClick?.(my.id, opp.id);
+                    }
+                  }}
                   className={cn(
                     "bg-card text-foreground min-h-[110px] p-3 text-left text-sm leading-relaxed transition-colors",
-                    !readOnly &&
-                      "hover:border-primary/40 hover:bg-accent cursor-pointer border border-transparent",
-                    readOnly && "cursor-default",
+                    interactive &&
+                      "hover:border-primary/40 hover:bg-accent focus-visible:border-primary/40 focus-visible:ring-ring/50 cursor-pointer border border-transparent focus-visible:ring-2 focus-visible:outline-none",
+                    !interactive && "cursor-default",
                     isEmpty && "text-muted-foreground/70 italic",
                   )}
                 >
-                  {isEmpty
-                    ? readOnly
-                      ? "—"
-                      : "Vide · clique pour éditer"
-                    : previewContent(content)}
-                </button>
+                  {isEmpty ? (
+                    readOnly ? (
+                      "—"
+                    ) : (
+                      "Vide · clique pour éditer"
+                    )
+                  ) : (
+                    <div className="prose prose-invert prose-sm line-clamp-5 max-w-none [&_*]:my-0 [&_li]:leading-snug [&_p]:leading-snug">
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        components={frameDataComponents}
+                      >
+                        {content}
+                      </ReactMarkdown>
+                    </div>
+                  )}
+                </div>
               );
             })}
           </div>
