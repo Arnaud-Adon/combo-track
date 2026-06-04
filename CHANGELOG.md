@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## 2026-06-04
 
+### Changed: Render strategy matrix cells with the markdown preview (frame-data colors, formatting) instead of plain truncated text
+
 ### Refactor: Redesign strategy matrix create/edit pages into numbered FGC sections (Modèle, Identité, Matchup, Axes, Matrice) with eyebrow/display headings, page glow and sticky action bar
 
 ### Changed: Strategy matrix grid color-codes mine=accent columns / opponent=neutral rows with explicit orientation corner for readability
