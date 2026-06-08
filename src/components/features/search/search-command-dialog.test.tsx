@@ -14,23 +14,24 @@ vi.mock("./semantic-search-action", () => ({
   semanticSearchAction: vi.fn(),
 }));
 
+import { useSearchDialogStore } from "@/stores/search-dialog";
 import { SearchCommandDialog } from "./search-command-dialog";
+import { SearchTriggerButton } from "./search-trigger-button";
 
 beforeEach(() => {
   vi.clearAllMocks();
+  useSearchDialogStore.setState({ open: false });
 });
 
 describe("SearchCommandDialog", () => {
-  it("renders trigger button", () => {
-    render(<SearchCommandDialog />);
-    expect(
-      screen.getByRole("button", { name: /ouvrir la recherche/i }),
-    ).toBeInTheDocument();
-  });
-
-  it("opens dialog on trigger click", async () => {
+  it("opens dialog on trigger button click", async () => {
     const user = userEvent.setup();
-    render(<SearchCommandDialog />);
+    render(
+      <>
+        <SearchTriggerButton />
+        <SearchCommandDialog />
+      </>,
+    );
     await user.click(
       screen.getByRole("button", { name: /ouvrir la recherche/i }),
     );

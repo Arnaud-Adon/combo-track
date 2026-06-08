@@ -7,6 +7,7 @@ import { ChevronDown, Menu } from "lucide-react";
 import { UserProfileDropdown } from "@/components/features/auth/user-profile-dropdown";
 import { NavLink } from "@/components/features/landing/nav-link";
 import { SearchCommandDialog } from "@/components/features/search/search-command-dialog";
+import { SearchTriggerButton } from "@/components/features/search/search-trigger-button";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -66,12 +67,12 @@ export function AuthenticatedNav({ user }: AuthenticatedNavProps) {
             </DropdownMenuContent>
           </DropdownMenu>
         )}
-        <SearchCommandDialog />
+        <SearchTriggerButton />
         <UserProfileDropdown user={user} />
       </div>
 
       <div className="flex items-center gap-2 lg:hidden">
-        <SearchCommandDialog />
+        <SearchTriggerButton />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" aria-label="Menu">
@@ -110,6 +111,8 @@ export function AuthenticatedNav({ user }: AuthenticatedNavProps) {
         </DropdownMenu>
         <UserProfileDropdown user={user} />
       </div>
+
+      <SearchCommandDialog />
     </>
   );
 }

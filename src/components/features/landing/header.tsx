@@ -7,6 +7,7 @@ import { useUserRole } from "@/hooks/use-user-role";
 import { useSession } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const NAV_LINKS = [
@@ -19,6 +20,8 @@ const NAV_LINKS = [
 export function Header() {
   const { data: session, isPending } = useSession();
   const { role } = useUserRole();
+  const pathname = usePathname();
+  const isLandingPage = pathname === "/";
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -51,17 +54,19 @@ export function Header() {
             </span>
           </Link>
 
-          <nav className="hidden items-center gap-1 md:flex">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-fgc-muted hover:text-fgc-text rounded-md px-3 py-1.5 text-sm transition-colors"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
+          {isLandingPage ? (
+            <nav className="hidden items-center gap-1 md:flex">
+              {NAV_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-fgc-muted hover:text-fgc-text rounded-md px-3 py-1.5 text-sm transition-colors"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          ) : null}
 
           <div className="flex items-center gap-2">
             {isPending ? (

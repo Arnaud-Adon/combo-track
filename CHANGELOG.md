@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## 2026-06-04
 
+### Fixed: Search command dialog opened twice (duplicate mounted instances) — single store-driven dialog with shared trigger buttons
+
+### Changed: Show landing page anchor links in the header only on the landing page
+
 ### Changed: Render strategy matrix cells with the markdown preview (frame-data colors, formatting) instead of plain truncated text
 
 ### Refactor: Redesign strategy matrix create/edit pages into numbered FGC sections (Modèle, Identité, Matchup, Axes, Matrice) with eyebrow/display headings, page glow and sticky action bar
