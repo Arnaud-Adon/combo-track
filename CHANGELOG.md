@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2026-06-11
+
+### Refactor: Redesign glossary listing with FGC design system — card grid, cover slot (image-ready), display/mono typography and chart-token category badges
+
+## 2026-06-08
+
+### Fixed: Glossary article view spacing — markdown renderer now spaces headings, paragraphs and lists
+
+### Added: glossary-from-youtube skill — transcript a fighting-game tutorial into FGC-voiced glossary entries
+
+### Added: `pnpm transcript` script — fetch YouTube transcripts with timestamps via yt-dlp
+
+### Changed: `pnpm transcript` defaults to Chrome cookies (avoids YouTube HTTP 429), with `--cookies <browser>` / `--no-cookies` overrides
+
+### Added: `pnpm glossary:import` script — import structured glossary entries with semantic dedup and RAG embedding
+
 ## 2026-06-04
 
 ### Fixed: Search command dialog opened twice (duplicate mounted instances) — single store-driven dialog with shared trigger buttons
