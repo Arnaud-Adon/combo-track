@@ -211,6 +211,7 @@ model GlossaryArticle {
   content        String                       @db.Text
   excerpt        String?
   category       String?
+  image          String?
   published      Boolean                      @default(false)
   embedding      Unsupported("vector(1536)")?
   contentHash    String?

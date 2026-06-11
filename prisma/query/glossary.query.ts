@@ -13,6 +13,7 @@ export const getAllPublishedArticles = async (category?: string) =>
       title: true,
       excerpt: true,
       category: true,
+      image: true,
       createdAt: true,
       creator: {
         select: {

@@ -31,6 +31,7 @@ export const getArticleByIdForAdmin = async (id: string) =>
       content: true,
       excerpt: true,
       category: true,
+      image: true,
       published: true,
       createdAt: true,
       updatedAt: true,

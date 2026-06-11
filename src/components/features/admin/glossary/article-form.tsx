@@ -23,6 +23,7 @@ import { Button } from "@/components/ui/button";
 import { articleFormSchema, ArticleFormSchemaType } from "./article-schema";
 import { createArticleAction, updateArticleAction } from "./article-action";
 import { MarkdownPreview } from "./markdown-preview";
+import { ImageField } from "./image-field";
 import { AdminArticleDetail } from "@/../prisma/query/admin-glossary.query";
 
 interface ArticleFormProps {
@@ -84,6 +85,7 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
       content: article?.content ?? "",
       excerpt: article?.excerpt ?? "",
       category: article?.category ?? "",
+      image: article?.image ?? "",
       published: article?.published ?? false,
     },
   });
@@ -162,6 +164,26 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
                       placeholder="Ex: Techniques, Personnages, Termes"
                     />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="image"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Image de couverture</FormLabel>
+                  <FormControl>
+                    <ImageField
+                      value={field.value ?? ""}
+                      onChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Affichée dans la liste des articles (optionnel)
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## 2026-06-11
 
+### Fixed: Server Action body size limit set to 2mb — image uploads over the 1mb default no longer rejected
+
+### Fixed: Mount Sonner Toaster in root layout — toasts now render app-wide
+
+### Added: Client-side size/format validation on glossary image upload with error toast
+
+### Added: Glossary article cover image upload (R2 storage) with edit-form field and card rendering
+
 ### Refactor: Redesign glossary listing with FGC design system — card grid, cover slot (image-ready), display/mono typography and chart-token category badges
 
 ## 2026-06-08
