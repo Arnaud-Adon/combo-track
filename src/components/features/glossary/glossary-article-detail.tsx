@@ -29,8 +29,57 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
         </div>
       </header>
 
-      <div className="prose prose-invert max-w-none">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+      <div className="max-w-none text-[15px] leading-relaxed">
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          components={{
+            h1: ({ children }) => (
+              <h1 className="mt-8 mb-4 text-2xl font-bold first:mt-0">
+                {children}
+              </h1>
+            ),
+            h2: ({ children }) => (
+              <h2 className="mt-8 mb-3 text-2xl font-bold first:mt-0">
+                {children}
+              </h2>
+            ),
+            h3: ({ children }) => (
+              <h3 className="mt-6 mb-2 text-xl font-semibold">{children}</h3>
+            ),
+            p: ({ children }) => (
+              <p className="mb-4 leading-relaxed">{children}</p>
+            ),
+            ul: ({ children }) => (
+              <ul className="mb-4 list-disc space-y-2 pl-6">{children}</ul>
+            ),
+            ol: ({ children }) => (
+              <ol className="mb-4 list-decimal space-y-2 pl-6">{children}</ol>
+            ),
+            li: ({ children }) => (
+              <li className="leading-relaxed">{children}</li>
+            ),
+            a: ({ href, children }) => (
+              <a href={href} className="text-primary underline">
+                {children}
+              </a>
+            ),
+            strong: ({ children }) => (
+              <strong className="text-foreground font-semibold">
+                {children}
+              </strong>
+            ),
+            code: ({ children }) => (
+              <code className="bg-muted rounded px-1.5 py-0.5 font-mono text-sm">
+                {children}
+              </code>
+            ),
+            blockquote: ({ children }) => (
+              <blockquote className="border-border text-muted-foreground my-4 border-l-2 pl-4 italic">
+                {children}
+              </blockquote>
+            ),
+          }}
+        >
           {article.content}
         </ReactMarkdown>
       </div>

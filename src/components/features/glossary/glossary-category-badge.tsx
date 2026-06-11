@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 interface CategoryBadgeProps {
@@ -6,33 +5,39 @@ interface CategoryBadgeProps {
   className?: string;
 }
 
-const getCategoryColor = (category: string) => {
-  const colors = [
-    "border-violet-500/20 bg-violet-500/10 text-violet-400",
-    "border-emerald-500/20 bg-emerald-500/10 text-emerald-400",
-    "border-blue-500/20 bg-blue-500/10 text-blue-400",
-    "border-amber-500/20 bg-amber-500/10 text-amber-400",
-    "border-rose-500/20 bg-rose-500/10 text-rose-400",
-    "border-cyan-500/20 bg-cyan-500/10 text-cyan-400",
-  ];
+// FGC-aligned chart tokens (defined in globals.css) instead of raw Tailwind colors.
+const CHART_VARS = [
+  "--chart-1",
+  "--chart-2",
+  "--chart-3",
+  "--chart-4",
+  "--chart-5",
+] as const;
 
+function categoryAccent(category: string): string {
   let hash = 0;
   for (let i = 0; i < category.length; i++) {
     hash = category.charCodeAt(i) + ((hash << 5) - hash);
   }
-
-  return colors[Math.abs(hash) % colors.length];
-};
+  return `var(${CHART_VARS[Math.abs(hash) % CHART_VARS.length]})`;
+}
 
 export function CategoryBadge({ category, className }: CategoryBadgeProps) {
-  const colorClass = getCategoryColor(category);
+  const accent = categoryAccent(category);
 
   return (
-    <Badge
-      variant="outline"
-      className={cn("rounded-full", colorClass, className)}
+    <span
+      className={cn(
+        "border-border/60 bg-background/70 inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[10px] tracking-wider uppercase backdrop-blur",
+        className,
+      )}
+      style={{ color: accent }}
     >
-      {category.charAt(0).toUpperCase() + category.slice(1)}
-    </Badge>
+      <span
+        className="h-1.5 w-1.5 rounded-full"
+        style={{ backgroundColor: accent }}
+      />
+      {category}
+    </span>
   );
 }

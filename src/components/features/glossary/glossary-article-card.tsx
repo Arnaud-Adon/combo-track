@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import type { PublishedArticles } from "../../../../prisma/query/glossary.query";
 import { CategoryBadge } from "./glossary-category-badge";
@@ -7,36 +7,64 @@ interface ArticleCardProps {
   article: PublishedArticles[number];
 }
 
+function formatDate(date: Date) {
+  return new Date(date).toLocaleDateString("fr-FR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+}
+
 export function ArticleCard({ article }: ArticleCardProps) {
   return (
-    <Link href={`/glossary/${article.slug}`}>
-      <Card className="text-muted-foreground cursor-pointer rounded-xl border border-zinc-800 bg-zinc-900/50 px-1 py-4 backdrop-blur transition-all hover:-translate-y-0.5 hover:border-zinc-700 hover:bg-zinc-900 hover:shadow-lg">
-        <CardHeader>
-          <CardTitle className="flex w-full items-center justify-between">
-            <div className="flex items-center gap-2">
-              {article.category && (
-                <CategoryBadge category={article.category} />
-              )}
-              <span className="text-foreground text-lg">{article.title}</span>
-            </div>
-            <div className="text-sm font-light">
-              {new Date(article.createdAt).toLocaleDateString()}
-            </div>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {article.excerpt ? (
-            <p className="text-muted-foreground text-sm">{article.excerpt}</p>
-          ) : (
-            <p className="text-muted-foreground text-sm italic">
-              Aucune description disponible
-            </p>
+    <Link
+      href={`/glossary/${article.slug}`}
+      className="group block focus:outline-none"
+    >
+      <article className="bg-card border-border hover:border-primary/60 focus-visible:border-primary/60 hover:shadow-primary/25 relative flex h-full flex-col overflow-hidden rounded-lg border transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_10px_40px_-15px]">
+        {/* Cover — placeholder until per-article images land.
+            Replace this block with <img src={article.image} … /> once the field exists. */}
+        <div className="bg-muted border-border relative aspect-[16/9] w-full overflow-hidden border-b">
+          {article.category && (
+            <span className="font-display text-foreground/[0.05] absolute inset-0 flex items-center justify-center px-4 text-center text-4xl tracking-tight uppercase select-none">
+              {article.category}
+            </span>
           )}
-          <p className="text-muted-foreground text-xs">
-            Par {article.creator.name}
+
+          {/* FGC corner ticks */}
+          <span className="border-primary/40 absolute top-2 left-2 h-3 w-3 border-t border-l" />
+          <span className="border-primary/40 absolute top-2 right-2 h-3 w-3 border-t border-r" />
+          <span className="border-primary/40 absolute bottom-2 left-2 h-3 w-3 border-b border-l" />
+          <span className="border-primary/40 absolute right-2 bottom-2 h-3 w-3 border-r border-b" />
+
+          {article.category && (
+            <div className="absolute top-3 left-3">
+              <CategoryBadge category={article.category} />
+            </div>
+          )}
+          <span className="text-muted-foreground absolute right-3 bottom-3 font-mono text-[11px] tabular-nums">
+            {formatDate(article.createdAt)}
+          </span>
+        </div>
+
+        {/* Body */}
+        <div className="flex flex-1 flex-col gap-3 p-5">
+          <h3 className="font-display text-foreground group-hover:text-primary text-base leading-tight tracking-tight uppercase transition-colors">
+            {article.title}
+          </h3>
+          <p className="text-muted-foreground line-clamp-3 text-sm leading-relaxed">
+            {article.excerpt ?? "Aucune description disponible"}
           </p>
-        </CardContent>
-      </Card>
+          <div className="border-border mt-auto flex items-center justify-between border-t pt-3">
+            <span className="text-muted-foreground font-mono text-[11px]">
+              Par {article.creator.name}
+            </span>
+            <span className="text-primary inline-flex translate-x-1 items-center gap-1 text-xs font-medium opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100">
+              Lire <ArrowUpRight className="h-3.5 w-3.5" />
+            </span>
+          </div>
+        </div>
+      </article>
     </Link>
   );
 }
