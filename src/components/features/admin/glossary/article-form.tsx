@@ -24,6 +24,7 @@ import { articleFormSchema, ArticleFormSchemaType } from "./article-schema";
 import { createArticleAction, updateArticleAction } from "./article-action";
 import { MarkdownPreview } from "./markdown-preview";
 import { ImageField } from "./image-field";
+import { ContentField } from "./content-field";
 import { AdminArticleDetail } from "@/../prisma/query/admin-glossary.query";
 
 interface ArticleFormProps {
@@ -218,14 +219,14 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
                 <FormItem>
                   <FormLabel>Contenu (Markdown)</FormLabel>
                   <FormControl>
-                    <Textarea
-                      {...field}
-                      placeholder="Contenu de l'article en markdown..."
-                      className="min-h-[300px] font-mono"
+                    <ContentField
+                      value={field.value}
+                      onChange={field.onChange}
                     />
                   </FormControl>
                   <FormDescription>
-                    Utilisez la syntaxe Markdown pour formater le contenu
+                    Utilisez la syntaxe Markdown pour formater le contenu.
+                    Insérez des images directement dans le texte.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

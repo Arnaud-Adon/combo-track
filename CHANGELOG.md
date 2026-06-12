@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2026-06-12
+
+### Added: Inline image upload in glossary article content — insert button injects markdown, images render in editor preview and consultation view
+
+### Added: Glossary article cover image hero at top of consultation view when present
+
 ## 2026-06-11
 
 ### Fixed: Server Action body size limit set to 2mb — image uploads over the 1mb default no longer rejected
