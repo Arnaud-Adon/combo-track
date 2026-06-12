@@ -36,6 +36,7 @@ export const getArticleBySlug = async (slug: string) =>
       title: true,
       content: true,
       category: true,
+      image: true,
       createdAt: true,
       updatedAt: true,
       creator: {
