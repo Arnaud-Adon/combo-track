@@ -22,6 +22,7 @@ export const articleFormSchema = z.object({
     .optional()
     .or(z.literal("")),
   category: z.string().min(1, "La catégorie est requise"),
+  image: z.string().url("L'image doit être une URL valide").optional().or(z.literal("")),
   published: z.boolean(),
 });
 

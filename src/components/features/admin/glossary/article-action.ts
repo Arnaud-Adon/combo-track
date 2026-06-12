@@ -11,7 +11,8 @@ import z from "zod";
 export const createArticleAction = adminActionClient
   .inputSchema(createArticleSchema)
   .action(async ({ parsedInput, ctx }) => {
-    const { title, slug, content, excerpt, category, published } = parsedInput;
+    const { title, slug, content, excerpt, category, image, published } =
+      parsedInput;
 
     // Check slug uniqueness
     const existing = await prisma.glossaryArticle.findUnique({
@@ -29,6 +30,7 @@ export const createArticleAction = adminActionClient
         content,
         excerpt,
         category,
+        image: image ?? null,
         published,
         createdBy: ctx.user.id,
       },
@@ -51,7 +53,7 @@ export const createArticleAction = adminActionClient
 export const updateArticleAction = adminActionClient
   .inputSchema(updateArticleSchema)
   .action(async ({ parsedInput }) => {
-    const { id, title, slug, content, excerpt, category, published } =
+    const { id, title, slug, content, excerpt, category, image, published } =
       parsedInput;
 
     // Check slug uniqueness (excluding current article)
@@ -74,6 +76,7 @@ export const updateArticleAction = adminActionClient
         content,
         excerpt,
         category,
+        image: image ?? null,
         published,
       },
     });

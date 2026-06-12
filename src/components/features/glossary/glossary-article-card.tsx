@@ -22,13 +22,21 @@ export function ArticleCard({ article }: ArticleCardProps) {
       className="group block focus:outline-none"
     >
       <article className="bg-card border-border hover:border-primary/60 focus-visible:border-primary/60 hover:shadow-primary/25 relative flex h-full flex-col overflow-hidden rounded-lg border transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_10px_40px_-15px]">
-        {/* Cover — placeholder until per-article images land.
-            Replace this block with <img src={article.image} … /> once the field exists. */}
+        {/* Cover — article image when present, otherwise category watermark. */}
         <div className="bg-muted border-border relative aspect-[16/9] w-full overflow-hidden border-b">
-          {article.category && (
-            <span className="font-display text-foreground/[0.05] absolute inset-0 flex items-center justify-center px-4 text-center text-4xl tracking-tight uppercase select-none">
-              {article.category}
-            </span>
+          {article.image ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={article.image}
+              alt={article.title}
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
+            />
+          ) : (
+            article.category && (
+              <span className="font-display text-foreground/[0.05] absolute inset-0 flex items-center justify-center px-4 text-center text-4xl tracking-tight uppercase select-none">
+                {article.category}
+              </span>
+            )
           )}
 
           {/* FGC corner ticks */}

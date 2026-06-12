@@ -1,6 +1,7 @@
 import { Footer } from "@/components/features/landing/footer";
 import { Header } from "@/components/features/landing/header";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 import { websiteConfig } from "@/config/website-config";
 import type { Metadata } from "next";
 import { Geist, JetBrains_Mono } from "next/font/google";
@@ -46,6 +47,7 @@ export default function RootLayout({
             <main className="flex-1">{children}</main>
             <Footer />
           </div>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
