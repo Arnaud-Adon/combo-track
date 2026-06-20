@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2026-06-20
+
+### Added: Colored FGC button rendering (LP/MP/HP → blue/yellow/red) in inline-code notation across memo, strategy matrix cell editor and grid previews
+
+### Added: Motion input rendering as directional arrow glyphs (236→↓↘→, 623, 214…) with hover labels in notation
+
+### Added: Motion notation dropdown (236/623/214…) with arrow-glyph labels in memo and strategy matrix cell editors
+
+### Changed: Notation/Motion/Frames dropdowns now auto-wrap inserted tokens into inline-code so notation renders colored without typing backticks
+
+### Changed: Inserting a button from the notation dropdown closes the inline-code zone and adds a trailing space outside the backtick for readability
+
 ## 2026-06-12
 
 ### Added: Inline image upload in glossary article content — insert button injects markdown, images render in editor preview and consultation view
@@ -60,7 +72,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added: Branded CT favicon (app/icon.svg + multi-size favicon.ico) matching the header logo badge
 
-### Refactor: Rebuild footer to match header identity (CT logo badge, font-display title, fgc-* palette, mono link columns, hairline accent)
+### Refactor: Rebuild footer to match header identity (CT logo badge, font-display title, fgc-\* palette, mono link columns, hairline accent)
 
 ### Added: Dashboard command-center hero with FGC training-room identity (eyebrow, font-display greeting, ⌘K trigger, resource panel)
 
@@ -78,13 +90,13 @@ All notable changes to this project will be documented in this file.
 
 ### Added: Design tokens for frame advantage (--frame-positive/negative/neutral), match status (--status-draft/in-progress/completed/analyzed) and note template categories (--tag-offense/defense/neutral/mental/execution/okizeme)
 
-### Refactor: Frame data renderer now uses --frame-* tokens instead of hardcoded text-blue/red/yellow
+### Refactor: Frame data renderer now uses --frame-\* tokens instead of hardcoded text-blue/red/yellow
 
-### Refactor: Note template selector uses --tag-* tokens with single-color semantic styling (drops dark: modifier on color)
+### Refactor: Note template selector uses --tag-\* tokens with single-color semantic styling (drops dark: modifier on color)
 
 ### Refactor: Dashboard hero carousel gradient uses FGC accent palette instead of orange-red-pink
 
-### Refactor: Replay card status and duration badges use --status-* and --fgc-accent tokens
+### Refactor: Replay card status and duration badges use --status-\* and --fgc-accent tokens
 
 ### Fixed: Glossary article detail footer border uses --border instead of hardcoded zinc-800
 

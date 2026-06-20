@@ -42,6 +42,20 @@ export const FGC_ACTIONS: NotationItem[] = [
   { value: "Backdash", label: "Backdash" },
 ];
 
+export const FGC_MOTIONS: NotationItem[] = [
+  { value: "236", label: "236 (Quart de cercle avant / QCF)" },
+  { value: "214", label: "214 (Quart de cercle arrière / QCB)" },
+  { value: "623", label: "623 (Dragon punch / DP)" },
+  { value: "421", label: "421 (Reverse DP)" },
+  { value: "41236", label: "41236 (Demi-cercle avant / HCF)" },
+  { value: "63214", label: "63214 (Demi-cercle arrière / HCB)" },
+  { value: "22", label: "22 (Double bas)" },
+  { value: "66", label: "66 (Dash avant)" },
+  { value: "44", label: "44 (Backdash)" },
+  { value: "360", label: "360 (Tour complet / SPD)" },
+  { value: "720", label: "720 (Double tour)" },
+];
+
 export const FRAME_OPTIONS = [
   { value: "(+)", label: "Avantage (+)", cursorOffset: 2 },
   { value: "(-)", label: "Désavantage (-)", cursorOffset: 2 },
