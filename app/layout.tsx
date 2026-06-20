@@ -1,5 +1,6 @@
 import { Footer } from "@/components/features/landing/footer";
 import { Header } from "@/components/features/landing/header";
+import { QuickRail } from "@/components/layout/quick-rail";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { websiteConfig } from "@/config/website-config";
@@ -47,6 +48,7 @@ export default function RootLayout({
             <main className="flex-1">{children}</main>
             <Footer />
           </div>
+          <QuickRail />
           <Toaster />
         </ThemeProvider>
       </body>
