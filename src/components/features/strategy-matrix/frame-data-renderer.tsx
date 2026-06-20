@@ -4,7 +4,7 @@ import { Fragment } from "react";
 
 const FRAME_PATTERN = /(\([+-]\d{1,2}\)|\(0\))/g;
 
-function highlightFrameData(children: ReactNode): ReactNode {
+export function highlightFrameData(children: ReactNode): ReactNode {
   if (typeof children === "string") {
     const parts = children.split(FRAME_PATTERN);
     if (parts.length === 1) return children;

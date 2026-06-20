@@ -1,12 +1,7 @@
 "use client";
 
-import { frameDataComponents } from "@/components/features/strategy-matrix/frame-data-renderer";
-import {
-  FGC_ACTIONS,
-  FGC_BUTTONS,
-  FGC_POSITIONS,
-  FRAME_OPTIONS,
-} from "@/components/features/strategy-matrix/strategy-matrix-types";
+import { notationComponents } from "@/components/features/notation/notation-renderer";
+import { NotationToolbar } from "@/components/features/notation/notation-toolbar";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -17,15 +12,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, Pencil } from "lucide-react";
@@ -58,20 +44,14 @@ type Props =
 export function MemoForm(props: Props) {
   const router = useRouter();
   const [showPreview, setShowPreview] = useState(false);
-  const [notationKey, setNotationKey] = useState(0);
-  const [frameKey, setFrameKey] = useState(0);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const form = useForm<MemoFormInput>({
     resolver: zodResolver(memoFormSchema),
     defaultValues:
-      props.mode === "edit"
-        ? props.initialData
-        : { title: "", content: "" },
+      props.mode === "edit" ? props.initialData : { title: "", content: "" },
     mode: "onSubmit",
   });
-
-  const content = form.watch("content");
 
   const createAction = useAction(createMemoAction, {
     onSuccess: ({ data }) => {
@@ -94,27 +74,6 @@ export function MemoForm(props: Props) {
   });
 
   const isPending = createAction.isPending || updateAction.isPending;
-
-  const insertAtCursor = (text: string, cursorOffset?: number) => {
-    const textarea = textareaRef.current;
-    if (!textarea) return;
-
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const before = content.slice(0, start);
-    const after = content.slice(end);
-    const newContent = (before + text + after).slice(0, MAX_MEMO_CONTENT_LENGTH);
-
-    form.setValue("content", newContent, { shouldDirty: true });
-
-    const newCursorPos =
-      cursorOffset !== undefined ? start + cursorOffset : start + text.length;
-
-    requestAnimationFrame(() => {
-      textarea.focus();
-      textarea.setSelectionRange(newCursorPos, newCursorPos);
-    });
-  };
 
   const onSubmit = (data: MemoFormInput) => {
     if (props.mode === "edit") {
@@ -174,69 +133,12 @@ export function MemoForm(props: Props) {
               </div>
 
               {!showPreview && (
-                <div className="flex items-center gap-2">
-                  <Select
-                    key={`notation-${notationKey}`}
-                    onValueChange={(v) => {
-                      insertAtCursor(v);
-                      setNotationKey((k) => k + 1);
-                    }}
-                  >
-                    <SelectTrigger size="sm" className="w-auto text-xs">
-                      <SelectValue placeholder="Notation..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Positions</SelectLabel>
-                        {FGC_POSITIONS.map((item) => (
-                          <SelectItem key={item.value} value={item.value}>
-                            {item.label}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                      <SelectGroup>
-                        <SelectLabel>Boutons</SelectLabel>
-                        {FGC_BUTTONS.map((item) => (
-                          <SelectItem key={item.value} value={item.value}>
-                            {item.label}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                      <SelectGroup>
-                        <SelectLabel>Actions</SelectLabel>
-                        {FGC_ACTIONS.map((item) => (
-                          <SelectItem key={item.value} value={item.value}>
-                            {item.label}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-
-                  <Select
-                    key={`frame-${frameKey}`}
-                    onValueChange={(v) => {
-                      const option = FRAME_OPTIONS.find((o) => o.value === v);
-                      const offset =
-                        option && "cursorOffset" in option
-                          ? (option as { cursorOffset: number }).cursorOffset
-                          : undefined;
-                      insertAtCursor(v, offset);
-                      setFrameKey((k) => k + 1);
-                    }}
-                  >
-                    <SelectTrigger size="sm" className="w-auto text-xs">
-                      <SelectValue placeholder="Frames..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {FRAME_OPTIONS.map((item) => (
-                        <SelectItem key={item.value} value={item.value}>
-                          {item.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                <NotationToolbar
+                  textareaRef={textareaRef}
+                  value={field.value}
+                  onValueChange={(next) => field.onChange(next)}
+                  maxLength={MAX_MEMO_CONTENT_LENGTH}
+                />
               )}
 
               <FormControl>
@@ -244,7 +146,7 @@ export function MemoForm(props: Props) {
                   <div className="prose prose-invert border-border bg-muted text-foreground min-h-[200px] max-w-none rounded-md border p-3 text-sm">
                     <ReactMarkdown
                       remarkPlugins={[remarkGfm]}
-                      components={frameDataComponents}
+                      components={notationComponents}
                     >
                       {field.value || "*Aucun contenu*"}
                     </ReactMarkdown>

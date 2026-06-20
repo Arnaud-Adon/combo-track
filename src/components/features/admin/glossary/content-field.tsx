@@ -4,6 +4,7 @@ import { ImageIcon, Loader2 } from "lucide-react";
 import { useRef, useState, type ChangeEvent } from "react";
 import { toast } from "sonner";
 
+import { NotationToolbar } from "@/components/features/notation/notation-toolbar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { uploadGlossaryImageAction } from "@/lib/actions/upload-glossary-image";
@@ -79,7 +80,12 @@ export function ContentField({ value, onChange }: ContentFieldProps) {
 
   return (
     <div className="space-y-2">
-      <div>
+      <div className="flex flex-wrap items-center gap-2">
+        <NotationToolbar
+          textareaRef={textareaRef}
+          value={value}
+          onValueChange={onChange}
+        />
         <input
           type="file"
           accept="image/jpeg,image/png,image/webp"

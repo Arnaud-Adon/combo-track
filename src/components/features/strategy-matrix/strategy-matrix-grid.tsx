@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { frameDataComponents } from "./frame-data-renderer";
+import { notationComponents } from "@/components/features/notation/notation-renderer";
 import type { Axis, Cell } from "./strategy-matrix-schema";
 import { buildCellLookup, cellKey } from "./strategy-matrix-types";
 
@@ -88,7 +88,7 @@ export function StrategyMatrixGrid({
                     <div className="prose prose-invert prose-sm line-clamp-5 max-w-none [&_*]:my-0 [&_li]:leading-snug [&_p]:leading-snug">
                       <ReactMarkdown
                         remarkPlugins={[remarkGfm]}
-                        components={frameDataComponents}
+                        components={notationComponents}
                       >
                         {content}
                       </ReactMarkdown>

@@ -56,6 +56,11 @@
   --frame-negative: oklch(0.65 0.2 28);
   --frame-neutral: oklch(0.78 0.15 80);
 
+  /* Notation FGC — button intensity (light/medium/heavy) */
+  --notation-light: oklch(0.72 0.13 220);
+  --notation-medium: oklch(0.78 0.15 80);
+  --notation-heavy: oklch(0.65 0.2 28);
+
   /* Match status — used on replay cards */
   --status-draft: oklch(0.6 0 0);
   --status-in-progress: oklch(0.7 0.2 28);
@@ -203,6 +208,10 @@ body {
   --color-frame-positive: var(--frame-positive);
   --color-frame-negative: var(--frame-negative);
   --color-frame-neutral: var(--frame-neutral);
+
+  --color-notation-light: var(--notation-light);
+  --color-notation-medium: var(--notation-medium);
+  --color-notation-heavy: var(--notation-heavy);
 
   --color-status-draft: var(--status-draft);
   --color-status-in-progress: var(--status-in-progress);

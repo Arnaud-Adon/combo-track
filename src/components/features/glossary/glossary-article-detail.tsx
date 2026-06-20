@@ -1,5 +1,7 @@
 "use client";
 
+import { renderInlineNotation } from "@/components/features/notation/notation-renderer";
+import { highlightFrameData } from "@/components/features/strategy-matrix/frame-data-renderer";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -58,7 +60,9 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
               <h3 className="mt-6 mb-2 text-xl font-semibold">{children}</h3>
             ),
             p: ({ children }) => (
-              <p className="mb-4 leading-relaxed">{children}</p>
+              <p className="mb-4 leading-relaxed">
+                {highlightFrameData(children)}
+              </p>
             ),
             ul: ({ children }) => (
               <ul className="mb-4 list-disc space-y-2 pl-6">{children}</ul>
@@ -67,7 +71,9 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
               <ol className="mb-4 list-decimal space-y-2 pl-6">{children}</ol>
             ),
             li: ({ children }) => (
-              <li className="leading-relaxed">{children}</li>
+              <li className="leading-relaxed">
+                {highlightFrameData(children)}
+              </li>
             ),
             a: ({ href, children }) => (
               <a href={href} className="text-primary underline">
@@ -79,11 +85,15 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
                 {children}
               </strong>
             ),
-            code: ({ children }) => (
-              <code className="bg-muted rounded px-1.5 py-0.5 font-mono text-sm">
-                {children}
-              </code>
-            ),
+            code: ({ className, children }) =>
+              className && /language-/.test(className) ? (
+                <code className={className}>{children}</code>
+              ) : (
+                renderInlineNotation(
+                  children,
+                  "bg-muted rounded px-1.5 py-0.5 font-mono text-sm",
+                )
+              ),
             blockquote: ({ children }) => (
               <blockquote className="border-border text-muted-foreground my-4 border-l-2 pl-4 italic">
                 {children}
