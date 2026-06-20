@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2026-06-21
+
+### Added: FGC notation toolbar in the glossary article editor, with colored rendering in the admin preview and the public article view
+
 ## 2026-06-20
 
 ### Added: Colored FGC button rendering (LP/MP/HP → blue/yellow/red) in inline-code notation across memo, strategy matrix cell editor and grid previews

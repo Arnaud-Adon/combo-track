@@ -24,7 +24,7 @@ type Props = {
   textareaRef: RefObject<HTMLTextAreaElement | null>;
   value: string;
   onValueChange: (next: string) => void;
-  maxLength: number;
+  maxLength?: number;
 };
 
 export function NotationToolbar({

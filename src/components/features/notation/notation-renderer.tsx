@@ -11,6 +11,26 @@ function childrenToString(children: ReactNode): string {
   return "";
 }
 
+export function renderInlineNotation(
+  children: ReactNode,
+  fallbackClassName?: string,
+): ReactNode {
+  const segments = parseNotation(childrenToString(children));
+  const hasNotation = segments.some((segment) => segment.kind !== "text");
+
+  if (!hasNotation) {
+    return <code className={fallbackClassName}>{children}</code>;
+  }
+
+  return (
+    <span className="font-mono">
+      {segments.map((segment, index) => (
+        <NotationChip key={index} segment={segment} />
+      ))}
+    </span>
+  );
+}
+
 export const notationComponents: Partial<Components> = {
   ...frameDataComponents,
   code({ className, children }) {
@@ -18,19 +38,6 @@ export const notationComponents: Partial<Components> = {
       return <code className={className}>{children}</code>;
     }
 
-    const segments = parseNotation(childrenToString(children));
-    const hasNotation = segments.some((segment) => segment.kind !== "text");
-
-    if (!hasNotation) {
-      return <code>{children}</code>;
-    }
-
-    return (
-      <span className="font-mono">
-        {segments.map((segment, index) => (
-          <NotationChip key={index} segment={segment} />
-        ))}
-      </span>
-    );
+    return renderInlineNotation(children);
   },
 };

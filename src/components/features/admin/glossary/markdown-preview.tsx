@@ -3,6 +3,8 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+import { notationComponents } from "@/components/features/notation/notation-renderer";
+
 interface MarkdownPreviewProps {
   content: string;
 }
@@ -13,6 +15,7 @@ export function MarkdownPreview({ content }: MarkdownPreviewProps) {
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
+          ...notationComponents,
           img: ({ src, alt }) => (
             // eslint-disable-next-line @next/next/no-img-element
             <img

@@ -1,7 +1,7 @@
 type InsertNotationOptions = {
   cursorOffset?: number;
   closeZone?: boolean;
-  maxLength: number;
+  maxLength?: number;
 };
 
 type InsertNotationResult = {
