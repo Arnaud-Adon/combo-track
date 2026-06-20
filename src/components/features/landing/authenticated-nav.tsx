@@ -36,8 +36,6 @@ export function AuthenticatedNav({ user }: AuthenticatedNavProps) {
     <>
       <div className="hidden items-center gap-4 lg:flex">
         <NavLink href="/dashboard">Dashboard</NavLink>
-        <NavLink href="/combos">Combos</NavLink>
-        <NavLink href="/glossary">Glossaire</NavLink>
         <NavLink href="/stream">Stream</NavLink>
         {user.role === "ADMIN" && (
           <DropdownMenu>
@@ -80,14 +78,25 @@ export function AuthenticatedNav({ user }: AuthenticatedNavProps) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuLabel>Labo</DropdownMenuLabel>
             <DropdownMenuItem asChild>
-              <Link href="/dashboard">Dashboard</Link>
+              <Link href="/videos">Replays</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link href="/combos">Combos</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
+              <Link href="/notes/strategy">Matrices</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/notes/memo">Mémos</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
               <Link href="/glossary">Glossaire</Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link href="/dashboard">Dashboard</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link href="/stream">Stream</Link>

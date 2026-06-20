@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## 2026-06-21
 
+### Added: Quick-access icon rail (Replays, Combos, Matrices, Mémos, Glossaire) as a right-edge overlay from the lg breakpoint, with accessible labels and tooltips
+
+### Changed: Deduplicate authenticated navigation — top bar keeps Dashboard/Stream/Admin, the rail owns the labo modules, and the mobile menu becomes the complete grouped menu
+
+### Docs: Add accessibility (a11y) rule for icon-only controls, focus, landmarks and target size
+
 ### Added: FGC notation toolbar in the glossary article editor, with colored rendering in the admin preview and the public article view
 
 ## 2026-06-20
