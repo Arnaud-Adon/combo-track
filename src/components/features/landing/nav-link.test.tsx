@@ -1,19 +1,9 @@
-import { render, screen } from "@testing-library/react";
-import { NextIntlClientProvider } from "next-intl";
-import { type ReactNode } from "react";
+import { screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { usePathname } from "next/navigation";
 
-import { frMessages } from "@/i18n/messages";
+import { renderWithIntl } from "@/test/render-with-intl";
 import { NavLink } from "./nav-link";
-
-function renderWithIntl(ui: ReactNode) {
-  return render(
-    <NextIntlClientProvider locale="fr" messages={frMessages}>
-      {ui}
-    </NextIntlClientProvider>,
-  );
-}
 
 describe("NavLink", () => {
   it("should render a link with the button text", () => {

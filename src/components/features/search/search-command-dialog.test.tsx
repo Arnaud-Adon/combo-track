@@ -1,10 +1,8 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { NextIntlClientProvider } from "next-intl";
-import { type ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { frMessages } from "@/i18n/messages";
+import { renderWithIntl } from "@/test/render-with-intl";
 
 vi.mock("next-safe-action/hooks", () => ({
   useAction: () => ({
@@ -21,14 +19,6 @@ vi.mock("./semantic-search-action", () => ({
 import { useSearchDialogStore } from "@/stores/search-dialog";
 import { SearchCommandDialog } from "./search-command-dialog";
 import { SearchTriggerButton } from "./search-trigger-button";
-
-function renderWithIntl(ui: ReactNode) {
-  return render(
-    <NextIntlClientProvider locale="fr" messages={frMessages}>
-      {ui}
-    </NextIntlClientProvider>,
-  );
-}
 
 beforeEach(() => {
   vi.clearAllMocks();

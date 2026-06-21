@@ -1,8 +1,7 @@
-import { render, screen } from "@testing-library/react";
-import { NextIntlClientProvider } from "next-intl";
+import { screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import { frMessages } from "@/i18n/messages";
+import { renderWithIntl } from "@/test/render-with-intl";
 
 // Mock upload avatar action
 vi.mock("@/lib/actions/upload-avatar", () => ({
@@ -13,11 +12,7 @@ import { SignUpForm } from "./sign-up-form";
 
 describe("SignUpForm", () => {
   it("should render the form", () => {
-    render(
-      <NextIntlClientProvider locale="fr" messages={frMessages}>
-        <SignUpForm />
-      </NextIntlClientProvider>,
-    );
+    renderWithIntl(<SignUpForm />);
     expect(screen.getByText("Créer un compte")).toBeInTheDocument();
   });
 });

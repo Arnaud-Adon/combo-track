@@ -1,18 +1,8 @@
-import { render, screen } from "@testing-library/react";
-import { NextIntlClientProvider } from "next-intl";
-import { type ReactNode } from "react";
+import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import { frMessages } from "@/i18n/messages";
+import { renderWithIntl } from "@/test/render-with-intl";
 import { SemanticSearchResults } from "./semantic-search-results";
-
-function renderWithIntl(ui: ReactNode) {
-  return render(
-    <NextIntlClientProvider locale="fr" messages={frMessages}>
-      {ui}
-    </NextIntlClientProvider>,
-  );
-}
 
 describe("SemanticSearchResults", () => {
   it("prompts when query too short", () => {
