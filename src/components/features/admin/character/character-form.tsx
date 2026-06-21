@@ -2,10 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { toast } from "sonner";
 
 import {
   Form,
@@ -17,7 +15,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -37,6 +34,8 @@ import {
 import { AdminCharacterDetail } from "@/../prisma/query/admin-character.query";
 import { GameOption } from "@/../prisma/query/game.query";
 import { generateSlug } from "@/lib/slug";
+import { useActionToast } from "@/hooks/use-action-toast";
+import { EntityFormButtons } from "@/components/features/admin/shared/entity-form-buttons";
 
 interface CharacterFormProps {
   mode: "create" | "edit";
@@ -49,30 +48,26 @@ export function CharacterForm({ mode, character, games }: CharacterFormProps) {
   const t = useTranslations("admin");
   const tCommon = useTranslations("common");
 
-  const { execute: createExecute, isPending: isCreating } = useAction(
+  const { execute: createExecute, isPending: isCreating } = useActionToast(
     createCharacterAction,
     {
+      successMessage: t("character.toast.created"),
+      errorMessage: t("character.toast.createError"),
       onSuccess: () => {
-        toast.success(t("character.toast.created"));
         router.push("/admin/characters");
         router.refresh();
-      },
-      onError: ({ error }) => {
-        toast.error(error.serverError ?? t("character.toast.createError"));
       },
     },
   );
 
-  const { execute: updateExecute, isPending: isUpdating } = useAction(
+  const { execute: updateExecute, isPending: isUpdating } = useActionToast(
     updateCharacterAction,
     {
+      successMessage: t("character.toast.updated"),
+      errorMessage: t("character.toast.updateError"),
       onSuccess: () => {
-        toast.success(t("character.toast.updated"));
         router.push("/admin/characters");
         router.refresh();
-      },
-      onError: ({ error }) => {
-        toast.error(error.serverError ?? t("character.toast.updateError"));
       },
     },
   );
@@ -198,25 +193,16 @@ export function CharacterForm({ mode, character, games }: CharacterFormProps) {
           )}
         />
 
-        <div className="flex gap-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => router.push("/admin/characters")}
-            disabled={isPending}
-          >
-            {tCommon("buttons.cancel")}
-          </Button>
-          <Button type="submit" disabled={isPending}>
-            {isPending
-              ? mode === "create"
-                ? t("character.form.creating")
-                : t("character.form.updating")
-              : mode === "create"
-                ? t("character.form.createSubmit")
-                : t("character.form.updateSubmit")}
-          </Button>
-        </div>
+        <EntityFormButtons
+          mode={mode}
+          isPending={isPending}
+          onCancel={() => router.push("/admin/characters")}
+          cancelLabel={tCommon("buttons.cancel")}
+          createLabel={t("character.form.createSubmit")}
+          updateLabel={t("character.form.updateSubmit")}
+          creatingLabel={t("character.form.creating")}
+          updatingLabel={t("character.form.updating")}
+        />
       </form>
     </Form>
   );

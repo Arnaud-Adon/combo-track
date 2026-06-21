@@ -3,10 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { toast } from "sonner";
 
 import { Tag } from "@/../generated/prisma";
 import {
@@ -33,6 +31,7 @@ import { cn } from "@/lib/utils";
 import { comboFormSchema, ComboFormSchemaType } from "./combo-schema";
 import { createComboAction, updateComboAction } from "./combo-action";
 import { ComboDetail } from "@/../prisma/query/combo.query";
+import { useActionToast } from "@/hooks/use-action-toast";
 
 type CharacterOption = {
   id: string;
@@ -101,30 +100,26 @@ export function ComboForm({
     [characters, selectedGameId],
   );
 
-  const { execute: createExecute, isPending: isCreating } = useAction(
+  const { execute: createExecute, isPending: isCreating } = useActionToast(
     createComboAction,
     {
+      successMessage: t("toast.created"),
+      errorMessage: t("toast.createError"),
       onSuccess: () => {
-        toast.success(t("toast.created"));
         router.push("/combos");
         router.refresh();
-      },
-      onError: ({ error }) => {
-        toast.error(error.serverError ?? t("toast.createError"));
       },
     },
   );
 
-  const { execute: updateExecute, isPending: isUpdating } = useAction(
+  const { execute: updateExecute, isPending: isUpdating } = useActionToast(
     updateComboAction,
     {
+      successMessage: t("toast.updated"),
+      errorMessage: t("toast.updateError"),
       onSuccess: () => {
-        toast.success(t("toast.updated"));
         router.push(`/combos/${combo!.id}`);
         router.refresh();
-      },
-      onError: ({ error }) => {
-        toast.error(error.serverError ?? t("toast.updateError"));
       },
     },
   );

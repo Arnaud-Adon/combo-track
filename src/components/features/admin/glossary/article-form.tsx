@@ -2,10 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { toast } from "sonner";
 
 import {
   Form,
@@ -19,7 +17,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { Button } from "@/components/ui/button";
 
 import { articleFormSchema, ArticleFormSchemaType } from "./article-schema";
 import { createArticleAction, updateArticleAction } from "./article-action";
@@ -27,21 +24,13 @@ import { MarkdownPreview } from "./markdown-preview";
 import { ImageField } from "./image-field";
 import { ContentField } from "./content-field";
 import { AdminArticleDetail } from "@/../prisma/query/admin-glossary.query";
+import { generateSlug } from "@/lib/slug";
+import { useActionToast } from "@/hooks/use-action-toast";
+import { EntityFormButtons } from "@/components/features/admin/shared/entity-form-buttons";
 
 interface ArticleFormProps {
   mode: "create" | "edit";
   article?: NonNullable<AdminArticleDetail>;
-}
-
-function generateSlug(title: string): string {
-  return title
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .trim();
 }
 
 export function ArticleForm({ mode, article }: ArticleFormProps) {
@@ -49,30 +38,26 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
   const t = useTranslations("admin");
   const tCommon = useTranslations("common");
 
-  const { execute: createExecute, isPending: isCreating } = useAction(
+  const { execute: createExecute, isPending: isCreating } = useActionToast(
     createArticleAction,
     {
+      successMessage: t("article.toast.created"),
+      errorMessage: t("article.toast.createError"),
       onSuccess: () => {
-        toast.success(t("article.toast.created"));
         router.push("/admin/glossary");
         router.refresh();
-      },
-      onError: ({ error }) => {
-        toast.error(error.serverError ?? t("article.toast.createError"));
       },
     },
   );
 
-  const { execute: updateExecute, isPending: isUpdating } = useAction(
+  const { execute: updateExecute, isPending: isUpdating } = useActionToast(
     updateArticleAction,
     {
+      successMessage: t("article.toast.updated"),
+      errorMessage: t("article.toast.updateError"),
       onSuccess: () => {
-        toast.success(t("article.toast.updated"));
         router.push("/admin/glossary");
         router.refresh();
-      },
-      onError: ({ error }) => {
-        toast.error(error.serverError ?? t("article.toast.updateError"));
       },
     },
   );
@@ -270,25 +255,16 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
           </div>
         </div>
 
-        <div className="flex gap-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => router.push("/admin/glossary")}
-            disabled={isPending}
-          >
-            {tCommon("buttons.cancel")}
-          </Button>
-          <Button type="submit" disabled={isPending}>
-            {isPending
-              ? mode === "create"
-                ? t("article.form.creating")
-                : t("article.form.updating")
-              : mode === "create"
-                ? t("article.form.createSubmit")
-                : t("article.form.updateSubmit")}
-          </Button>
-        </div>
+        <EntityFormButtons
+          mode={mode}
+          isPending={isPending}
+          onCancel={() => router.push("/admin/glossary")}
+          cancelLabel={tCommon("buttons.cancel")}
+          createLabel={t("article.form.createSubmit")}
+          updateLabel={t("article.form.updateSubmit")}
+          creatingLabel={t("article.form.creating")}
+          updatingLabel={t("article.form.updating")}
+        />
       </form>
     </Form>
   );

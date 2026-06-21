@@ -3,10 +3,10 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useTranslations } from "next-intl";
+import type { Translator } from "@/types/translator";
 import {
   resolveStrategyMatrixTemplates,
   type StrategyMatrixTemplate,
-  type TemplateTranslator,
 } from "./strategy-matrix-templates";
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
 export function StrategyMatrixTemplateSelector({ onSelect }: Props) {
   const t = useTranslations("strategyMatrix");
   const templates = resolveStrategyMatrixTemplates(
-    t as unknown as TemplateTranslator,
+    t as unknown as Translator,
   );
 
   return (

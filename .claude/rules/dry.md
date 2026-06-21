@@ -4,23 +4,28 @@ Before duplicating logic, markup or config, reuse the shared building blocks bel
 
 ## Reuse these (don't re-inline)
 
-- **Dates**: `formatDate` / `formatTime` from `@/utils` — do not re-inline `toLocaleDateString("fr-FR", …)`.
+- **Dates**: `formatDate` (short), `formatDateLong` (long month), `formatDateFull` (weekday) and `formatTime` from `@/utils` — do not re-inline `toLocaleDateString("fr-FR", …)`.
+- **Action feedback**: `useActionToast` from `@/hooks/use-action-toast` — wraps `useAction` with the `toast.success` / `toast.error(error.serverError ?? …)` boilerplate. Pass already-translated `successMessage` / `errorMessage`; keep side effects in `onSuccess` / `onError`.
+- **Delete confirmation**: `ConfirmDeleteDialog` from `@/components/shared/confirm-delete-dialog` (+ `useDeleteDialog` from `@/hooks/use-delete-dialog`) — never inline an `AlertDialog` delete flow per list.
+- **Dashboard sections**: `RecentSection` from `@/components/features/dashboard/recent-section` — generic header + empty state + animated grid/list.
+- **Admin form footer**: `EntityFormButtons` from `@/components/features/admin/shared/entity-form-buttons` — shared cancel/submit block.
+- **Admin Zod fragments**: `slugSchema` / `nameSchema` / `urlFieldSchema` / `withIdExtension` / `SLUG_REGEX` from `@/lib/validations/admin-schemas`.
+- **Translator type**: `Translator` from `@/types/translator` — never re-declare `(key: string) => string`.
 - **i18n test render**: `renderWithIntl` from `@/test/render-with-intl` — never redeclare the `NextIntlClientProvider` wrapper in a test file.
 - **Translations**: `getTranslations` / `useTranslations` + the `fr` catalogs (see `i18n.md`). Generic labels live in the `common` namespace — reuse, don't duplicate.
 - **Form validation display**: the shadcn `FormMessage` already translates Zod message keys — don't build per-form error rendering.
-- **Action feedback**: keep the next-safe-action `error.serverError ?? t(...)` toast pattern consistent.
 
 ## Extract when you see it 3×
 
-- A confirmation dialog → a single `ConfirmDeleteDialog`, not an inline `AlertDialog` per list.
-- A near-identical section/card → one config-driven component.
-- A repeated Zod fragment (e.g. the slug rule) → a shared schema piece.
+- A confirmation dialog → reuse `ConfirmDeleteDialog`, not an inline `AlertDialog` per list.
+- A near-identical section/card → one config-driven component (see `RecentSection`).
+- A repeated Zod fragment (e.g. the slug rule) → a shared schema piece in `admin-schemas.ts`.
 
-## Known consolidation backlog (dedicated session)
+## Known consolidation backlog
 
-1. Admin CRUD triplication (game / character / article: form + list + action + schema, ~64% identical) → generic CRUD scaffold + shared `slugSchema` + a `makeEntityActions` factory.
-2. Inline delete `AlertDialog` repeated in ~7 lists → reuse a `ConfirmDeleteDialog`.
-3. Dashboard `recent-*-section.tsx` (×3, near-identical) → one `RecentSection`.
-4. next-safe-action toast boilerplate in ~16 files → a `useActionToast` hook.
-5. `(key: string) => string` translator type duplicated 3× (`MatchTranslator`, `TemplateTranslator`, `replay-card`) → one shared `Translator`.
-6. `formatDate` underused — ~7 inline `toLocaleDateString` call sites (mind the long `fr-FR` vs short format).
+Resolved (2026-06-21): inline delete dialog (`ConfirmDeleteDialog` + `useDeleteDialog`), dashboard `recent-*` (`RecentSection`), toast boilerplate (`useActionToast`, 16 sites), `Translator` type, `formatDate` underuse, shared admin Zod fragments + `EntityFormButtons`.
+
+Remaining (gated — dedicated PR):
+
+1. **Admin CRUD action factory** — game / character / action create+update+delete actions are still ~67% identical. A `makeEntityActions({ model, schemas, revalidatePaths, slugScope, getCreateData, getUpdateData, onCreateHook?, onUpdateHook? })` factory would collapse them. Deferred because the generic Prisma-model typing is delicate and must not break the article RAG `after()`/`embedGlossaryArticleIfNeeded` hook — design before coding.
+2. Two delete dialogs still use the per-card `AlertDialogTrigger` idiom (`strategy-matrix-list`, `memo-list`); migrate to `ConfirmDeleteDialog` only if a controlled-state refactor of those loops is worthwhile.

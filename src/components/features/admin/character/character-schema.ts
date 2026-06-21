@@ -1,27 +1,23 @@
 import z from "zod";
 
+import {
+  nameSchema,
+  slugSchema,
+  urlFieldSchema,
+  withIdExtension,
+} from "@/lib/validations/admin-schemas";
+
+const base = "admin.validation.character";
+
 export const characterFormSchema = z.object({
-  gameId: z.string().min(1, "admin.validation.character.gameRequired"),
-  name: z
-    .string()
-    .min(2, "admin.validation.character.nameMin")
-    .max(60, "admin.validation.character.nameMax"),
-  slug: z
-    .string()
-    .min(1, "admin.validation.character.slugRequired")
-    .max(40, "admin.validation.character.slugMax")
-    .regex(/^[a-z0-9-]+$/, "admin.validation.character.slugFormat"),
-  iconUrl: z
-    .string()
-    .url("admin.validation.character.iconUrlInvalid")
-    .optional()
-    .or(z.literal("")),
+  gameId: z.string().min(1, `${base}.gameRequired`),
+  name: nameSchema({ base, min: 2, max: 60 }),
+  slug: slugSchema({ base, min: 1, max: 40, minKey: "slugRequired" }),
+  iconUrl: urlFieldSchema(`${base}.iconUrlInvalid`),
 });
 
 export type CharacterFormSchemaType = z.infer<typeof characterFormSchema>;
 
 export const createCharacterSchema = characterFormSchema;
 
-export const updateCharacterSchema = characterFormSchema.extend({
-  id: z.string().min(1),
-});
+export const updateCharacterSchema = withIdExtension(characterFormSchema);

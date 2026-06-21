@@ -3,12 +3,11 @@ import { getTranslations } from "next-intl/server";
 import type { MatchStatus, MatchType } from "@/../generated/prisma";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-
-export type MatchTranslator = (key: string) => string;
+import type { Translator } from "@/types/translator";
 
 export function getMatchTypeLabel(
   matchType: MatchType,
-  t: MatchTranslator,
+  t: Translator,
 ): string {
   switch (matchType) {
     case "RANKED":
@@ -22,7 +21,7 @@ export function getMatchTypeLabel(
 
 export function getStatusLabel(
   status: MatchStatus,
-  t: MatchTranslator,
+  t: Translator,
 ): string {
   switch (status) {
     case "DRAFT":
@@ -62,7 +61,7 @@ export async function MatchStatusBadge(props: MatchStatusBadgeProps) {
         className,
       )}
     >
-      {getStatusLabel(status, t as unknown as MatchTranslator)}
+      {getStatusLabel(status, t as unknown as Translator)}
     </Badge>
   );
 }

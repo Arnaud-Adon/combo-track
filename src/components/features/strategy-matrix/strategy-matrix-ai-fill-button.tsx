@@ -13,9 +13,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Loader2, Sparkles } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useAction } from "next-safe-action/hooks";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useActionToast } from "@/hooks/use-action-toast";
 import { fillStrategyMatrixWithAiAction } from "./strategy-matrix-ai-action";
 import type { Axis, Cell } from "./strategy-matrix-schema";
 
@@ -46,17 +46,18 @@ export function StrategyMatrixAiFillButton({
   const t = useTranslations("strategyMatrix");
   const tc = useTranslations("common");
 
-  const { execute, isPending } = useAction(fillStrategyMatrixWithAiAction, {
+  const { execute, isPending } = useActionToast(fillStrategyMatrixWithAiAction, {
+    successMessage: (data) =>
+      data?.cells && data.cells.length > 0
+        ? t("aiFill.success", { count: data.cells.length })
+        : undefined,
+    errorMessage: t("aiFill.error"),
     onSuccess: ({ data }) => {
       if (!data?.cells || data.cells.length === 0) {
         toast.error(t("aiFill.empty"));
         return;
       }
       onCellsGenerated(data.cells);
-      toast.success(t("aiFill.success", { count: data.cells.length }));
-    },
-    onError: ({ error }) => {
-      toast.error(error.serverError ?? t("aiFill.error"));
     },
   });
 

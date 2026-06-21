@@ -15,14 +15,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, Pencil } from "lucide-react";
-import { useAction } from "next-safe-action/hooks";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { toast } from "sonner";
+import { useActionToast } from "@/hooks/use-action-toast";
 import { createMemoAction, updateMemoAction } from "./memo-action";
 import {
   MAX_MEMO_CONTENT_LENGTH,
@@ -56,23 +55,19 @@ export function MemoForm(props: Props) {
     mode: "onSubmit",
   });
 
-  const createAction = useAction(createMemoAction, {
+  const createAction = useActionToast(createMemoAction, {
+    successMessage: t("created"),
+    errorMessage: t("createError"),
     onSuccess: ({ data }) => {
-      toast.success(t("created"));
       if (data?.id) router.push(`/notes/memo/${data.id}`);
-    },
-    onError: ({ error }) => {
-      toast.error(error.serverError ?? t("createError"));
     },
   });
 
-  const updateAction = useAction(updateMemoAction, {
+  const updateAction = useActionToast(updateMemoAction, {
+    successMessage: t("updated"),
+    errorMessage: t("updateError"),
     onSuccess: () => {
-      toast.success(t("updated"));
       router.refresh();
-    },
-    onError: ({ error }) => {
-      toast.error(error.serverError ?? t("updateError"));
     },
   });
 

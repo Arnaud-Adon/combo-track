@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2026-06-22
+
+### Refactor: Add a shared Translator type and replace the duplicated MatchTranslator/TemplateTranslator/inline casts (DRY)
+
+### Refactor: Add formatDateLong/formatDateFull utils and route ~9 inline toLocaleDateString call sites through @/utils (DRY)
+
+### Fixed: Reuse @/lib/slug generateSlug in the article form instead of a duplicated local implementation
+
+### Refactor: Extract shared admin Zod building blocks (slugSchema/nameSchema/urlFieldSchema/withIdExtension + SLUG_REGEX) for game/character/article schemas (DRY)
+
+### Refactor: Extract a shared ConfirmDeleteDialog + useDeleteDialog hook and reuse them across admin, note, combo lists (DRY)
+
+### Refactor: Extract a generic RecentSection component and thin the three dashboard recent-* sections down to config (DRY)
+
+### Refactor: Extract a useActionToast hook and migrate the 16 next-safe-action toast call sites onto it (DRY)
+
+### Refactor: Extract a shared EntityFormButtons footer for the admin game/character/article forms (DRY)
+
 ## 2026-06-21
 
 ### Refactor: Extract a shared renderWithIntl test helper and point all i18n-aware tests at it (DRY)
