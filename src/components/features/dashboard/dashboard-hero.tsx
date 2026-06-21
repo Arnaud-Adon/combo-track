@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import { formatDateFull } from "@/utils";
 import { CmdkTriggerButton } from "./cmdk-trigger-button";
 import { HeroCarousel, type HeroSlide } from "./hero-carousel";
 
@@ -15,11 +16,7 @@ export async function DashboardHero(props: DashboardHeroProps) {
   const { userName, slides } = props;
   const t = await getTranslations("dashboard");
 
-  const today = new Date().toLocaleDateString("fr-FR", {
-    weekday: "long",
-    day: "2-digit",
-    month: "long",
-  });
+  const today = formatDateFull(new Date());
 
   return (
     <section className="relative grid gap-10 md:grid-cols-[1.15fr_0.85fr] md:items-stretch">

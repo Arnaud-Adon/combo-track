@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 import Link from "next/link";
 import { Swords, Trash2 } from "lucide-react";
@@ -9,17 +9,9 @@ import { useAction } from "next-safe-action/hooks";
 import { useTranslations } from "next-intl";
 
 import { Note, Tag } from "@/../generated/prisma";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
+import { ConfirmDeleteDialog } from "@/components/shared/confirm-delete-dialog";
+import { useDeleteDialog } from "@/hooks/use-delete-dialog";
 import { cn } from "@/lib/utils";
 import { useVideoPlayerStore } from "@/stores/video-player";
 import { formatTime } from "@/utils";
@@ -122,17 +114,11 @@ export function NoteList(props: NoteListProps) {
   const seekToTimestamp = useVideoPlayerStore((state) => state.seekToTimestamp);
   const currentTime = useVideoPlayerStore((state) => state.currentTime);
 
-  const [deleteDialog, setDeleteDialog] = useState<{
-    open: boolean;
-    note: NoteWithTags | null;
-  }>({
-    open: false,
-    note: null,
-  });
+  const deleteDialog = useDeleteDialog<NoteWithTags>();
 
   const { execute, isPending, result } = useAction(deleteNoteAction, {
     onSuccess: () => {
-      setDeleteDialog({ open: false, note: null });
+      deleteDialog.close();
       router.refresh();
     },
   });
@@ -144,13 +130,9 @@ export function NoteList(props: NoteListProps) {
     [seekToTimestamp],
   );
 
-  const openDeleteDialog = (note: NoteWithTags) => {
-    setDeleteDialog({ open: true, note });
-  };
-
   const handleDelete = () => {
-    if (deleteDialog.note) {
-      execute({ noteId: deleteDialog.note.id });
+    if (deleteDialog.item) {
+      execute({ noteId: deleteDialog.item.id });
     }
   };
 
@@ -180,46 +162,24 @@ export function NoteList(props: NoteListProps) {
             note={note}
             isActive={note.id === activeNoteId}
             onClick={handleNoteClick}
-            onDelete={openDeleteDialog}
+            onDelete={deleteDialog.openWith}
           />
         ))}
       </div>
 
-      <AlertDialog
+      <ConfirmDeleteDialog
         open={deleteDialog.open}
-        onOpenChange={(open) =>
-          !open && setDeleteDialog({ open: false, note: null })
-        }
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>{t("deleteTitle")}</AlertDialogTitle>
-            <AlertDialogDescription>
-              {deleteDialog.note?.content}
-              <br />
-              <br />
-              {t("deleteIrreversible")}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={isPending}>
-              {tCommon("cancel")}
-            </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleDelete}
-              disabled={isPending}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            >
-              {isPending ? t("deleting") : tCommon("delete")}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-          {result.serverError && (
-            <p className="text-destructive mt-2 text-sm">
-              {result.serverError}
-            </p>
-          )}
-        </AlertDialogContent>
-      </AlertDialog>
+        onOpenChange={deleteDialog.onOpenChange}
+        title={t("deleteTitle")}
+        description={t("deleteIrreversible")}
+        itemName={deleteDialog.item?.content}
+        isPending={isPending}
+        onConfirm={handleDelete}
+        confirmLabel={tCommon("delete")}
+        cancelLabel={tCommon("cancel")}
+        deletingLabel={t("deleting")}
+        serverError={result.serverError}
+      />
     </>
   );
 }

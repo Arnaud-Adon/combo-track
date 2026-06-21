@@ -11,13 +11,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import type { Translator } from "@/types/translator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
-import { useAction } from "next-safe-action/hooks";
+import { useActionToast } from "@/hooks/use-action-toast";
 import { useRouter } from "next/navigation";
 import { useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import type {
   CharacterOption,
   GameOption,
@@ -40,7 +40,6 @@ import {
 import {
   resolveStrategyMatrixTemplates,
   type StrategyMatrixTemplate,
-  type TemplateTranslator,
 } from "./strategy-matrix-templates";
 import { StrategyMatrixTemplateSelector } from "./strategy-matrix-template-selector";
 import {
@@ -112,7 +111,7 @@ export function StrategyMatrixForm(props: Props) {
   const t = useTranslations("strategyMatrix");
   const tc = useTranslations("common");
   const templates = resolveStrategyMatrixTemplates(
-    t as unknown as TemplateTranslator,
+    t as unknown as Translator,
   );
   const fallback = props.initialTemplate ?? templates[0];
   const initialValues: StrategyMatrixCreateInput =
@@ -145,23 +144,19 @@ export function StrategyMatrixForm(props: Props) {
   const myCharacterId = form.watch("myCharacterId");
   const opponentCharacterId = form.watch("opponentCharacterId");
 
-  const createAction = useAction(createStrategyMatrixAction, {
+  const createAction = useActionToast(createStrategyMatrixAction, {
+    successMessage: t("form.toast.created"),
+    errorMessage: t("form.toast.createError"),
     onSuccess: ({ data }) => {
-      toast.success(t("form.toast.created"));
       if (data?.id) router.push(`/notes/strategy/${data.id}`);
-    },
-    onError: ({ error }) => {
-      toast.error(error.serverError ?? t("form.toast.createError"));
     },
   });
 
-  const updateAction = useAction(updateStrategyMatrixAction, {
+  const updateAction = useActionToast(updateStrategyMatrixAction, {
+    successMessage: t("form.toast.updated"),
+    errorMessage: t("form.toast.updateError"),
     onSuccess: () => {
-      toast.success(t("form.toast.updated"));
       router.refresh();
-    },
-    onError: ({ error }) => {
-      toast.error(error.serverError ?? t("form.toast.updateError"));
     },
   });
 

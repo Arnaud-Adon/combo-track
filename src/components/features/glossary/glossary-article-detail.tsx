@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import type { ArticleDetail } from "../../../../prisma/query/glossary.query";
+import { formatDate } from "@/utils";
 import { CategoryBadge } from "./glossary-category-badge";
 
 interface ArticleDetailProps {
@@ -35,15 +36,11 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
         <div className="text-muted-foreground flex items-center gap-4 text-sm">
           {article.category && <CategoryBadge category={article.category} />}
           <time dateTime={article.createdAt.toString()}>
-            {t("detail.createdAt", {
-              date: new Date(article.createdAt).toLocaleDateString(),
-            })}
+            {t("detail.createdAt", { date: formatDate(article.createdAt) })}
           </time>
           {article.updatedAt && (
             <time dateTime={article.updatedAt.toString()}>
-              {t("detail.updatedAt", {
-                date: new Date(article.updatedAt).toLocaleDateString(),
-              })}
+              {t("detail.updatedAt", { date: formatDate(article.updatedAt) })}
             </time>
           )}
         </div>
@@ -137,7 +134,7 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
               {t("detail.createdBy", { name: article.creator.name })}
             </p>
             <p className="text-muted-foreground text-xs">
-              {new Date(article.createdAt).toLocaleDateString()}
+              {formatDate(article.createdAt)}
             </p>
           </div>
         </div>

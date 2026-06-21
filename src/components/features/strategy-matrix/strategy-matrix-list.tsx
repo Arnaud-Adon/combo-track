@@ -20,10 +20,9 @@ import {
 } from "@/components/ui/tooltip";
 import { FolderOpen, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useAction } from "next-safe-action/hooks";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import { useActionToast } from "@/hooks/use-action-toast";
 import { StrategyMatrixVisualizeDialog } from "./strategy-matrix-visualize-dialog";
 import { axisSchema } from "./strategy-matrix-schema";
 import type { StrategyMatrixListItem } from "../../../../prisma/query/strategy-matrix.query";
@@ -42,13 +41,11 @@ export function StrategyMatrixList({ matrices }: Props) {
   const router = useRouter();
   const t = useTranslations("strategyMatrix");
   const tc = useTranslations("common");
-  const { execute, isPending } = useAction(deleteStrategyMatrixAction, {
+  const { execute, isPending } = useActionToast(deleteStrategyMatrixAction, {
+    successMessage: t("list.toast.deleted"),
+    errorMessage: t("list.toast.deleteError"),
     onSuccess: () => {
-      toast.success(t("list.toast.deleted"));
       router.refresh();
-    },
-    onError: ({ error }) => {
-      toast.error(error.serverError ?? t("list.toast.deleteError"));
     },
   });
 

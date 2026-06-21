@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import type { Translator } from "@/types/translator";
 import { formatDate, formatTime } from "@/utils";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
@@ -13,7 +14,7 @@ interface ReplayCardProps {
 export async function ReplayCard({ match }: ReplayCardProps) {
   const t = await getTranslations("dashboard");
   const tMatch = await getTranslations("match");
-  const translateMatch = tMatch as unknown as (key: string) => string;
+  const translateMatch = tMatch as unknown as Translator;
 
   return (
     <Link href={`/videos/${match.id}`}>

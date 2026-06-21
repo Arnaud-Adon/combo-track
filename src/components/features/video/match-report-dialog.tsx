@@ -31,8 +31,7 @@ import { CheckCircle, FileText, Loader2, Target } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useAction } from "next-safe-action/hooks";
-import { toast } from "sonner";
+import { useActionToast } from "@/hooks/use-action-toast";
 import { generateReportAction } from "./match-report-action";
 import type { MatchReportData } from "./match-report-schema";
 
@@ -54,16 +53,14 @@ export function MatchReportDialog({
   const [report, setReport] = useState<MatchReportData | null>(existingReport);
   const [confirmOpen, setConfirmOpen] = useState(false);
 
-  const { execute, isPending } = useAction(generateReportAction, {
+  const { execute, isPending } = useActionToast(generateReportAction, {
+    successMessage: (data) => (data ? t("generated") : undefined),
+    errorMessage: t("generationError"),
     onSuccess: ({ data }) => {
       if (data) {
         setReport(data);
-        toast.success(t("generated"));
         router.refresh();
       }
-    },
-    onError: ({ error }) => {
-      toast.error(error.serverError ?? t("generationError"));
     },
   });
 

@@ -2,18 +2,11 @@ import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import type { PublishedArticles } from "../../../../prisma/query/glossary.query";
+import { formatDate } from "@/utils";
 import { CategoryBadge } from "./glossary-category-badge";
 
 interface ArticleCardProps {
   article: PublishedArticles[number];
-}
-
-function formatDate(date: Date) {
-  return new Date(date).toLocaleDateString("fr-FR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
 }
 
 export async function ArticleCard({ article }: ArticleCardProps) {

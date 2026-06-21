@@ -1,26 +1,22 @@
 import z from "zod";
 
+import {
+  nameSchema,
+  slugSchema,
+  urlFieldSchema,
+  withIdExtension,
+} from "@/lib/validations/admin-schemas";
+
+const base = "admin.validation.game";
+
 export const gameFormSchema = z.object({
-  name: z
-    .string()
-    .min(2, "admin.validation.game.nameMin")
-    .max(80, "admin.validation.game.nameMax"),
-  slug: z
-    .string()
-    .min(2, "admin.validation.game.slugMin")
-    .max(40, "admin.validation.game.slugMax")
-    .regex(/^[a-z0-9-]+$/, "admin.validation.game.slugFormat"),
-  iconUrl: z
-    .string()
-    .url("admin.validation.game.iconUrlInvalid")
-    .optional()
-    .or(z.literal("")),
+  name: nameSchema({ base, min: 2, max: 80 }),
+  slug: slugSchema({ base, min: 2, max: 40 }),
+  iconUrl: urlFieldSchema(`${base}.iconUrlInvalid`),
 });
 
 export type GameFormSchemaType = z.infer<typeof gameFormSchema>;
 
 export const createGameSchema = gameFormSchema;
 
-export const updateGameSchema = gameFormSchema.extend({
-  id: z.string().min(1),
-});
+export const updateGameSchema = withIdExtension(gameFormSchema);

@@ -1,3 +1,4 @@
+import type { Translator } from "@/types/translator";
 import type { Axis, Cell } from "./strategy-matrix-schema";
 import { createEmptyCells } from "./strategy-matrix-types";
 
@@ -12,12 +13,11 @@ export type StrategyMatrixTemplate = {
 };
 
 /**
- * Translator scoped to the `strategyMatrix` namespace.
- * Templates store i18n KEYS (relative to that namespace) as their labels —
- * hooks cannot run in this module, so labels are resolved at render time by the
- * consuming components via {@link resolveStrategyMatrixTemplates}.
+ * Templates store i18n KEYS (relative to the `strategyMatrix` namespace) as their
+ * labels — hooks cannot run in this module, so labels are resolved at render time
+ * by the consuming components via {@link resolveStrategyMatrixTemplates}, passing a
+ * scoped {@link Translator}.
  */
-export type TemplateTranslator = (key: string) => string;
 
 const hpMeterMyAxis: Axis = {
   label: "templates.hpVsMeter.myAxisLabel",
@@ -106,7 +106,7 @@ export const STRATEGY_MATRIX_TEMPLATES: StrategyMatrixTemplate[] = [
   },
 ];
 
-function resolveAxis(axis: Axis, t: TemplateTranslator): Axis {
+function resolveAxis(axis: Axis, t: Translator): Axis {
   return {
     ...axis,
     label: t(axis.label),
@@ -119,7 +119,7 @@ function resolveAxis(axis: Axis, t: TemplateTranslator): Axis {
  * localized labels. Cells only reference level ids, so they are left untouched.
  */
 export function resolveStrategyMatrixTemplates(
-  t: TemplateTranslator,
+  t: Translator,
 ): StrategyMatrixTemplate[] {
   return STRATEGY_MATRIX_TEMPLATES.map((template) => ({
     ...template,

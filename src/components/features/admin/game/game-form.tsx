@@ -2,10 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { toast } from "sonner";
 
 import {
   Form,
@@ -17,12 +15,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 
 import { gameFormSchema, GameFormSchemaType } from "./game-schema";
 import { createGameAction, updateGameAction } from "./game-action";
 import { AdminGameDetail } from "@/../prisma/query/admin-game.query";
 import { generateSlug } from "@/lib/slug";
+import { useActionToast } from "@/hooks/use-action-toast";
+import { EntityFormButtons } from "@/components/features/admin/shared/entity-form-buttons";
 
 interface GameFormProps {
   mode: "create" | "edit";
@@ -34,30 +33,26 @@ export function GameForm({ mode, game }: GameFormProps) {
   const t = useTranslations("admin");
   const tCommon = useTranslations("common");
 
-  const { execute: createExecute, isPending: isCreating } = useAction(
+  const { execute: createExecute, isPending: isCreating } = useActionToast(
     createGameAction,
     {
+      successMessage: t("game.toast.created"),
+      errorMessage: t("game.toast.createError"),
       onSuccess: () => {
-        toast.success(t("game.toast.created"));
         router.push("/admin/games");
         router.refresh();
-      },
-      onError: ({ error }) => {
-        toast.error(error.serverError ?? t("game.toast.createError"));
       },
     },
   );
 
-  const { execute: updateExecute, isPending: isUpdating } = useAction(
+  const { execute: updateExecute, isPending: isUpdating } = useActionToast(
     updateGameAction,
     {
+      successMessage: t("game.toast.updated"),
+      errorMessage: t("game.toast.updateError"),
       onSuccess: () => {
-        toast.success(t("game.toast.updated"));
         router.push("/admin/games");
         router.refresh();
-      },
-      onError: ({ error }) => {
-        toast.error(error.serverError ?? t("game.toast.updateError"));
       },
     },
   );
@@ -146,25 +141,16 @@ export function GameForm({ mode, game }: GameFormProps) {
           )}
         />
 
-        <div className="flex gap-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => router.push("/admin/games")}
-            disabled={isPending}
-          >
-            {tCommon("buttons.cancel")}
-          </Button>
-          <Button type="submit" disabled={isPending}>
-            {isPending
-              ? mode === "create"
-                ? t("game.form.creating")
-                : t("game.form.updating")
-              : mode === "create"
-                ? t("game.form.createSubmit")
-                : t("game.form.updateSubmit")}
-          </Button>
-        </div>
+        <EntityFormButtons
+          mode={mode}
+          isPending={isPending}
+          onCancel={() => router.push("/admin/games")}
+          cancelLabel={tCommon("buttons.cancel")}
+          createLabel={t("game.form.createSubmit")}
+          updateLabel={t("game.form.updateSubmit")}
+          creatingLabel={t("game.form.creating")}
+          updatingLabel={t("game.form.updating")}
+        />
       </form>
     </Form>
   );

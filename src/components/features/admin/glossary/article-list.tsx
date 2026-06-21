@@ -1,23 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useAction } from "next-safe-action/hooks";
 import { useTranslations } from "next-intl";
-import { toast } from "sonner";
 import { Edit, Trash2, MoreVertical } from "lucide-react";
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -26,6 +13,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ConfirmDeleteDialog } from "@/components/shared/confirm-delete-dialog";
+import { useActionToast } from "@/hooks/use-action-toast";
+import { useDeleteDialog } from "@/hooks/use-delete-dialog";
+import { formatDate } from "@/utils";
 
 import { deleteArticleAction } from "./article-action";
 import { StatusBadge } from "./status-badge";
@@ -39,32 +30,20 @@ export function ArticleList({ articles }: ArticleListProps) {
   const router = useRouter();
   const t = useTranslations("admin");
   const tCommon = useTranslations("common");
-  const [deleteDialog, setDeleteDialog] = useState<{
-    open: boolean;
-    article: AdminArticleList[number] | null;
-  }>({
-    open: false,
-    article: null,
-  });
+  const deleteDialog = useDeleteDialog<AdminArticleList[number]>();
 
-  const { execute, isPending } = useAction(deleteArticleAction, {
+  const { execute, isPending } = useActionToast(deleteArticleAction, {
+    successMessage: t("article.toast.deleted"),
+    errorMessage: t("article.toast.deleteError"),
     onSuccess: () => {
-      toast.success(t("article.toast.deleted"));
-      setDeleteDialog({ open: false, article: null });
+      deleteDialog.close();
       router.refresh();
     },
-    onError: ({ error }) => {
-      toast.error(error.serverError ?? t("article.toast.deleteError"));
-    },
   });
 
-  const openDeleteDialog = (article: AdminArticleList[number]) => {
-    setDeleteDialog({ open: true, article });
-  };
-
   const handleDelete = () => {
-    if (deleteDialog.article) {
-      execute({ id: deleteDialog.article.id });
+    if (deleteDialog.item) {
+      execute({ id: deleteDialog.item.id });
     }
   };
 
@@ -114,7 +93,7 @@ export function ArticleList({ articles }: ArticleListProps) {
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      onClick={() => openDeleteDialog(article)}
+                      onClick={() => deleteDialog.openWith(article)}
                       className="text-destructive"
                     >
                       <Trash2 className="mr-2 h-4 w-4" />
@@ -142,7 +121,7 @@ export function ArticleList({ articles }: ArticleListProps) {
                   </span>
                   <span>
                     {t("article.list.updatedAt", {
-                      date: new Date(article.updatedAt).toLocaleDateString(),
+                      date: formatDate(article.updatedAt),
                     })}
                   </span>
                 </div>
@@ -152,38 +131,18 @@ export function ArticleList({ articles }: ArticleListProps) {
         ))}
       </div>
 
-      <AlertDialog
+      <ConfirmDeleteDialog
         open={deleteDialog.open}
-        onOpenChange={(open) =>
-          !open && setDeleteDialog({ open: false, article: null })
-        }
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              {t("article.deleteDialog.title")}
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              {deleteDialog.article?.title}
-              <br />
-              <br />
-              {t("article.deleteDialog.description")}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={isPending}>
-              {tCommon("buttons.cancel")}
-            </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleDelete}
-              disabled={isPending}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            >
-              {isPending ? t("actions.deleting") : tCommon("buttons.delete")}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        onOpenChange={deleteDialog.onOpenChange}
+        title={t("article.deleteDialog.title")}
+        description={t("article.deleteDialog.description")}
+        itemName={deleteDialog.item?.title}
+        isPending={isPending}
+        onConfirm={handleDelete}
+        confirmLabel={tCommon("buttons.delete")}
+        cancelLabel={tCommon("buttons.cancel")}
+        deletingLabel={t("actions.deleting")}
+      />
     </>
   );
 }

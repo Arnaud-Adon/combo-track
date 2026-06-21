@@ -2,6 +2,7 @@ import { MemoForm } from "@/components/features/memo/memo-form";
 import { requireAuth } from "@/lib/auth-utils";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
+import { formatDateLong } from "@/utils";
 import { getMemoById } from "../../../../../prisma/query/memo.query";
 
 export default async function MemoDetailPage({
@@ -27,12 +28,7 @@ export default async function MemoDetailPage({
           {t("pages.editTitle")}
         </h1>
         <p className="text-muted-foreground mt-1">
-          {t("list.updatedOn")}{" "}
-          {new Date(memo.updatedAt).toLocaleDateString("fr-FR", {
-            day: "2-digit",
-            month: "long",
-            year: "numeric",
-          })}
+          {t("list.updatedOn")} {formatDateLong(memo.updatedAt)}
         </p>
       </div>
 

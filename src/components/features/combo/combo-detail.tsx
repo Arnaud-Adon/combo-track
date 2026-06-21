@@ -3,24 +3,16 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useAction } from "next-safe-action/hooks";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Copy, Edit, ExternalLink, Gauge, Heart, Trash2, Zap } from "lucide-react";
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { useActionToast } from "@/hooks/use-action-toast";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ConfirmDeleteDialog } from "@/components/shared/confirm-delete-dialog";
 import { ComboDetail as ComboDetailType } from "@/../prisma/query/combo.query";
 
 import { deleteComboAction } from "./combo-action";
@@ -35,14 +27,12 @@ export function ComboDetail({ combo }: ComboDetailProps) {
   const tCommon = useTranslations("common");
   const [deleteOpen, setDeleteOpen] = useState(false);
 
-  const { execute, isPending } = useAction(deleteComboAction, {
+  const { execute, isPending } = useActionToast(deleteComboAction, {
+    successMessage: t("toast.deleted"),
+    errorMessage: t("toast.deleteError"),
     onSuccess: () => {
-      toast.success(t("toast.deleted"));
       router.push("/combos");
       router.refresh();
-    },
-    onError: ({ error }) => {
-      toast.error(error.serverError ?? t("toast.deleteError"));
     },
   });
 
@@ -182,31 +172,18 @@ export function ComboDetail({ combo }: ComboDetailProps) {
         )}
       </div>
 
-      <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>{t("deleteDialog.title")}</AlertDialogTitle>
-            <AlertDialogDescription>
-              {combo.title}
-              <br />
-              <br />
-              {t("deleteDialog.description")}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={isPending}>
-              {tCommon("buttons.cancel")}
-            </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={() => execute({ id: combo.id })}
-              disabled={isPending}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            >
-              {isPending ? t("form.deleting") : tCommon("buttons.delete")}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <ConfirmDeleteDialog
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
+        title={t("deleteDialog.title")}
+        description={t("deleteDialog.description")}
+        itemName={combo.title}
+        isPending={isPending}
+        onConfirm={() => execute({ id: combo.id })}
+        confirmLabel={tCommon("buttons.delete")}
+        cancelLabel={tCommon("buttons.cancel")}
+        deletingLabel={t("form.deleting")}
+      />
     </>
   );
 }

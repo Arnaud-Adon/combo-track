@@ -7,11 +7,11 @@ import { DeleteMatchDialog } from "@/components/features/match/delete-match-dial
 import {
   getMatchTypeLabel,
   MatchStatusBadge,
-  type MatchTranslator,
 } from "@/components/features/match/match-labels";
 import { MatchReportDialog } from "@/components/features/video/match-report-dialog";
 import type { MatchReportData } from "@/components/features/video/match-report-schema";
 import { Button } from "@/components/ui/button";
+import type { Translator } from "@/types/translator";
 import { formatDate, formatTime } from "@/utils";
 
 type MatchHeaderProps = {
@@ -44,7 +44,7 @@ export async function MatchHeader(props: MatchHeaderProps) {
             <span>
               {getMatchTypeLabel(
                 match.matchType,
-                t as unknown as MatchTranslator,
+                t as unknown as Translator,
               )}
             </span>
           </div>

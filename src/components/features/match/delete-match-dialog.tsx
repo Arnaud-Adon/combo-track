@@ -14,9 +14,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useAction } from "next-safe-action/hooks";
 import { useTranslations } from "next-intl";
-import { toast } from "sonner";
+import { useActionToast } from "@/hooks/use-action-toast";
 import { deleteMatchAction } from "./match-action";
 
 interface DeleteMatchDialogProps {
@@ -32,14 +31,12 @@ export function DeleteMatchDialog({
   const t = useTranslations("match");
   const tCommon = useTranslations("common");
 
-  const { execute, isPending, result } = useAction(deleteMatchAction, {
+  const { execute, isPending, result } = useActionToast(deleteMatchAction, {
+    successMessage: t("toast.deleted"),
+    errorMessage: t("toast.deleteError"),
     onSuccess: () => {
-      toast.success(t("toast.deleted"));
       router.replace("/dashboard");
       router.refresh();
-    },
-    onError: ({ error }) => {
-      toast.error(error.serverError ?? t("toast.deleteError"));
     },
   });
 

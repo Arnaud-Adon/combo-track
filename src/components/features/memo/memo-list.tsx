@@ -19,11 +19,11 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { FolderOpen, Trash2 } from "lucide-react";
-import { useAction } from "next-safe-action/hooks";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import { useActionToast } from "@/hooks/use-action-toast";
+import { formatDate } from "@/utils";
 import type { MemoListItem } from "../../../../prisma/query/memo.query";
 import { deleteMemoAction } from "./memo-action";
 import { MemoVisualizeDialog } from "./memo-visualize-dialog";
@@ -36,13 +36,11 @@ export function MemoList({ memos }: Props) {
   const router = useRouter();
   const t = useTranslations("memo.list");
   const tCommon = useTranslations("common.buttons");
-  const { execute, isPending } = useAction(deleteMemoAction, {
+  const { execute, isPending } = useActionToast(deleteMemoAction, {
+    successMessage: t("deleted"),
+    errorMessage: t("deleteError"),
     onSuccess: () => {
-      toast.success(t("deleted"));
       router.refresh();
-    },
-    onError: ({ error }) => {
-      toast.error(error.serverError ?? t("deleteError"));
     },
   });
 
@@ -70,12 +68,7 @@ export function MemoList({ memos }: Props) {
             )}
           </div>
           <div className="text-muted-foreground text-xs">
-            {t("updatedOn")}{" "}
-            {new Date(memo.updatedAt).toLocaleDateString("fr-FR", {
-              day: "2-digit",
-              month: "short",
-              year: "numeric",
-            })}
+            {t("updatedOn")} {formatDate(memo.updatedAt)}
           </div>
           <div className="mt-auto flex justify-end gap-2">
             <Tooltip>
