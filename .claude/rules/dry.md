@@ -25,7 +25,8 @@ Before duplicating logic, markup or config, reuse the shared building blocks bel
 
 Resolved (2026-06-21): inline delete dialog (`ConfirmDeleteDialog` + `useDeleteDialog`), dashboard `recent-*` (`RecentSection`), toast boilerplate (`useActionToast`, 16 sites), `Translator` type, `formatDate` underuse, shared admin Zod fragments + `EntityFormButtons`.
 
-Remaining (gated — dedicated PR):
+Resolved (2026-06-22): admin CRUD actions — extracted closure-based helpers in `@/lib/admin/entity-actions` (`runDelete`, `assertSlugAvailable`, `normalizeOptionalUrl`). A single generic `makeEntityActions` factory was **declined on purpose**: the create/update divergences (character `gameNotFound` pre-check, article `createdBy` + RAG `after()` hook + `image ?? null`, per-entity slug scoping) live in the semantically important parts, and a Prisma-model-generic param has no clean shared delegate type → it would force `any` (the codebase has none). The closure helpers remove the real duplication while keeping each action explicit and typed. Note: a Next.js `"use server"` file must export literal async functions, so the delete action stays inline and only its body (`runDelete`) is shared — a `makeDeleteAction` that *returns* the action fails the build.
 
-1. **Admin CRUD action factory** — game / character / action create+update+delete actions are still ~67% identical. A `makeEntityActions({ model, schemas, revalidatePaths, slugScope, getCreateData, getUpdateData, onCreateHook?, onUpdateHook? })` factory would collapse them. Deferred because the generic Prisma-model typing is delicate and must not break the article RAG `after()`/`embedGlossaryArticleIfNeeded` hook — design before coding.
-2. Two delete dialogs still use the per-card `AlertDialogTrigger` idiom (`strategy-matrix-list`, `memo-list`); migrate to `ConfirmDeleteDialog` only if a controlled-state refactor of those loops is worthwhile.
+Remaining (optional):
+
+1. Two delete dialogs still use the per-card `AlertDialogTrigger` idiom (`strategy-matrix-list`, `memo-list`); migrate to `ConfirmDeleteDialog` only if a controlled-state refactor of those loops is worthwhile.
