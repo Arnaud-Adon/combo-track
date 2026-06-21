@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## 2026-06-21
 
+### Added: Language filter on the streams page to filter live SF6 streams by language
+
 ### Added: Quick-access icon rail (Replays, Combos, Matrices, Mémos, Glossaire) as a right-edge overlay from the lg breakpoint, with accessible labels and tooltips
 
 ### Changed: Deduplicate authenticated navigation — top bar keeps Dashboard/Stream/Admin, the rail owns the labo modules, and the mobile menu becomes the complete grouped menu
