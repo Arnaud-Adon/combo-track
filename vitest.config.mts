@@ -25,6 +25,7 @@ export default defineConfig({
         ".next/",
         "coverage/",
         "__mocks__/",
+        "src/test/**",
       ],
       thresholds: {
         lines: 80,

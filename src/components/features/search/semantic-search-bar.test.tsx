@@ -1,15 +1,7 @@
-import {
-  act,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-} from "@testing-library/react";
-import { NextIntlClientProvider } from "next-intl";
-import { type ReactNode } from "react";
+import { act, fireEvent, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { frMessages } from "@/i18n/messages";
+import { renderWithIntl } from "@/test/render-with-intl";
 
 const executeMock = vi.fn();
 const useActionMock = vi.fn(() => ({
@@ -27,14 +19,6 @@ vi.mock("./semantic-search-action", () => ({
 }));
 
 import { SemanticSearchBar } from "./semantic-search-bar";
-
-function renderWithIntl(ui: ReactNode) {
-  return render(
-    <NextIntlClientProvider locale="fr" messages={frMessages}>
-      {ui}
-    </NextIntlClientProvider>,
-  );
-}
 
 beforeEach(() => {
   executeMock.mockClear();

@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## 2026-06-21
 
+### Refactor: Extract a shared renderWithIntl test helper and point all i18n-aware tests at it (DRY)
+
+### Docs: Add DRY rule with shared building blocks and a consolidation backlog
+
 ### Fixed: Scope the homepage e2e "ComboTrack" link locator to the header (resolve strict-mode flake from the duplicate footer logo link)
 
 ### Added: Extract all hardcoded French UI strings into next-intl catalogs across every feature domain (landing, dashboard, admin, glossary, strategy-matrix, video, memo, combo, match, auth, nav, capture, stream, search)
