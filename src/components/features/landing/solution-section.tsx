@@ -1,12 +1,15 @@
 import { FgcTerm } from "@/components/features/landing/fgc-term";
 import { cn } from "@/lib/utils";
+import { getTranslations } from "next-intl/server";
 
 type SolutionSectionProps = {
   className?: string;
 };
 
-export function SolutionSection(props: SolutionSectionProps) {
+export async function SolutionSection(props: SolutionSectionProps) {
   const { className } = props;
+
+  const t = await getTranslations("landing");
 
   return (
     <section
@@ -26,22 +29,18 @@ export function SolutionSection(props: SolutionSectionProps) {
       />
       <div className="relative mx-auto max-w-4xl px-4 py-24 text-center sm:px-6 md:py-32 lg:px-8">
         <span className="font-mono-fgc text-fgc-accent mb-4 inline-block text-[10px] tracking-[0.3em] uppercase">
-          {"// Solution"}
+          {t("solution.eyebrow")}
         </span>
         <h2 className="marketing-h1 text-fgc-text mx-auto max-w-3xl text-balance text-4xl md:text-5xl lg:text-6xl">
-          Un seul endroit pour
+          {t("solution.titlePart1")}
           <br />
-          <span className="text-fgc-accent">tout ce qui te fait progresser.</span>
+          <span className="text-fgc-accent">{t("solution.titleHighlight")}</span>
         </h2>
 
         <p className="text-fgc-muted mx-auto mt-8 max-w-2xl text-base leading-relaxed md:text-lg">
-          ComboTrack connecte tes replays, tes combos, tes matchups et tes
-          mémos dans un seul <FgcTerm term="lab">labo</FgcTerm> dédié à la FGC.
-          Ce que tu observes en vidéo devient un combo dans ton carnet. Ce que
-          tu comprends d&apos;un matchup devient une matrice consultable avant
-          ton prochain set. Ce qui te passe par la tête en plein lab devient un
-          mémo retrouvable en deux frappes (⌘K). L&apos;IA synthétise ce que
-          tu n&apos;as pas vu seul.
+          {t.rich("solution.description", {
+            lab: (chunks) => <FgcTerm term="lab">{chunks}</FgcTerm>,
+          })}
         </p>
       </div>
     </section>

@@ -6,14 +6,14 @@ export const MAX_MEMO_CONTENT_LENGTH = 2000;
 export const memoFormSchema = z.object({
   title: z
     .string()
-    .min(1, { error: "Le titre est requis" })
+    .min(1, { error: "memo.validation.titleRequired" })
     .max(MAX_MEMO_TITLE_LENGTH, {
-      error: `Maximum ${MAX_MEMO_TITLE_LENGTH} caractères`,
+      error: "memo.validation.titleMax",
     }),
   content: z
     .string()
     .max(MAX_MEMO_CONTENT_LENGTH, {
-      error: `Maximum ${MAX_MEMO_CONTENT_LENGTH} caractères`,
+      error: "memo.validation.contentMax",
     }),
 });
 
@@ -26,5 +26,5 @@ export const updateMemoSchema = memoFormSchema.extend({
 });
 
 export const deleteMemoSchema = z.object({
-  id: z.string().min(1, { error: "L'ID du mémo est requis" }),
+  id: z.string().min(1, { error: "memo.validation.idRequired" }),
 });

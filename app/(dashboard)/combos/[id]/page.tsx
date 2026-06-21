@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
 import { requireAuth } from "@/lib/auth-utils";
 import { getComboById } from "@/../prisma/query/combo.query";
@@ -20,12 +21,14 @@ export default async function ComboPage({ params }: ComboPageProps) {
     notFound();
   }
 
+  const t = await getTranslations("combo");
+
   return (
     <div className="container mx-auto max-w-5xl px-4 py-8">
       <Button variant="ghost" size="sm" asChild className="mb-4">
         <Link href="/combos">
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Retour aux combos
+          {t("pages.detailBack")}
         </Link>
       </Button>
       <ComboDetail combo={combo} />

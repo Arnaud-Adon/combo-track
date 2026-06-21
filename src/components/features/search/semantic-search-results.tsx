@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
@@ -27,11 +28,12 @@ function SimilarityBadge({ similarity }: { similarity: number }) {
 
 export function SemanticSearchResults(props: SemanticSearchResultsProps) {
   const { query, isPending, notes, glossary, memos, onResultClick } = props;
+  const t = useTranslations("search");
 
   if (query.trim().length < 2) {
     return (
       <p className="text-muted-foreground py-8 text-center text-sm">
-        Tape au moins 2 caractères pour lancer une recherche.
+        {t("results.minLength")}
       </p>
     );
   }
@@ -39,7 +41,7 @@ export function SemanticSearchResults(props: SemanticSearchResultsProps) {
   if (isPending) {
     return (
       <p className="text-muted-foreground py-8 text-center text-sm">
-        Recherche en cours…
+        {t("results.pending")}
       </p>
     );
   }
@@ -49,7 +51,7 @@ export function SemanticSearchResults(props: SemanticSearchResultsProps) {
   if (!hasResults) {
     return (
       <p className="text-muted-foreground py-8 text-center text-sm">
-        Aucun résultat pour « {query} ».
+        {t("results.empty", { query })}
       </p>
     );
   }
@@ -58,7 +60,7 @@ export function SemanticSearchResults(props: SemanticSearchResultsProps) {
     <div className="space-y-8">
       {notes.length > 0 && (
         <section>
-          <h2 className="mb-3 text-lg font-semibold">Notes</h2>
+          <h2 className="mb-3 text-lg font-semibold">{t("results.notes")}</h2>
           <ul className="space-y-2">
             {notes.map((note) => (
               <li key={note.id}>
@@ -88,7 +90,7 @@ export function SemanticSearchResults(props: SemanticSearchResultsProps) {
 
       {memos.length > 0 && (
         <section>
-          <h2 className="mb-3 text-lg font-semibold">Mémos</h2>
+          <h2 className="mb-3 text-lg font-semibold">{t("results.memos")}</h2>
           <ul className="space-y-2">
             {memos.map((memo) => (
               <li key={memo.id}>
@@ -115,7 +117,9 @@ export function SemanticSearchResults(props: SemanticSearchResultsProps) {
 
       {glossary.length > 0 && (
         <section>
-          <h2 className="mb-3 text-lg font-semibold">Glossaire</h2>
+          <h2 className="mb-3 text-lg font-semibold">
+            {t("results.glossary")}
+          </h2>
           <ul className="space-y-2">
             {glossary.map((article) => (
               <li key={article.id}>

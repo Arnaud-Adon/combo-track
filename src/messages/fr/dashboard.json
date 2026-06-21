@@ -1,0 +1,74 @@
+{
+  "hero": {
+    "eyebrow": "Training room · {date}",
+    "greeting": "GG, {name}.",
+    "greetingSub": "Reprends le grind.",
+    "description": "Tes replays, tes BnB et tes matchups t'attendent. Tout est connecté, tout est retrouvable en une frappe.",
+    "fallbackName": "joueur"
+  },
+  "actions": {
+    "newReplay": "Nouveau replay",
+    "newMatrix": "Nouvelle matrice",
+    "newCombo": "Nouveau combo"
+  },
+  "cmdk": {
+    "placeholder": "Chercher dans ton labo"
+  },
+  "carousel": {
+    "resource": "Ressource",
+    "open": "Ouvrir",
+    "empty": "Aucune ressource pour le moment"
+  },
+  "quickActions": {
+    "title": "Ton labo",
+    "modules": {
+      "replays": {
+        "label": "Replays",
+        "hint": "Notes timestampées"
+      },
+      "combos": {
+        "label": "Combos",
+        "hint": "Tes BnB par perso"
+      },
+      "matrices": {
+        "label": "Matrices",
+        "hint": "Matchups structurés"
+      },
+      "memos": {
+        "label": "Mémos",
+        "hint": "Une idée en 5 sec"
+      },
+      "glossary": {
+        "label": "Glossaire",
+        "hint": "Terminologie FGC"
+      }
+    }
+  },
+  "sectionHeader": {
+    "seeAll": "Voir tout"
+  },
+  "recentMatrices": {
+    "title": "Dernières matrices",
+    "empty": "Aucune matrice pour le moment.",
+    "emptyHint": "Prépare ton premier matchup avant le set."
+  },
+  "recentMatches": {
+    "title": "Derniers replays",
+    "empty": "Aucun replay pour le moment.",
+    "emptyHint": "Colle un lien YouTube et commence à labber."
+  },
+  "recentCombos": {
+    "title": "Derniers combos",
+    "empty": "Aucun combo pour le moment.",
+    "emptyHint": "Note ta première BnB et garde-la sous la main."
+  },
+  "replayCard": {
+    "noteCount": "{count, plural, one {# note} other {# notes}}"
+  },
+  "strategyMatrixCard": {
+    "cellCount": "{count, plural, one {# cellule} other {# cellules}}"
+  },
+  "resources": {
+    "fullMeterDescription": "Frame data complète SF6 et autres jeux — la référence pour vérifier tes punishs."
+  }
+}

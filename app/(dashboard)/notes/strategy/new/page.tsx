@@ -1,6 +1,7 @@
 import { StrategyMatrixForm } from "@/components/features/strategy-matrix/strategy-matrix-form";
 import { StrategyMatrixHelpDialog } from "@/components/features/strategy-matrix/strategy-matrix-help-dialog";
 import { requireAuth } from "@/lib/auth-utils";
+import { getTranslations } from "next-intl/server";
 import {
   getAllCharactersGroupedByGame,
   getGameOptions,
@@ -8,6 +9,7 @@ import {
 
 export default async function NewStrategyMatrixPage() {
   await requireAuth();
+  const t = await getTranslations("strategyMatrix");
   const [games, charactersByGame] = await Promise.all([
     getGameOptions(),
     getAllCharactersGroupedByGame(),
@@ -28,14 +30,14 @@ export default async function NewStrategyMatrixPage() {
         <div className="flex items-start justify-between gap-4">
           <div>
             <div className="text-muted-foreground mb-2 font-mono text-[10px] tracking-[0.2em] uppercase">
-              <span className="text-primary">Matrice</span> · Nouvelle
+              <span className="text-primary">{t("page.new.eyebrowLabel")}</span>{" "}
+              · {t("page.new.eyebrowValue")}
             </div>
             <h1 className="font-display text-2xl uppercase md:text-3xl">
-              Prépare un matchup
+              {t("page.new.title")}
             </h1>
             <p className="text-muted-foreground mt-2 max-w-2xl text-sm">
-              Croise tes ressources et celles de l&apos;adversaire, puis remplis
-              chaque cellule avec ta stratégie optimale.
+              {t("page.new.subtitle")}
             </p>
           </div>
           <StrategyMatrixHelpDialog />

@@ -2,9 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useTranslations } from "next-intl";
 import {
-  STRATEGY_MATRIX_TEMPLATES,
+  resolveStrategyMatrixTemplates,
   type StrategyMatrixTemplate,
+  type TemplateTranslator,
 } from "./strategy-matrix-templates";
 
 type Props = {
@@ -12,9 +14,14 @@ type Props = {
 };
 
 export function StrategyMatrixTemplateSelector({ onSelect }: Props) {
+  const t = useTranslations("strategyMatrix");
+  const templates = resolveStrategyMatrixTemplates(
+    t as unknown as TemplateTranslator,
+  );
+
   return (
     <div className="grid gap-4 md:grid-cols-3">
-      {STRATEGY_MATRIX_TEMPLATES.map((template) => (
+      {templates.map((template) => (
         <Card
           key={template.id}
           className="hover:border-primary/40 flex flex-col gap-3 p-4 transition-colors"
@@ -26,8 +33,10 @@ export function StrategyMatrixTemplateSelector({ onSelect }: Props) {
             </p>
           </div>
           <div className="text-muted-foreground font-mono text-xs">
-            {template.myAxis.levels.length} ×{" "}
-            {template.opponentAxis.levels.length} cellules
+            {t("templateSelector.cellCount", {
+              my: template.myAxis.levels.length,
+              opp: template.opponentAxis.levels.length,
+            })}
           </div>
           <Button
             type="button"
@@ -36,7 +45,7 @@ export function StrategyMatrixTemplateSelector({ onSelect }: Props) {
             onClick={() => onSelect(template)}
             className="mt-auto"
           >
-            Utiliser ce modèle
+            {t("templateSelector.use")}
           </Button>
         </Card>
       ))}

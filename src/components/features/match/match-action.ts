@@ -5,24 +5,26 @@ import { authActionClient } from "@/lib/auth-action";
 import { getVideoDetails, isStreetFighter6 } from "@/lib/youtube";
 import { extractYoutubeVideoId } from "@/utils";
 import { revalidatePath } from "next/cache";
+import { getTranslations } from "next-intl/server";
 import { z } from "zod";
 import { matchFormSchema } from "./match-schema";
 
 export const createMatchAction = authActionClient
   .inputSchema(matchFormSchema)
   .action(async ({ parsedInput, ctx }) => {
+    const t = await getTranslations("match");
     const { videoUrl, title } = parsedInput;
 
     const videoId = extractYoutubeVideoId(videoUrl);
 
     if (!videoId) {
-      throw new Error("URL YouTube invalide");
+      throw new Error(t("errors.invalidYoutubeUrl"));
     }
 
     const videoDetails = await getVideoDetails(videoId);
 
     if (!isStreetFighter6(videoDetails)) {
-      throw new Error("Cette vidéo ne semble pas être liée à Street Fighter 6");
+      throw new Error(t("errors.notStreetFighter6"));
     }
 
     const match = await prisma.match.create({
@@ -41,7 +43,7 @@ export const createMatchAction = authActionClient
 export const deleteMatchAction = authActionClient
   .inputSchema(
     z.object({
-      matchId: z.string().min(1, "L'ID du match est requis"),
+      matchId: z.string().min(1, "match.validation.idRequired"),
     }),
   )
   .action(async ({ parsedInput, ctx }) => {

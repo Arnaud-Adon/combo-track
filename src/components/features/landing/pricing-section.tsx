@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Check, ShieldCheck, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -21,61 +22,39 @@ type Tier = {
   badge?: string;
 };
 
-const TIERS: Tier[] = [
-  {
-    name: "Free",
-    monthly: 0,
-    yearly: 0,
-    description: "Tester l'outil, voir la valeur.",
-    features: [
-      "5 matches / mois",
-      "20 combos",
-      "2 matrices",
-      "10 mémos",
-      "1 jeu",
-      "Recherche ⌘K sémantique",
-    ],
-    cta: "Commencer gratuitement",
-  },
-  {
-    name: "Challenger",
-    monthly: 6.99,
-    yearly: 4.99,
-    description: "Le joueur compétitif qui analyse régulièrement.",
-    features: [
-      "Matches illimités",
-      "Combos illimités",
-      "Matrices illimitées",
-      "Mémos illimités",
-      "10 rapports AI / mois",
-      "Génération IA des matrices",
-      "Suggestions de tags IA",
-      "Tous les jeux disponibles",
-    ],
-    cta: "Passer Challenger",
-    highlight: true,
-    badge: "Le plus populaire",
-  },
-  {
-    name: "Pro",
-    monthly: 9.99,
-    yearly: 7.99,
-    description: "Tournois, très actifs, > 10 analyses / mois.",
-    features: [
-      "Tout Challenger",
-      "Rapports AI illimités",
-      "Export carnet de combos (PDF)",
-      "Partage de matrices (liens publics)",
-      "Early access nouvelles features",
-      "Support prioritaire",
-    ],
-    cta: "Passer Pro",
-  },
-];
-
 export function PricingSection(props: PricingSectionProps) {
   const { className } = props;
+  const t = useTranslations("landing");
   const [yearly, setYearly] = useState(false);
+
+  const tiers: Tier[] = [
+    {
+      name: "Free",
+      monthly: 0,
+      yearly: 0,
+      description: t("pricing.tiers.free.description"),
+      features: t.raw("pricing.tiers.free.features") as string[],
+      cta: t("pricing.tiers.free.cta"),
+    },
+    {
+      name: "Challenger",
+      monthly: 6.99,
+      yearly: 4.99,
+      description: t("pricing.tiers.challenger.description"),
+      features: t.raw("pricing.tiers.challenger.features") as string[],
+      cta: t("pricing.tiers.challenger.cta"),
+      highlight: true,
+      badge: t("pricing.popularBadge"),
+    },
+    {
+      name: "Pro",
+      monthly: 9.99,
+      yearly: 7.99,
+      description: t("pricing.tiers.pro.description"),
+      features: t.raw("pricing.tiers.pro.features") as string[],
+      cta: t("pricing.tiers.pro.cta"),
+    },
+  ];
 
   return (
     <section
@@ -89,12 +68,12 @@ export function PricingSection(props: PricingSectionProps) {
       <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 md:py-32 lg:px-8">
         <div className="mb-12 text-center md:mb-16">
           <span className="font-mono-fgc text-fgc-accent mb-4 inline-block text-[10px] tracking-[0.3em] uppercase">
-            {"// Pricing"}
+            {t("pricing.eyebrow")}
           </span>
           <h2 className="marketing-h1 text-fgc-text mx-auto max-w-3xl text-balance text-4xl md:text-5xl lg:text-6xl">
-            Commence gratuitement.
+            {t("pricing.titlePart1")}
             <br />
-            <span className="text-fgc-muted">Upgrade quand tu veux.</span>
+            <span className="text-fgc-muted">{t("pricing.titleHighlight")}</span>
           </h2>
 
           <div className="border-fgc-border bg-fgc-surface mx-auto mt-10 inline-flex items-center gap-1 rounded-full border p-1">
@@ -108,7 +87,7 @@ export function PricingSection(props: PricingSectionProps) {
                   : "text-fgc-muted hover:text-fgc-text",
               )}
             >
-              Mensuel
+              {t("pricing.billingMonthly")}
             </button>
             <button
               type="button"
@@ -120,14 +99,14 @@ export function PricingSection(props: PricingSectionProps) {
                   : "text-fgc-muted hover:text-fgc-text",
               )}
             >
-              Annuel
+              {t("pricing.billingYearly")}
               <span className="text-fgc-accent ml-1.5 text-[9px]">−29%</span>
             </button>
           </div>
         </div>
 
         <div className="grid gap-5 md:grid-cols-3 md:items-start">
-          {TIERS.map((tier) => {
+          {tiers.map((tier) => {
             const price = yearly ? tier.yearly : tier.monthly;
             return (
               <div
@@ -160,7 +139,7 @@ export function PricingSection(props: PricingSectionProps) {
                     ${price}
                   </span>
                   <span className="text-fgc-muted font-mono-fgc text-[11px] tracking-wider">
-                    /mois
+                    {t("pricing.perMonth")}
                   </span>
                 </div>
 
@@ -203,9 +182,11 @@ export function PricingSection(props: PricingSectionProps) {
         <div className="border-fgc-border bg-fgc-surface/40 text-fgc-muted mx-auto mt-12 flex max-w-2xl items-center gap-3 rounded-xl border px-5 py-4 text-sm md:mt-16">
           <ShieldCheck className="text-fgc-accent size-5 shrink-0" />
           <span>
-            Pas satisfait dans les{" "}
-            <span className="text-fgc-text font-semibold">7 premiers jours</span>{" "}
-            après ton upgrade ? On te rembourse, sans question.
+            {t.rich("pricing.guarantee", {
+              b: (chunks) => (
+                <span className="text-fgc-text font-semibold">{chunks}</span>
+              ),
+            })}
           </span>
         </div>
       </div>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAction } from "next-safe-action/hooks";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Edit, Trash2, MoreVertical } from "lucide-react";
 
@@ -35,6 +36,8 @@ interface GameListProps {
 
 export function GameList({ games }: GameListProps) {
   const router = useRouter();
+  const t = useTranslations("admin");
+  const tCommon = useTranslations("common");
   const [deleteDialog, setDeleteDialog] = useState<{
     open: boolean;
     game: AdminGameList[number] | null;
@@ -45,12 +48,12 @@ export function GameList({ games }: GameListProps) {
 
   const { execute, isPending } = useAction(deleteGameAction, {
     onSuccess: () => {
-      toast.success("Jeu supprimé avec succès");
+      toast.success(t("game.toast.deleted"));
       setDeleteDialog({ open: false, game: null });
       router.refresh();
     },
     onError: ({ error }) => {
-      toast.error(error.serverError ?? "Erreur lors de la suppression");
+      toast.error(error.serverError ?? t("game.toast.deleteError"));
     },
   });
 
@@ -67,9 +70,9 @@ export function GameList({ games }: GameListProps) {
   if (games.length === 0) {
     return (
       <div className="py-12 text-center">
-        <p className="text-muted-foreground mb-4">Aucun jeu pour le moment</p>
+        <p className="text-muted-foreground mb-4">{t("game.list.empty")}</p>
         <Button asChild>
-          <Link href="/admin/games/new">Créer votre premier jeu</Link>
+          <Link href="/admin/games/new">{t("game.list.createFirst")}</Link>
         </Button>
       </div>
     );
@@ -99,7 +102,7 @@ export function GameList({ games }: GameListProps) {
                         className="flex items-center"
                       >
                         <Edit className="mr-2 h-4 w-4" />
-                        Éditer
+                        {t("actions.edit")}
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem
@@ -107,7 +110,7 @@ export function GameList({ games }: GameListProps) {
                       className="text-destructive"
                     >
                       <Trash2 className="mr-2 h-4 w-4" />
-                      Supprimer
+                      {tCommon("buttons.delete")}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -115,10 +118,18 @@ export function GameList({ games }: GameListProps) {
             </CardHeader>
             <CardContent>
               <div className="text-muted-foreground flex items-center gap-4 text-xs">
-                <span>{game._count.characters} personnages</span>
-                <span>{game._count.combos} combos</span>
                 <span>
-                  Modifié le {new Date(game.updatedAt).toLocaleDateString()}
+                  {t("game.list.charactersCount", {
+                    count: game._count.characters,
+                  })}
+                </span>
+                <span>
+                  {t("game.list.combosCount", { count: game._count.combos })}
+                </span>
+                <span>
+                  {t("game.list.updatedAt", {
+                    date: new Date(game.updatedAt).toLocaleDateString(),
+                  })}
                 </span>
               </div>
             </CardContent>
@@ -134,23 +145,24 @@ export function GameList({ games }: GameListProps) {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Supprimer ce jeu ?</AlertDialogTitle>
+            <AlertDialogTitle>{t("game.deleteDialog.title")}</AlertDialogTitle>
             <AlertDialogDescription>
               {deleteDialog.game?.name}
               <br />
               <br />
-              Cela supprimera aussi tous les personnages et combos associés.
-              Cette action est irréversible.
+              {t("game.deleteDialog.description")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isPending}>Annuler</AlertDialogCancel>
+            <AlertDialogCancel disabled={isPending}>
+              {tCommon("buttons.cancel")}
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               disabled={isPending}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              {isPending ? "Suppression..." : "Supprimer"}
+              {isPending ? t("actions.deleting") : tCommon("buttons.delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

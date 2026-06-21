@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { Mic, MicOff } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 type NoteVoiceRecorderProps = {
   isListening: boolean;
@@ -18,6 +19,8 @@ export function NoteVoiceRecorder({
   isListening,
   onToggle,
 }: NoteVoiceRecorderProps) {
+  const t = useTranslations("video.voiceRecorder");
+
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -30,11 +33,7 @@ export function NoteVoiceRecorder({
             "h-8 w-8",
             isListening && "text-destructive animate-pulse",
           )}
-          aria-label={
-            isListening
-              ? "Arrêter la dictée vocale"
-              : "Démarrer la dictée vocale"
-          }
+          aria-label={isListening ? t("stop") : t("start")}
         >
           {isListening ? (
             <MicOff className="h-4 w-4" />
@@ -44,7 +43,7 @@ export function NoteVoiceRecorder({
         </Button>
       </TooltipTrigger>
       <TooltipContent>
-        {isListening ? "Arrêter la dictée vocale" : "Dicter une note"}
+        {isListening ? t("stop") : t("dictate")}
       </TooltipContent>
     </Tooltip>
   );

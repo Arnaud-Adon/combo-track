@@ -3,8 +3,9 @@ import { Header } from "@/components/features/landing/header";
 import { QuickRail } from "@/components/layout/quick-rail";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { websiteConfig } from "@/config/website-config";
 import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getTranslations } from "next-intl/server";
 import { Geist, JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -26,31 +27,39 @@ const departureMono = localFont({
   weight: "400",
 });
 
-export const metadata: Metadata = {
-  title: websiteConfig.title,
-  description: websiteConfig.description,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("meta");
 
-export default function RootLayout({
+  return {
+    title: t("app.title"),
+    description: t("app.description"),
+  };
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+
   return (
-    <html lang="fr" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <head />
       <body
         className={`${geistSans.variable} ${jetbrainsMono.variable} ${departureMono.variable} antialiased`}
       >
-        <ThemeProvider>
-          <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-          <QuickRail />
-          <Toaster />
-        </ThemeProvider>
+        <NextIntlClientProvider>
+          <ThemeProvider>
+            <div className="flex min-h-screen flex-col">
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+            <QuickRail />
+            <Toaster />
+          </ThemeProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

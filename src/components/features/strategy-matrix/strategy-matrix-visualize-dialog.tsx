@@ -14,6 +14,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Eye } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import z from "zod";
 import { StrategyMatrixGrid } from "./strategy-matrix-grid";
@@ -32,6 +33,7 @@ export function StrategyMatrixVisualizeDialog({
   opponentAxis,
   cells,
 }: Props) {
+  const t = useTranslations("strategyMatrix");
   const [open, setOpen] = useState(false);
 
   const parsed = useMemo(() => {
@@ -47,12 +49,16 @@ export function StrategyMatrixVisualizeDialog({
       <Tooltip>
         <TooltipTrigger asChild>
           <DialogTrigger asChild>
-            <Button variant="outline" size="icon" aria-label="Visualiser">
+            <Button
+              variant="outline"
+              size="icon"
+              aria-label={t("visualize.trigger")}
+            >
               <Eye className="h-4 w-4" />
             </Button>
           </DialogTrigger>
         </TooltipTrigger>
-        <TooltipContent>Visualiser</TooltipContent>
+        <TooltipContent>{t("visualize.trigger")}</TooltipContent>
       </Tooltip>
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[90vw]">
         <DialogHeader>
@@ -67,7 +73,7 @@ export function StrategyMatrixVisualizeDialog({
           />
         ) : (
           <p className="text-muted-foreground text-sm">
-            Impossible d&apos;afficher cette matrice.
+            {t("visualize.error")}
           </p>
         )}
       </DialogContent>

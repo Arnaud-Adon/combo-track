@@ -1,0 +1,233 @@
+{
+  "page": {
+    "list": {
+      "title": "Matrices de stratégie",
+      "subtitle": "Vos plans de jeu conditionnels par état des ressources.",
+      "new": "Nouvelle matrice"
+    },
+    "new": {
+      "eyebrowLabel": "Matrice",
+      "eyebrowValue": "Nouvelle",
+      "title": "Prépare un matchup",
+      "subtitle": "Croise tes ressources et celles de l'adversaire, puis remplis chaque cellule avec ta stratégie optimale."
+    },
+    "detail": {
+      "eyebrowLabel": "Matrice",
+      "eyebrowValue": "Édition"
+    }
+  },
+  "form": {
+    "template": {
+      "title": "Pars d'un modèle",
+      "description": "Un point de départ rapide pour ne pas démarrer d'une page blanche. Tu personnalises tout ensuite.",
+      "show": "Voir les modèles",
+      "hide": "Masquer les modèles"
+    },
+    "identity": {
+      "title": "Identité",
+      "description": "Nomme ta matrice pour la retrouver d'un coup d'œil avant un set."
+    },
+    "titleLabel": "Titre",
+    "titlePlaceholder": "Ex: Ken vs Juri — défense en burnout",
+    "descriptionLabel": "Description (optionnelle)",
+    "descriptionPlaceholder": "Contexte ou conditions d'utilisation de cette matrice",
+    "matchup": {
+      "title": "Matchup",
+      "description": "Associe un jeu et des persos pour retrouver la matrice par matchup (optionnel)."
+    },
+    "axes": {
+      "title": "Axes",
+      "description": "Tes ressources en colonnes, celles de l'adversaire en lignes. 2 à 5 niveaux par axe.",
+      "mine": "Mon état (colonnes →)",
+      "opponent": "État adverse (lignes ↓)"
+    },
+    "grid": {
+      "title": "Matrice",
+      "description": "Clique une cellule pour décrire la stratégie optimale — ou laisse l'IA remplir toute la grille."
+    },
+    "submitting": "Enregistrement…",
+    "submitEdit": "Mettre à jour",
+    "submitCreate": "Créer la matrice",
+    "toast": {
+      "created": "Matrice créée",
+      "createError": "Erreur lors de la création",
+      "updated": "Matrice mise à jour",
+      "updateError": "Erreur lors de la mise à jour"
+    }
+  },
+  "templateSelector": {
+    "cellCount": "{my} × {opp} cellules",
+    "use": "Utiliser ce modèle"
+  },
+  "templates": {
+    "hpVsMeter": {
+      "name": "HP × Meter (générique)",
+      "description": "Stratégie selon votre HP et le meter adverse",
+      "title": "Stratégie HP × Meter",
+      "myAxisLabel": "Mon HP",
+      "opponentAxisLabel": "Meter adversaire"
+    },
+    "driveVsPosition": {
+      "name": "Drive Gauge × Position (SF6)",
+      "description": "Stratégie selon votre Drive et la position adverse",
+      "title": "Stratégie Drive × Position",
+      "myAxisLabel": "Mon Drive Gauge",
+      "opponentAxisLabel": "Position adversaire"
+    },
+    "customBlank": {
+      "name": "Vide / Personnalisé",
+      "description": "Démarrer avec une matrice vierge à personnaliser",
+      "title": "Nouvelle matrice",
+      "myAxisLabel": "Mon état",
+      "opponentAxisLabel": "État adversaire"
+    },
+    "levels": {
+      "high": "Haut",
+      "mid": "Moyen",
+      "low": "Bas",
+      "full": "Plein",
+      "empty": "Vide",
+      "burnout": "Burnout",
+      "midscreen": "Midscreen",
+      "corner": "Corner",
+      "levelA": "Niveau A",
+      "levelB": "Niveau B"
+    }
+  },
+  "resourceTypes": {
+    "HP": "Vie",
+    "METER": "Jauge Super",
+    "DRIVE": "Drive Gauge",
+    "POSITION": "Position",
+    "CUSTOM": "Personnalisé"
+  },
+  "axisBuilder": {
+    "axisLabel": "Libellé de l'axe",
+    "axisLabelPlaceholder": "Ex: Mon meter",
+    "resourceType": "Type de ressource",
+    "levels": "Niveaux ({count}/{max})",
+    "add": "Ajouter",
+    "levelDefault": "Niveau {n}",
+    "levelPlaceholder": "Niveau {n}",
+    "removeLevel": "Supprimer {label}"
+  },
+  "cellEditor": {
+    "eyebrow": "Cellule de stratégie",
+    "description": "Décris ta stratégie pour cette combinaison d'états. Markdown supporté.",
+    "edit": "Édition",
+    "preview": "Aperçu",
+    "emptyPreview": "*Aucun contenu*",
+    "placeholder": "Ex: Punish max → cr.HP xx Super...",
+    "discardTitle": "Abandonner les modifications ?",
+    "discardDescription": "Les changements apportés à cette cellule ne sont pas enregistrés. Voulez-vous vraiment fermer l'éditeur ?",
+    "keepEditing": "Continuer l'édition",
+    "discard": "Abandonner"
+  },
+  "matchupSelector": {
+    "game": "Jeu",
+    "myCharacter": "Mon personnage",
+    "opponentCharacter": "Personnage adverse",
+    "none": "Aucun"
+  },
+  "grid": {
+    "emptyCell": "Vide · clique pour éditer"
+  },
+  "filters": {
+    "game": "Jeu",
+    "character": "Personnage",
+    "all": "Tous",
+    "allGames": "Tous les jeux",
+    "allCharacters": "Tous les personnages",
+    "reset": "Réinitialiser"
+  },
+  "visualize": {
+    "trigger": "Visualiser",
+    "error": "Impossible d'afficher cette matrice."
+  },
+  "frameLegend": {
+    "heading": "Frame data",
+    "advantage": "Avantage",
+    "disadvantage": "Désavantage",
+    "neutral": "Neutre"
+  },
+  "aiFill": {
+    "button": "Remplir avec l'IA",
+    "generating": "Génération…",
+    "empty": "Aucune cellule générée",
+    "success": "{count} cellules remplies par l'IA",
+    "error": "Erreur lors de la génération",
+    "overwriteTitle": "Écraser le contenu existant ?",
+    "overwriteDescription": "Certaines cellules contiennent déjà du contenu. La génération IA remplacera tout le contenu existant. Vous pourrez encore éditer chaque cellule manuellement après.",
+    "continue": "Continuer"
+  },
+  "list": {
+    "empty": "Aucune matrice pour le moment.",
+    "createFirst": "Créer ma première matrice",
+    "open": "Ouvrir",
+    "deleteTitle": "Supprimer cette matrice ?",
+    "deleteDescription": "Cette action est irréversible. La matrice « {title} » sera définitivement supprimée.",
+    "toast": {
+      "deleted": "Matrice supprimée",
+      "deleteError": "Erreur lors de la suppression"
+    }
+  },
+  "help": {
+    "trigger": "Mode d'emploi",
+    "title": "Comment utiliser une matrice ?",
+    "intro": "Une matrice croise <strong>votre état</strong> (colonnes) et <strong>l'état adverse</strong> (lignes). Chaque cellule contient l'action optimale pour cette combinaison de ressources.",
+    "steps": {
+      "heading": "Étapes",
+      "step1": "<strong>Choisir un modèle</strong> (HP × Meter, Drive × Position, ou Vide) ou partir d'une base existante.",
+      "step2": "<strong>Donner un titre</strong> clair (ex: « Ken vs Juri — défense »).",
+      "step3": "<strong>Définir les axes</strong> : un libellé, un type de ressource (HP, Meter, Drive, Position, Custom) et de 2 à 5 niveaux par axe.",
+      "step4": "<strong>Cliquer une cellule</strong> pour ouvrir l'éditeur markdown et décrire la stratégie optimale.",
+      "step5": "<strong>Enregistrer</strong> — la matrice est consultable ensuite avant un match."
+    },
+    "example": {
+      "heading": "Exemple concret",
+      "intro": "Matrice : <em>Mon Drive Gauge</em> (colonnes) × <em>Position adversaire</em> (lignes).",
+      "table": {
+        "driveFull": "Drive plein",
+        "driveMid": "Drive moyen",
+        "burnout": "Burnout",
+        "midscreen": "Midscreen",
+        "corner": "Corner",
+        "midscreenFull": "Pression DR + mixup, hit confirm Super 2",
+        "midscreenMid": "Whiff punish safe, garder 1 bar",
+        "midscreenBurnout": "Backdash pour reset spacing, bloquer haut",
+        "cornerFull": "Throw loop unreactable, kill confirm",
+        "cornerMid": "Frame trap cr.MK xx DR → mixup overhead/low",
+        "cornerBurnout": "Pas de DI possible, jouer pour timeout"
+      },
+      "tip": "Astuce : dans une cellule, le markdown est supporté (gras, listes, flèches `→`). Compteur 2000 caractères max par cellule."
+    },
+    "bestPractices": {
+      "heading": "Bonnes pratiques",
+      "item1": "Une matrice = <strong>une situation</strong> précise (un matchup, une phase de jeu).",
+      "item2": "Garder 2-3 niveaux par axe au début. Ajouter de la granularité quand vous maîtrisez la base.",
+      "item3": "Si vous modifiez un axe (ajout/suppression de niveau), les cellules orphelines sont purgées et les nouvelles cellules sont créées vides.",
+      "item4": "Consultable depuis <code>/notes/strategy</code>. Idéal avant un match comme fiche de révision."
+    },
+    "gotIt": "Compris"
+  },
+  "errors": {
+    "notFound": "Matrice introuvable",
+    "aiGeneration": "Erreur lors de la génération IA. Vérifiez la clé API Groq."
+  },
+  "validation": {
+    "levelLabelRequired": "Le libellé du niveau est requis",
+    "levelLabelMax": "Maximum 60 caractères",
+    "axisLabelRequired": "Le libellé de l'axe est requis",
+    "axisLabelMax": "Maximum 60 caractères",
+    "levelsMin": "Au moins 2 niveaux requis",
+    "levelsMax": "Maximum 5 niveaux",
+    "levelIdsUnique": "Les identifiants de niveaux doivent être uniques",
+    "cellContentMax": "Maximum 2000 caractères par cellule",
+    "titleRequired": "Le titre est requis",
+    "titleMax": "Maximum 120 caractères",
+    "descriptionMax": "Maximum 500 caractères",
+    "orphanCells": "Cellules orphelines détectées",
+    "gameRequiredForCharacter": "Un jeu doit être sélectionné pour associer un personnage",
+    "idRequired": "L'ID de la matrice est requis"
+  }
+}

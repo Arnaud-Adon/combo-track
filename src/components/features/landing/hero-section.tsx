@@ -4,14 +4,17 @@ import { HeroProductMock } from "@/components/features/landing/hero-product-mock
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ArrowRight, Command } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 
 type HeroSectionProps = {
   className?: string;
 };
 
-export function HeroSection(props: HeroSectionProps) {
+export async function HeroSection(props: HeroSectionProps) {
   const { className } = props;
+
+  const t = await getTranslations("landing");
 
   return (
     <section
@@ -54,22 +57,20 @@ export function HeroSection(props: HeroSectionProps) {
             className="marketing-h1 fgc-rise text-fgc-text text-5xl md:text-6xl lg:text-7xl"
             style={{ animationDelay: "0.15s" }}
           >
-            Download tes adversaires.
+            {t("hero.titleLine1")}
             <br />
-            <span className="text-fgc-muted">Retiens chaque combo.</span>
+            <span className="text-fgc-muted">{t("hero.titleLine2")}</span>
             <br />
-            <span className="text-fgc-accent">Monte en ranked.</span>
+            <span className="text-fgc-accent">{t("hero.titleLine3")}</span>
           </h1>
 
           <p
             className="fgc-rise text-fgc-muted mt-8 max-w-xl text-base leading-relaxed md:text-lg"
             style={{ animationDelay: "0.3s" }}
           >
-            ComboTrack centralise tes notes timestampées sur YouTube, ton
-            carnet de combos par perso, tes matrices de{" "}
-            <FgcTerm term="matchup">matchup</FgcTerm> stratégiques, tes mémos
-            personnels et un rapport d&apos;analyse par IA. Tout est connecté, tout
-            est retrouvable en une recherche.
+            {t.rich("hero.description", {
+              matchup: (chunks) => <FgcTerm term="matchup">{chunks}</FgcTerm>,
+            })}
           </p>
 
           <div
@@ -82,7 +83,7 @@ export function HeroSection(props: HeroSectionProps) {
               className="bg-fgc-accent hover:bg-fgc-accent-strong h-12 text-base text-white shadow-[0_0_0_1px_rgba(255,255,255,0.08)_inset,0_20px_40px_-10px_var(--fgc-accent-soft)]"
             >
               <Link href="/signup" className="flex items-center gap-2">
-                Commencer gratuitement
+                {t("hero.ctaPrimary")}
                 <ArrowRight className="size-4" />
               </Link>
             </Button>
@@ -94,7 +95,7 @@ export function HeroSection(props: HeroSectionProps) {
             >
               <Command className="size-3.5" />
               <span className="font-mono-fgc tracking-wider">⌘K</span>
-              <span>Essayer la recherche</span>
+              <span>{t("hero.searchCta")}</span>
             </button>
           </div>
 
@@ -102,11 +103,11 @@ export function HeroSection(props: HeroSectionProps) {
             className="fgc-rise text-fgc-muted mt-6 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs"
             style={{ animationDelay: "0.6s" }}
           >
-            <span>Gratuit pour toujours</span>
+            <span>{t("hero.trustForever")}</span>
             <span className="bg-fgc-border size-1 rounded-full" />
-            <span>Pas de CB requise</span>
+            <span>{t("hero.trustNoCard")}</span>
             <span className="bg-fgc-border size-1 rounded-full" />
-            <span>Aucune installation</span>
+            <span>{t("hero.trustNoInstall")}</span>
           </div>
 
           <div
@@ -114,7 +115,7 @@ export function HeroSection(props: HeroSectionProps) {
             style={{ animationDelay: "0.75s" }}
           >
             <span className="font-mono-fgc text-fgc-muted text-[10px] tracking-widest uppercase">
-              Notation
+              {t("hero.notationLabel")}
             </span>
             <AnimatedComboNotation
               combos={[

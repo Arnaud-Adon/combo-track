@@ -8,6 +8,7 @@ import {
   Swords,
   type LucideIcon,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -22,19 +23,20 @@ import { cn } from "@/lib/utils";
 
 type RailItem = {
   href: string;
-  label: string;
+  labelKey: "replays" | "combos" | "matrices" | "memos" | "glossary";
   icon: LucideIcon;
 };
 
 const RAIL_ITEMS: RailItem[] = [
-  { href: "/videos", label: "Replays", icon: Clapperboard },
-  { href: "/combos", label: "Combos", icon: Swords },
-  { href: "/notes/strategy", label: "Matrices", icon: Grid3x3 },
-  { href: "/notes/memo", label: "Mémos", icon: NotebookPen },
-  { href: "/glossary", label: "Glossaire", icon: BookOpen },
+  { href: "/videos", labelKey: "replays", icon: Clapperboard },
+  { href: "/combos", labelKey: "combos", icon: Swords },
+  { href: "/notes/strategy", labelKey: "matrices", icon: Grid3x3 },
+  { href: "/notes/memo", labelKey: "memos", icon: NotebookPen },
+  { href: "/glossary", labelKey: "glossary", icon: BookOpen },
 ];
 
 export function QuickRail() {
+  const t = useTranslations("nav");
   const pathname = usePathname();
   const { data: session, isPending } = useSession();
 
@@ -45,12 +47,13 @@ export function QuickRail() {
   return (
     <TooltipProvider delayDuration={150}>
       <nav
-        aria-label="Accès rapide au labo"
+        aria-label={t("rail.ariaLabel")}
         className="fixed top-1/2 right-6 z-40 hidden -translate-y-1/2 lg:block"
       >
         <ul className="border-border bg-card/80 supports-[backdrop-filter]:bg-card/60 flex flex-col items-center gap-1 rounded-2xl border p-1.5 shadow-lg backdrop-blur-md">
           {RAIL_ITEMS.map((item) => {
             const Icon = item.icon;
+            const label = t(`rail.${item.labelKey}`);
             const isActive =
               pathname === item.href || pathname.startsWith(`${item.href}/`);
 
@@ -60,7 +63,7 @@ export function QuickRail() {
                   <TooltipTrigger asChild>
                     <Link
                       href={item.href}
-                      aria-label={item.label}
+                      aria-label={label}
                       aria-current={isActive ? "page" : undefined}
                       className={cn(
                         "focus-visible:ring-ring relative flex size-11 items-center justify-center rounded-xl outline-none transition-colors focus-visible:ring-2",
@@ -79,7 +82,7 @@ export function QuickRail() {
                     </Link>
                   </TooltipTrigger>
                   <TooltipContent side="left" sideOffset={12}>
-                    {item.label}
+                    {label}
                   </TooltipContent>
                 </Tooltip>
               </li>

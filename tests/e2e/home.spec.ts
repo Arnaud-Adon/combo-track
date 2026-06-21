@@ -4,7 +4,7 @@ test.describe("Homepage E2E Test", () => {
   test("should load the home page", async ({ page }) => {
     await page.goto("/");
     await expect(
-      page.getByRole("link", { name: "ComboTrack" }),
+      page.getByRole("banner").getByRole("link", { name: "ComboTrack" }),
     ).toBeInViewport();
   });
 

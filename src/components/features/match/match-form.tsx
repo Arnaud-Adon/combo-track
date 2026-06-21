@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import {
@@ -22,10 +23,12 @@ import { createMatchAction } from "./match-action";
 
 export function MatchForm() {
   const router = useRouter();
+  const t = useTranslations("match");
+  const tCommon = useTranslations("common");
 
   const { execute, isPending, result } = useAction(createMatchAction, {
     onSuccess: ({ data }) => {
-      toast.success("Match créé avec succès");
+      toast.success(t("toast.created"));
       router.push(`/videos/${data?.id}`);
       router.refresh();
     },
@@ -51,11 +54,11 @@ export function MatchForm() {
           name="videoUrl"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>URL YouTube</FormLabel>
+              <FormLabel>{t("form.videoUrlLabel")}</FormLabel>
               <FormControl>
                 <Input
                   {...field}
-                  placeholder="https://www.youtube.com/watch?v=..."
+                  placeholder={t("form.videoUrlPlaceholder")}
                 />
               </FormControl>
               <FormMessage />
@@ -68,9 +71,9 @@ export function MatchForm() {
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Titre</FormLabel>
+              <FormLabel>{t("form.titleLabel")}</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="Titre du match" />
+                <Input {...field} placeholder={t("form.titlePlaceholder")} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -88,10 +91,10 @@ export function MatchForm() {
             onClick={() => router.push("/dashboard")}
             disabled={isPending}
           >
-            Annuler
+            {tCommon("buttons.cancel")}
           </Button>
           <Button type="submit" disabled={isPending}>
-            {isPending ? "Création..." : "Créer le replay"}
+            {isPending ? t("form.creating") : t("form.createSubmit")}
           </Button>
         </div>
       </form>

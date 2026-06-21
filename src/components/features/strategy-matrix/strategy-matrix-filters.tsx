@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
 import type {
   CharacterOption,
@@ -29,6 +30,7 @@ export function StrategyMatrixFilters({
   selectedGameId,
   selectedCharacterId,
 }: Props) {
+  const t = useTranslations("strategyMatrix");
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -65,16 +67,16 @@ export function StrategyMatrixFilters({
   return (
     <div className="flex flex-wrap items-end gap-3">
       <div className="space-y-1">
-        <label className="text-xs font-medium">Jeu</label>
+        <label className="text-xs font-medium">{t("filters.game")}</label>
         <Select
           value={selectedGameId ?? ALL_VALUE}
           onValueChange={handleGameChange}
         >
           <SelectTrigger className="w-[200px]">
-            <SelectValue placeholder="Tous" />
+            <SelectValue placeholder={t("filters.all")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value={ALL_VALUE}>Tous les jeux</SelectItem>
+            <SelectItem value={ALL_VALUE}>{t("filters.allGames")}</SelectItem>
             {games.map((g) => (
               <SelectItem key={g.id} value={g.id}>
                 {g.name}
@@ -85,17 +87,19 @@ export function StrategyMatrixFilters({
       </div>
 
       <div className="space-y-1">
-        <label className="text-xs font-medium">Personnage</label>
+        <label className="text-xs font-medium">{t("filters.character")}</label>
         <Select
           value={selectedCharacterId ?? ALL_VALUE}
           onValueChange={handleCharacterChange}
           disabled={!selectedGameId || characters.length === 0}
         >
           <SelectTrigger className="w-[200px]">
-            <SelectValue placeholder="Tous" />
+            <SelectValue placeholder={t("filters.all")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value={ALL_VALUE}>Tous les personnages</SelectItem>
+            <SelectItem value={ALL_VALUE}>
+              {t("filters.allCharacters")}
+            </SelectItem>
             {characters.map((c) => (
               <SelectItem key={c.id} value={c.id}>
                 {c.name}
@@ -107,7 +111,7 @@ export function StrategyMatrixFilters({
 
       {hasFilter && (
         <Button variant="ghost" size="sm" onClick={() => updateParams({})}>
-          Réinitialiser
+          {t("filters.reset")}
         </Button>
       )}
     </div>

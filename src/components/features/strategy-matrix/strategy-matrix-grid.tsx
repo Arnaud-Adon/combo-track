@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { notationComponents } from "@/components/features/notation/notation-renderer";
@@ -22,6 +23,7 @@ export function StrategyMatrixGrid({
   onCellClick,
   readOnly = false,
 }: Props) {
+  const t = useTranslations("strategyMatrix");
   const lookup = buildCellLookup(cells);
   const columnCount = myAxis.levels.length;
 
@@ -82,7 +84,7 @@ export function StrategyMatrixGrid({
                     readOnly ? (
                       "—"
                     ) : (
-                      "Vide · clique pour éditer"
+                      t("grid.emptyCell")
                     )
                   ) : (
                     <div className="prose prose-invert prose-sm line-clamp-5 max-w-none [&_*]:my-0 [&_li]:leading-snug [&_p]:leading-snug">

@@ -2,6 +2,7 @@
 
 import { authActionClient } from "@/lib/auth-action";
 import { prisma } from "@/lib/prisma";
+import { getTranslations } from "next-intl/server";
 import { revalidatePath } from "next/cache";
 import { Prisma } from "../../../../generated/prisma";
 import {
@@ -41,7 +42,8 @@ export const updateStrategyMatrixAction = authActionClient
     });
 
     if (!existing) {
-      throw new Error("Matrice introuvable");
+      const t = await getTranslations("strategyMatrix");
+      throw new Error(t("errors.notFound"));
     }
 
     const matrix = await prisma.strategyMatrix.update({
@@ -73,7 +75,8 @@ export const deleteStrategyMatrixAction = authActionClient
     });
 
     if (!existing) {
-      throw new Error("Matrice introuvable");
+      const t = await getTranslations("strategyMatrix");
+      throw new Error(t("errors.notFound"));
     }
 
     await prisma.strategyMatrix.delete({

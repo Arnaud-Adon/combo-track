@@ -1,0 +1,83 @@
+{
+  "pages": {
+    "listTitle": "Mes combos",
+    "count": "{count, plural, one {# combo} other {# combos}}",
+    "createCta": "Nouveau combo",
+    "newTitle": "Créer un nouveau combo",
+    "editTitle": "Modifier le combo",
+    "detailBack": "Retour aux combos",
+    "notFoundTitle": "Combo introuvable",
+    "notFoundDescription": "Ce combo n'existe pas ou ne vous appartient pas.",
+    "notFoundCta": "Voir mes combos"
+  },
+  "list": {
+    "empty": "Aucun combo pour le moment",
+    "createFirst": "Créer votre premier combo"
+  },
+  "detail": {
+    "copy": "Copier",
+    "edit": "Éditer",
+    "notationTitle": "Notation",
+    "damageLabel": "Dégâts",
+    "meterLabel": "Jauge",
+    "difficultyLabel": "Difficulté",
+    "notesTitle": "Notes",
+    "sourceNoteTitle": "Note source",
+    "sourceNoteExtract": "Extrait depuis : {title}",
+    "viewNoteInReplay": "Voir la note dans le replay"
+  },
+  "deleteDialog": {
+    "title": "Supprimer ce combo ?",
+    "description": "Cette action est irréversible."
+  },
+  "form": {
+    "gameLabel": "Jeu",
+    "gamePlaceholder": "Sélectionner un jeu",
+    "characterLabel": "Personnage",
+    "characterPlaceholder": "Sélectionner un personnage",
+    "characterPlaceholderNoGame": "Sélectionnez un jeu d'abord",
+    "titleLabel": "Titre",
+    "titlePlaceholder": "Ex : Bread and butter midscreen",
+    "notationLabel": "Notation",
+    "notationPlaceholder": "Ex : 2MP > 2HP xx 236P, SA1",
+    "notationDescription": "Utilisez la notation FGC habituelle (numpad ou directionnelle)",
+    "damageLabel": "Dégâts",
+    "meterLabel": "Jauge utilisée",
+    "difficultyLabel": "Difficulté (1-5)",
+    "notesLabel": "Notes (optionnel)",
+    "notesPlaceholder": "Détails, conditions, alternatives...",
+    "tagsLabel": "Tags ({count}/10)",
+    "tagsDescription": "Sélectionnez les tags qui décrivent ce combo",
+    "creating": "Création...",
+    "updating": "Mise à jour...",
+    "deleting": "Suppression...",
+    "createSubmit": "Créer le combo",
+    "updateSubmit": "Mettre à jour"
+  },
+  "toast": {
+    "created": "Combo créé avec succès",
+    "createError": "Erreur lors de la création du combo",
+    "updated": "Combo mis à jour avec succès",
+    "updateError": "Erreur lors de la mise à jour du combo",
+    "deleted": "Combo supprimé",
+    "deleteError": "Erreur lors de la suppression",
+    "notationCopied": "Notation copiée",
+    "copyError": "Impossible de copier"
+  },
+  "errors": {
+    "characterNotFound": "Personnage introuvable",
+    "sourceNoteUnauthorized": "Note source non autorisée",
+    "comboNotFound": "Combo introuvable",
+    "unauthorized": "Non autorisé"
+  },
+  "validation": {
+    "characterRequired": "Le personnage est requis",
+    "titleMin": "Le titre doit contenir au moins 2 caractères",
+    "titleMax": "Le titre ne peut pas dépasser 120 caractères",
+    "notationRequired": "La notation est requise",
+    "notationMax": "La notation ne peut pas dépasser 500 caractères",
+    "notesMax": "Les notes ne peuvent pas dépasser 2000 caractères",
+    "tagsMax": "Maximum 10 tags autorisés",
+    "idRequired": "L'ID du combo est requis"
+  }
+}

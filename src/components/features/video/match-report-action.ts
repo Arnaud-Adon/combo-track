@@ -3,6 +3,7 @@
 import { generateMatchReport } from "@/lib/ai/groq";
 import { authActionClient } from "@/lib/auth-action";
 import { prisma } from "@/lib/prisma";
+import { getTranslations } from "next-intl/server";
 import { z } from "zod";
 
 export const generateReportAction = authActionClient
@@ -13,13 +14,14 @@ export const generateReportAction = authActionClient
   )
   .action(async ({ parsedInput, ctx }) => {
     const { matchId } = parsedInput;
+    const t = await getTranslations("video.errors");
 
     const match = await prisma.match.findUnique({
       where: { id: matchId, userId: ctx.user.id },
     });
 
     if (!match) {
-      throw new Error("Match introuvable");
+      throw new Error(t("matchNotFound"));
     }
 
     const notes = await prisma.note.findMany({
@@ -29,9 +31,7 @@ export const generateReportAction = authActionClient
     });
 
     if (notes.length < 3) {
-      throw new Error(
-        "Il faut au moins 3 notes pour générer un rapport d'analyse",
-      );
+      throw new Error(t("notEnoughNotes"));
     }
 
     const formattedNotes = notes.map((note) => ({
@@ -43,9 +43,7 @@ export const generateReportAction = authActionClient
     const report = await generateMatchReport(formattedNotes, match.title);
 
     if (!report) {
-      throw new Error(
-        "Erreur lors de la génération du rapport. Vérifiez la clé API Groq.",
-      );
+      throw new Error(t("generationFailed"));
     }
 
     await prisma.matchReport.upsert({

@@ -1,4 +1,5 @@
 import { ArrowRight, Plus } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -10,8 +11,9 @@ type DashboardHeroProps = {
   slides: HeroSlide[];
 };
 
-export function DashboardHero(props: DashboardHeroProps) {
+export async function DashboardHero(props: DashboardHeroProps) {
   const { userName, slides } = props;
+  const t = await getTranslations("dashboard");
 
   const today = new Date().toLocaleDateString("fr-FR", {
     weekday: "long",
@@ -30,7 +32,7 @@ export function DashboardHero(props: DashboardHeroProps) {
             <span className="bg-primary absolute inset-0 animate-ping rounded-full opacity-60" />
           </span>
           <span className="font-mono text-[10px] tracking-[0.2em] uppercase">
-            Training room · {today}
+            {t("hero.eyebrow", { date: today })}
           </span>
         </div>
 
@@ -38,17 +40,16 @@ export function DashboardHero(props: DashboardHeroProps) {
           className="font-display fgc-rise text-3xl uppercase md:text-4xl lg:text-5xl"
           style={{ animationDelay: "0.15s" }}
         >
-          GG, {userName}.
+          {t("hero.greeting", { name: userName })}
           <br />
-          <span className="text-muted-foreground">Reprends le grind.</span>
+          <span className="text-muted-foreground">{t("hero.greetingSub")}</span>
         </h1>
 
         <p
           className="text-muted-foreground fgc-rise mt-6 max-w-xl text-base leading-relaxed"
           style={{ animationDelay: "0.3s" }}
         >
-          Tes replays, tes BnB et tes matchups t&apos;attendent. Tout est
-          connecté, tout est retrouvable en une frappe.
+          {t("hero.description")}
         </p>
 
         <div
@@ -62,7 +63,7 @@ export function DashboardHero(props: DashboardHeroProps) {
           >
             <Link href="/videos/new" className="flex items-center gap-2">
               <Plus className="size-4" />
-              Nouveau replay
+              {t("actions.newReplay")}
             </Link>
           </Button>
 
@@ -73,7 +74,7 @@ export function DashboardHero(props: DashboardHeroProps) {
             className="h-12 text-base"
           >
             <Link href="/notes/strategy/new" className="flex items-center gap-2">
-              Nouvelle matrice
+              {t("actions.newMatrix")}
               <ArrowRight className="size-4" />
             </Link>
           </Button>

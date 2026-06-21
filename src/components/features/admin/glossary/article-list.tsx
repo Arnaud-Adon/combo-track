@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAction } from "next-safe-action/hooks";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Edit, Trash2, MoreVertical } from "lucide-react";
 
@@ -36,6 +37,8 @@ interface ArticleListProps {
 
 export function ArticleList({ articles }: ArticleListProps) {
   const router = useRouter();
+  const t = useTranslations("admin");
+  const tCommon = useTranslations("common");
   const [deleteDialog, setDeleteDialog] = useState<{
     open: boolean;
     article: AdminArticleList[number] | null;
@@ -46,12 +49,12 @@ export function ArticleList({ articles }: ArticleListProps) {
 
   const { execute, isPending } = useAction(deleteArticleAction, {
     onSuccess: () => {
-      toast.success("Article supprimé avec succès");
+      toast.success(t("article.toast.deleted"));
       setDeleteDialog({ open: false, article: null });
       router.refresh();
     },
     onError: ({ error }) => {
-      toast.error(error.serverError ?? "Erreur lors de la suppression");
+      toast.error(error.serverError ?? t("article.toast.deleteError"));
     },
   });
 
@@ -68,11 +71,11 @@ export function ArticleList({ articles }: ArticleListProps) {
   if (articles.length === 0) {
     return (
       <div className="py-12 text-center">
-        <p className="text-muted-foreground mb-4">
-          Aucun article pour le moment
-        </p>
+        <p className="text-muted-foreground mb-4">{t("article.list.empty")}</p>
         <Button asChild>
-          <Link href="/admin/glossary/new">Créer votre premier article</Link>
+          <Link href="/admin/glossary/new">
+            {t("article.list.createFirst")}
+          </Link>
         </Button>
       </div>
     );
@@ -107,7 +110,7 @@ export function ArticleList({ articles }: ArticleListProps) {
                         className="flex items-center"
                       >
                         <Edit className="mr-2 h-4 w-4" />
-                        Éditer
+                        {t("actions.edit")}
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem
@@ -115,7 +118,7 @@ export function ArticleList({ articles }: ArticleListProps) {
                       className="text-destructive"
                     >
                       <Trash2 className="mr-2 h-4 w-4" />
-                      Supprimer
+                      {tCommon("buttons.delete")}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -129,11 +132,18 @@ export function ArticleList({ articles }: ArticleListProps) {
                   </p>
                 )}
                 <div className="text-muted-foreground flex items-center gap-4 text-xs">
-                  <span>Catégorie : {article.category}</span>
-                  <span>Par {article.creator.name}</span>
                   <span>
-                    Modifié le{" "}
-                    {new Date(article.updatedAt).toLocaleDateString()}
+                    {t("article.list.category", {
+                      category: article.category ?? "",
+                    })}
+                  </span>
+                  <span>
+                    {t("article.list.author", { name: article.creator.name })}
+                  </span>
+                  <span>
+                    {t("article.list.updatedAt", {
+                      date: new Date(article.updatedAt).toLocaleDateString(),
+                    })}
                   </span>
                 </div>
               </div>
@@ -150,22 +160,26 @@ export function ArticleList({ articles }: ArticleListProps) {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Supprimer cet article ?</AlertDialogTitle>
+            <AlertDialogTitle>
+              {t("article.deleteDialog.title")}
+            </AlertDialogTitle>
             <AlertDialogDescription>
               {deleteDialog.article?.title}
               <br />
               <br />
-              Cette action est irréversible.
+              {t("article.deleteDialog.description")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isPending}>Annuler</AlertDialogCancel>
+            <AlertDialogCancel disabled={isPending}>
+              {tCommon("buttons.cancel")}
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               disabled={isPending}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              {isPending ? "Suppression..." : "Supprimer"}
+              {isPending ? t("actions.deleting") : tCommon("buttons.delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -3,12 +3,14 @@
 import { prisma } from "@/lib/prisma";
 import { authActionClient } from "@/lib/auth-action";
 import { revalidatePath } from "next/cache";
+import { getTranslations } from "next-intl/server";
 import { createComboSchema, updateComboSchema } from "./combo-schema";
 import z from "zod";
 
 export const createComboAction = authActionClient
   .inputSchema(createComboSchema)
   .action(async ({ parsedInput, ctx }) => {
+    const t = await getTranslations("combo");
     const {
       characterId,
       title,
@@ -27,7 +29,7 @@ export const createComboAction = authActionClient
     });
 
     if (!character) {
-      throw new Error("Personnage introuvable");
+      throw new Error(t("errors.characterNotFound"));
     }
 
     if (sourceNoteId) {
@@ -36,7 +38,7 @@ export const createComboAction = authActionClient
         select: { match: { select: { userId: true } } },
       });
       if (!sourceNote || sourceNote.match.userId !== ctx.user.id) {
-        throw new Error("Note source non autorisée");
+        throw new Error(t("errors.sourceNoteUnauthorized"));
       }
     }
 
@@ -65,6 +67,7 @@ export const createComboAction = authActionClient
 export const updateComboAction = authActionClient
   .inputSchema(updateComboSchema)
   .action(async ({ parsedInput, ctx }) => {
+    const t = await getTranslations("combo");
     const {
       id,
       characterId,
@@ -84,10 +87,10 @@ export const updateComboAction = authActionClient
     });
 
     if (!existing) {
-      throw new Error("Combo introuvable");
+      throw new Error(t("errors.comboNotFound"));
     }
     if (existing.userId !== ctx.user.id) {
-      throw new Error("Non autorisé");
+      throw new Error(t("errors.unauthorized"));
     }
 
     const character = await prisma.character.findUnique({
@@ -96,7 +99,7 @@ export const updateComboAction = authActionClient
     });
 
     if (!character) {
-      throw new Error("Personnage introuvable");
+      throw new Error(t("errors.characterNotFound"));
     }
 
     const combo = await prisma.combo.update({
@@ -125,20 +128,21 @@ export const updateComboAction = authActionClient
 export const deleteComboAction = authActionClient
   .inputSchema(
     z.object({
-      id: z.string().min(1, "L'ID du combo est requis"),
+      id: z.string().min(1, "combo.validation.idRequired"),
     }),
   )
   .action(async ({ parsedInput, ctx }) => {
+    const t = await getTranslations("combo");
     const existing = await prisma.combo.findUnique({
       where: { id: parsedInput.id },
       select: { userId: true },
     });
 
     if (!existing) {
-      throw new Error("Combo introuvable");
+      throw new Error(t("errors.comboNotFound"));
     }
     if (existing.userId !== ctx.user.id) {
-      throw new Error("Non autorisé");
+      throw new Error(t("errors.unauthorized"));
     }
 
     await prisma.combo.delete({

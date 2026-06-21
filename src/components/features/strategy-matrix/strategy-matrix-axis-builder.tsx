@@ -12,13 +12,10 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { Plus, Trash2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type { Axis, Level, ResourceType } from "./strategy-matrix-schema";
 import { RESOURCE_TYPES } from "./strategy-matrix-schema";
-import {
-  MAX_LEVELS,
-  MIN_LEVELS,
-  RESOURCE_TYPE_LABELS,
-} from "./strategy-matrix-types";
+import { MAX_LEVELS, MIN_LEVELS } from "./strategy-matrix-types";
 
 type Props = {
   axis: Axis;
@@ -37,6 +34,7 @@ export function StrategyMatrixAxisBuilder({
   heading,
   tone = "mine",
 }: Props) {
+  const t = useTranslations("strategyMatrix");
   const updateLabel = (label: string) => onChange({ ...axis, label });
 
   const updateResource = (resource: ResourceType) =>
@@ -53,7 +51,7 @@ export function StrategyMatrixAxisBuilder({
     if (axis.levels.length >= MAX_LEVELS) return;
     const newLevel: Level = {
       id: generateLevelId(),
-      label: `Niveau ${axis.levels.length + 1}`,
+      label: t("axisBuilder.levelDefault", { n: axis.levels.length + 1 }),
       order: axis.levels.length,
     };
     onChange({ ...axis, levels: [...axis.levels, newLevel] });
@@ -80,17 +78,19 @@ export function StrategyMatrixAxisBuilder({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor={`axis-label-${heading}`}>Libellé de l&apos;axe</Label>
+        <Label htmlFor={`axis-label-${heading}`}>
+          {t("axisBuilder.axisLabel")}
+        </Label>
         <Input
           id={`axis-label-${heading}`}
           value={axis.label}
           onChange={(e) => updateLabel(e.target.value)}
-          placeholder="Ex: Mon meter"
+          placeholder={t("axisBuilder.axisLabelPlaceholder")}
         />
       </div>
 
       <div className="space-y-2">
-        <Label>Type de ressource</Label>
+        <Label>{t("axisBuilder.resourceType")}</Label>
         <Select
           value={axis.resource}
           onValueChange={(v) => updateResource(v as ResourceType)}
@@ -101,7 +101,7 @@ export function StrategyMatrixAxisBuilder({
           <SelectContent>
             {RESOURCE_TYPES.map((type) => (
               <SelectItem key={type} value={type}>
-                {RESOURCE_TYPE_LABELS[type]}
+                {t(`resourceTypes.${type}`)}
               </SelectItem>
             ))}
           </SelectContent>
@@ -111,7 +111,10 @@ export function StrategyMatrixAxisBuilder({
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <Label>
-            Niveaux ({axis.levels.length}/{MAX_LEVELS})
+            {t("axisBuilder.levels", {
+              count: axis.levels.length,
+              max: MAX_LEVELS,
+            })}
           </Label>
           <Button
             type="button"
@@ -121,7 +124,7 @@ export function StrategyMatrixAxisBuilder({
             disabled={axis.levels.length >= MAX_LEVELS}
           >
             <Plus className="mr-1 h-3 w-3" />
-            Ajouter
+            {t("axisBuilder.add")}
           </Button>
         </div>
         <div className="space-y-2">
@@ -130,7 +133,9 @@ export function StrategyMatrixAxisBuilder({
               <Input
                 value={level.label}
                 onChange={(e) => updateLevel(index, { label: e.target.value })}
-                placeholder={`Niveau ${index + 1}`}
+                placeholder={t("axisBuilder.levelPlaceholder", {
+                  n: index + 1,
+                })}
               />
               <Button
                 type="button"
@@ -138,7 +143,7 @@ export function StrategyMatrixAxisBuilder({
                 size="icon"
                 onClick={() => removeLevel(index)}
                 disabled={axis.levels.length <= MIN_LEVELS}
-                aria-label={`Supprimer ${level.label}`}
+                aria-label={t("axisBuilder.removeLevel", { label: level.label })}
               >
                 <Trash2 className="h-4 w-4" />
               </Button>

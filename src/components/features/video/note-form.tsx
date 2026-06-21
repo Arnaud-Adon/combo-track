@@ -17,6 +17,7 @@ import { useVideoPlayerStore } from "@/stores/video-player";
 import { formatTime } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -37,6 +38,7 @@ type NoteFormProps = {
 
 export function NoteForm({ matchId, availableTags }: NoteFormProps) {
   const router = useRouter();
+  const t = useTranslations("video.noteForm");
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
   const [suggestedTagIds, setSuggestedTagIds] = useState<string[]>([]);
 
@@ -100,7 +102,7 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
 
   const handleToggleRecording = () => {
     if (!isSupported) {
-      toast.error("Votre navigateur ne supporte pas la reconnaissance vocale");
+      toast.error(t("voiceUnsupported"));
       return;
     }
 
@@ -113,7 +115,7 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
   };
 
   const handleSelectTemplate = (template: NoteTemplate) => {
-    form.setValue("note", template.content, {
+    form.setValue("note", template.content ?? "", {
       shouldDirty: true,
       shouldValidate: true,
     });
@@ -170,7 +172,7 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
             <FormItem>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <FormLabel>Note</FormLabel>
+                  <FormLabel>{t("label")}</FormLabel>
                   <span className="bg-accent text-primary rounded font-mono text-xs font-bold tabular-nums px-2 py-0.5">
                     {formatTime(currentTime)}
                   </span>
@@ -188,7 +190,7 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
               <FormControl>
                 <Textarea
                   {...field}
-                  placeholder="Ajouter une note à ce moment de la vidéo..."
+                  placeholder={t("placeholder")}
                   className="min-h-[100px]"
                 />
               </FormControl>
@@ -197,9 +199,7 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
                   {interimTranscript}
                 </p>
               )}
-              <FormDescription>
-                Votre note sera horodatée automatiquement
-              </FormDescription>
+              <FormDescription>{t("description")}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -207,27 +207,25 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
 
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <FormLabel>Tags ({selectedTagIds.length}/10)</FormLabel>
+            <FormLabel>{t("tagsLabel", { count: selectedTagIds.length })}</FormLabel>
             <NoteSuggestTagsButton
               onSuggest={handleSuggestTags}
               isSuggesting={isSuggesting}
               disabled={noteValue.length < 10}
             />
           </div>
-          <FormDescription>
-            Sélectionnez les tags qui décrivent cette note
-          </FormDescription>
+          <FormDescription>{t("tagsDescription")}</FormDescription>
           {suggestedTagIds.length > 0 && (
             <div className="flex items-center gap-2">
               <p className="text-muted-foreground text-xs">
-                Tags suggérés par l&apos;IA
+                {t("suggestedByAi")}
               </p>
               <button
                 type="button"
                 onClick={handleAcceptAllSuggestions}
                 className="text-primary text-xs underline"
               >
-                Tout accepter
+                {t("acceptAll")}
               </button>
             </div>
           )}
@@ -258,7 +256,7 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
           </div>
           {selectedTagIds.length === 0 && (
             <p className="text-destructive text-sm">
-              Veuillez sélectionner au moins un tag
+              {t("selectAtLeastOneTag")}
             </p>
           )}
         </div>
@@ -269,8 +267,8 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
           disabled={isPending || selectedTagIds.length === 0}
         >
           {isPending
-            ? "Ajout en cours..."
-            : `Poser la note à ${formatTime(currentTime)}`}
+            ? t("submitting")
+            : t("submit", { time: formatTime(currentTime) })}
         </Button>
         {result.serverError && (
           <p className="text-destructive mt-2 text-sm">{result.serverError}</p>

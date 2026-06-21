@@ -1,10 +1,12 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { signIn } from "@/lib/auth-client";
 
 export function GoogleSignInButton() {
+  const t = useTranslations("auth");
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleGoogleSignIn() {
@@ -21,7 +23,7 @@ export function GoogleSignInButton() {
       disabled={isLoading}
       variant="outline"
       className="w-full"
-      aria-label="Se connecter avec Google"
+      aria-label={t("google.ariaLabel")}
     >
       <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
         <path
@@ -41,7 +43,7 @@ export function GoogleSignInButton() {
           fill="#EA4335"
         />
       </svg>
-      {isLoading ? "Connexion en cours..." : "Continuer avec Google"}
+      {isLoading ? t("google.loading") : t("google.label")}
     </Button>
   );
 }

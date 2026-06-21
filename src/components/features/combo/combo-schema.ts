@@ -1,23 +1,20 @@
 import z from "zod";
 
 export const comboFormSchema = z.object({
-  characterId: z.string().min(1, "Le personnage est requis"),
+  characterId: z.string().min(1, "combo.validation.characterRequired"),
   title: z
     .string()
-    .min(2, "Le titre doit contenir au moins 2 caractères")
-    .max(120, "Le titre ne peut pas dépasser 120 caractères"),
+    .min(2, "combo.validation.titleMin")
+    .max(120, "combo.validation.titleMax"),
   notation: z
     .string()
-    .min(1, "La notation est requise")
-    .max(500, "La notation ne peut pas dépasser 500 caractères"),
+    .min(1, "combo.validation.notationRequired")
+    .max(500, "combo.validation.notationMax"),
   damage: z.number().int().min(0).max(9999).optional(),
   meterUsed: z.number().int().min(0).max(10).optional(),
   difficulty: z.number().int().min(1).max(5).optional(),
-  notes: z
-    .string()
-    .max(2000, "Les notes ne peuvent pas dépasser 2000 caractères")
-    .optional(),
-  tagIds: z.array(z.string()).max(10, "Maximum 10 tags autorisés"),
+  notes: z.string().max(2000, "combo.validation.notesMax").optional(),
+  tagIds: z.array(z.string()).max(10, "combo.validation.tagsMax"),
   sourceNoteId: z.string().optional(),
 });
 

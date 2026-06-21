@@ -6,6 +6,7 @@ import {
   Swords,
   type LucideIcon,
 } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 
 type ModuleTile = {
@@ -15,49 +16,53 @@ type ModuleTile = {
   icon: LucideIcon;
 };
 
-const MODULES: ModuleTile[] = [
-  {
-    href: "/videos",
-    label: "Replays",
-    hint: "Notes timestampées",
-    icon: Clapperboard,
-  },
-  {
-    href: "/combos",
-    label: "Combos",
-    hint: "Tes BnB par perso",
-    icon: Swords,
-  },
-  {
-    href: "/notes/strategy",
-    label: "Matrices",
-    hint: "Matchups structurés",
-    icon: Grid3x3,
-  },
-  {
-    href: "/notes/memo",
-    label: "Mémos",
-    hint: "Une idée en 5 sec",
-    icon: NotebookPen,
-  },
-  {
-    href: "/glossary",
-    label: "Glossaire",
-    hint: "Terminologie FGC",
-    icon: BookOpen,
-  },
-];
+export async function QuickActions() {
+  const t = await getTranslations("dashboard");
 
-export function QuickActions() {
+  const modules: ModuleTile[] = [
+    {
+      href: "/videos",
+      label: t("quickActions.modules.replays.label"),
+      hint: t("quickActions.modules.replays.hint"),
+      icon: Clapperboard,
+    },
+    {
+      href: "/combos",
+      label: t("quickActions.modules.combos.label"),
+      hint: t("quickActions.modules.combos.hint"),
+      icon: Swords,
+    },
+    {
+      href: "/notes/strategy",
+      label: t("quickActions.modules.matrices.label"),
+      hint: t("quickActions.modules.matrices.hint"),
+      icon: Grid3x3,
+    },
+    {
+      href: "/notes/memo",
+      label: t("quickActions.modules.memos.label"),
+      hint: t("quickActions.modules.memos.hint"),
+      icon: NotebookPen,
+    },
+    {
+      href: "/glossary",
+      label: t("quickActions.modules.glossary.label"),
+      hint: t("quickActions.modules.glossary.hint"),
+      icon: BookOpen,
+    },
+  ];
+
   return (
     <section className="space-y-4">
       <div className="flex items-baseline gap-3">
         <span className="text-primary font-mono text-xs">00</span>
-        <h2 className="font-display text-xl uppercase md:text-2xl">Ton labo</h2>
+        <h2 className="font-display text-xl uppercase md:text-2xl">
+          {t("quickActions.title")}
+        </h2>
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-        {MODULES.map((module, index) => {
+        {modules.map((module, index) => {
           const Icon = module.icon;
           return (
             <Link

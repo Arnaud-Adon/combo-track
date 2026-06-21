@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowUpRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -23,6 +24,8 @@ interface HeroCarouselProps {
 }
 
 function ResourcePanel({ slide }: { slide: HeroSlide }) {
+  const t = useTranslations("dashboard");
+
   return (
     <Link
       href={slide.link}
@@ -35,7 +38,7 @@ function ResourcePanel({ slide }: { slide: HeroSlide }) {
         style={{ background: "var(--fgc-accent-soft)" }}
       />
       <div className="text-primary font-mono text-[10px] tracking-[0.2em] uppercase">
-        Ressource
+        {t("carousel.resource")}
       </div>
       <h3 className="font-display mt-3 text-xl uppercase">{slide.title}</h3>
       {slide.description && (
@@ -44,7 +47,7 @@ function ResourcePanel({ slide }: { slide: HeroSlide }) {
         </p>
       )}
       <div className="text-muted-foreground group-hover:text-foreground mt-auto flex items-center gap-1.5 pt-6 font-mono text-xs tracking-wider uppercase transition-colors">
-        Ouvrir
+        {t("carousel.open")}
         <ArrowUpRight className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
       </div>
     </Link>
@@ -52,6 +55,7 @@ function ResourcePanel({ slide }: { slide: HeroSlide }) {
 }
 
 export function HeroCarousel({ slides }: HeroCarouselProps) {
+  const t = useTranslations("dashboard");
   const [api, setApi] = useState<CarouselApi>();
 
   useEffect(() => {
@@ -68,7 +72,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
     return (
       <div className="border-border bg-card text-muted-foreground flex h-full min-h-[260px] items-center justify-center rounded-xl border p-6 text-center">
         <p className="font-mono text-xs tracking-wider uppercase">
-          Aucune ressource pour le moment
+          {t("carousel.empty")}
         </p>
       </div>
     );

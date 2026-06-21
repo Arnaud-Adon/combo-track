@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Loader2, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useAction } from "next-safe-action/hooks";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -42,18 +43,20 @@ export function StrategyMatrixAiFillButton({
   onCellsGenerated,
 }: Props) {
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const t = useTranslations("strategyMatrix");
+  const tc = useTranslations("common");
 
   const { execute, isPending } = useAction(fillStrategyMatrixWithAiAction, {
     onSuccess: ({ data }) => {
       if (!data?.cells || data.cells.length === 0) {
-        toast.error("Aucune cellule générée");
+        toast.error(t("aiFill.empty"));
         return;
       }
       onCellsGenerated(data.cells);
-      toast.success(`${data.cells.length} cellules remplies par l'IA`);
+      toast.success(t("aiFill.success", { count: data.cells.length }));
     },
     onError: ({ error }) => {
-      toast.error(error.serverError ?? "Erreur lors de la génération");
+      toast.error(error.serverError ?? t("aiFill.error"));
     },
   });
 
@@ -93,28 +96,26 @@ export function StrategyMatrixAiFillButton({
         ) : (
           <Sparkles className="mr-2 h-4 w-4" />
         )}
-        {isPending ? "Génération…" : "Remplir avec l'IA"}
+        {isPending ? t("aiFill.generating") : t("aiFill.button")}
       </Button>
 
       <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Écraser le contenu existant ?</AlertDialogTitle>
+            <AlertDialogTitle>{t("aiFill.overwriteTitle")}</AlertDialogTitle>
             <AlertDialogDescription>
-              Certaines cellules contiennent déjà du contenu. La génération IA
-              remplacera tout le contenu existant. Vous pourrez encore éditer
-              chaque cellule manuellement après.
+              {t("aiFill.overwriteDescription")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogCancel>{tc("buttons.cancel")}</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
                 setConfirmOpen(false);
                 triggerFill();
               }}
             >
-              Continuer
+              {t("aiFill.continue")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

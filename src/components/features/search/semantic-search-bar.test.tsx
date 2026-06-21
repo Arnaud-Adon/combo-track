@@ -5,7 +5,11 @@ import {
   screen,
   waitFor,
 } from "@testing-library/react";
+import { NextIntlClientProvider } from "next-intl";
+import { type ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+
+import { frMessages } from "@/i18n/messages";
 
 const executeMock = vi.fn();
 const useActionMock = vi.fn(() => ({
@@ -24,6 +28,14 @@ vi.mock("./semantic-search-action", () => ({
 
 import { SemanticSearchBar } from "./semantic-search-bar";
 
+function renderWithIntl(ui: ReactNode) {
+  return render(
+    <NextIntlClientProvider locale="fr" messages={frMessages}>
+      {ui}
+    </NextIntlClientProvider>,
+  );
+}
+
 beforeEach(() => {
   executeMock.mockClear();
   useActionMock.mockClear();
@@ -31,12 +43,12 @@ beforeEach(() => {
 
 describe("SemanticSearchBar", () => {
   it("renders search input", () => {
-    render(<SemanticSearchBar />);
+    renderWithIntl(<SemanticSearchBar />);
     expect(screen.getByLabelText(/recherche sémantique/i)).toBeInTheDocument();
   });
 
   it("triggers debounced action for valid query", async () => {
-    render(<SemanticSearchBar />);
+    renderWithIntl(<SemanticSearchBar />);
 
     const input = screen.getByLabelText(/recherche sémantique/i);
     await act(async () => {
@@ -56,7 +68,7 @@ describe("SemanticSearchBar", () => {
   });
 
   it("does not trigger for query shorter than 2 chars", async () => {
-    render(<SemanticSearchBar />);
+    renderWithIntl(<SemanticSearchBar />);
 
     const input = screen.getByLabelText(/recherche sémantique/i);
     await act(async () => {

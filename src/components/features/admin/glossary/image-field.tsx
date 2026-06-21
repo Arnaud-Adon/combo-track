@@ -1,6 +1,7 @@
 "use client";
 
 import { ImageIcon, Loader2, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState, type ChangeEvent } from "react";
 import { toast } from "sonner";
 
@@ -13,6 +14,7 @@ interface ImageFieldProps {
 }
 
 export function ImageField({ value, onChange }: ImageFieldProps) {
+  const t = useTranslations("admin");
   const [isUploading, setIsUploading] = useState(false);
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -24,12 +26,12 @@ export function ImageField({ value, onChange }: ImageFieldProps) {
     }
 
     if (file.size > 2 * 1024 * 1024) {
-      toast.error("L'image doit faire moins de 2 Mo");
+      toast.error(t("article.upload.tooLarge"));
       return;
     }
 
     if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
-      toast.error("Formats acceptés : JPEG, PNG, WebP");
+      toast.error(t("article.upload.invalidFormat"));
       return;
     }
 
@@ -43,7 +45,7 @@ export function ImageField({ value, onChange }: ImageFieldProps) {
     setIsUploading(false);
 
     if (!result.success || !result.imageUrl) {
-      toast.error(result.error ?? "Échec de l'upload de l'image");
+      toast.error(result.error ?? t("article.upload.uploadFailed"));
       return;
     }
 
@@ -57,13 +59,13 @@ export function ImageField({ value, onChange }: ImageFieldProps) {
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={value}
-            alt="Aperçu"
+            alt={t("article.imageField.previewAlt")}
             className="h-full w-full object-cover"
           />
         ) : (
           <div className="text-muted-foreground absolute inset-0 flex flex-col items-center justify-center gap-2">
             <ImageIcon className="h-8 w-8" />
-            <span className="text-sm">Aucune image</span>
+            <span className="text-sm">{t("article.imageField.empty")}</span>
           </div>
         )}
 
@@ -105,7 +107,9 @@ export function ImageField({ value, onChange }: ImageFieldProps) {
             ) : (
               <ImageIcon className="mr-2 h-4 w-4" />
             )}
-            {value ? "Changer l'image" : "Choisir une image"}
+            {value
+              ? t("article.imageField.change")
+              : t("article.imageField.choose")}
           </Button>
         </label>
       </div>

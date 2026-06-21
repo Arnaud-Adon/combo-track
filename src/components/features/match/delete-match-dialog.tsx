@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAction } from "next-safe-action/hooks";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { deleteMatchAction } from "./match-action";
 
@@ -28,15 +29,17 @@ export function DeleteMatchDialog({
   matchTitle,
 }: DeleteMatchDialogProps) {
   const router = useRouter();
+  const t = useTranslations("match");
+  const tCommon = useTranslations("common");
 
   const { execute, isPending, result } = useAction(deleteMatchAction, {
     onSuccess: () => {
-      toast.success("Match supprimé avec succès");
+      toast.success(t("toast.deleted"));
       router.replace("/dashboard");
       router.refresh();
     },
     onError: ({ error }) => {
-      toast.error(error.serverError ?? "Erreur lors de la suppression");
+      toast.error(error.serverError ?? t("toast.deleteError"));
     },
   });
 
@@ -50,7 +53,7 @@ export function DeleteMatchDialog({
         <Button
           variant="ghost"
           size="icon"
-          aria-label="Supprimer le match"
+          aria-label={t("deleteDialog.trigger")}
           className="text-muted-foreground hover:text-destructive"
         >
           <Trash2 />
@@ -58,14 +61,15 @@ export function DeleteMatchDialog({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Supprimer ce match ?</AlertDialogTitle>
+          <AlertDialogTitle>{t("deleteDialog.title")}</AlertDialogTitle>
           <AlertDialogDescription>
-            Cette action est irréversible. Le match «&nbsp;{matchTitle}&nbsp;»
-            et toutes ses notes seront définitivement supprimés.
+            {t("deleteDialog.description", { title: matchTitle })}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isPending}>Annuler</AlertDialogCancel>
+          <AlertDialogCancel disabled={isPending}>
+            {tCommon("buttons.cancel")}
+          </AlertDialogCancel>
           <AlertDialogAction
             onClick={(e) => {
               e.preventDefault();
@@ -74,7 +78,7 @@ export function DeleteMatchDialog({
             disabled={isPending}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
-            {isPending ? "Suppression..." : "Supprimer"}
+            {isPending ? t("deleteDialog.deleting") : tCommon("buttons.delete")}
           </AlertDialogAction>
         </AlertDialogFooter>
         {result.serverError && (

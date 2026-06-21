@@ -3,12 +3,14 @@
 import { prisma } from "@/lib/prisma";
 import { adminActionClient } from "@/lib/admin-action";
 import { revalidatePath } from "next/cache";
+import { getTranslations } from "next-intl/server";
 import { createGameSchema, updateGameSchema } from "./game-schema";
 import z from "zod";
 
 export const createGameAction = adminActionClient
   .inputSchema(createGameSchema)
   .action(async ({ parsedInput }) => {
+    const t = await getTranslations("admin");
     const { name, slug, iconUrl } = parsedInput;
 
     const existing = await prisma.game.findUnique({
@@ -16,7 +18,7 @@ export const createGameAction = adminActionClient
     });
 
     if (existing) {
-      throw new Error("Un jeu avec ce slug existe déjà");
+      throw new Error(t("game.errors.slugExists"));
     }
 
     const game = await prisma.game.create({
@@ -36,6 +38,7 @@ export const createGameAction = adminActionClient
 export const updateGameAction = adminActionClient
   .inputSchema(updateGameSchema)
   .action(async ({ parsedInput }) => {
+    const t = await getTranslations("admin");
     const { id, name, slug, iconUrl } = parsedInput;
 
     const existing = await prisma.game.findFirst({
@@ -46,7 +49,7 @@ export const updateGameAction = adminActionClient
     });
 
     if (existing) {
-      throw new Error("Un jeu avec ce slug existe déjà");
+      throw new Error(t("game.errors.slugExists"));
     }
 
     const game = await prisma.game.update({
@@ -67,7 +70,7 @@ export const updateGameAction = adminActionClient
 export const deleteGameAction = adminActionClient
   .inputSchema(
     z.object({
-      id: z.string().min(1, "L'ID du jeu est requis"),
+      id: z.string().min(1, "admin.validation.game.idRequired"),
     }),
   )
   .action(async ({ parsedInput }) => {

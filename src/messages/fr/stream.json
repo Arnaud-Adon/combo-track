@@ -1,0 +1,30 @@
+{
+  "page": {
+    "title": "Streams SF6",
+    "liveCount": "{count} en direct"
+  },
+  "filter": {
+    "language": "Langue",
+    "allPlaceholder": "Toutes",
+    "allLanguages": "Toutes les langues"
+  },
+  "empty": {
+    "noStreams": "Aucun stream Street Fighter 6 en direct.",
+    "noStreamsHint": "Revenez plus tard pour regarder des streams en direct !",
+    "noStreamsForLanguage": "Aucun stream dans cette langue."
+  },
+  "player": {
+    "back": "Retour aux streams"
+  },
+  "languages": {
+    "fr": "Français",
+    "de": "Allemand",
+    "en": "Anglais",
+    "ja": "Japonais",
+    "es": "Espagnol",
+    "it": "Italien",
+    "pt": "Portugais",
+    "ko": "Coréen",
+    "zh": "Chinois"
+  }
+}

@@ -6,23 +6,25 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { useUserRole } from "@/hooks/use-user-role";
 import { useSession } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const NAV_LINKS = [
-  { href: "#benefits", label: "Bénéfices" },
-  { href: "#walkthrough", label: "Produit" },
-  { href: "#pricing", label: "Pricing" },
-  { href: "#faq", label: "FAQ" },
-];
-
 export function Header() {
+  const t = useTranslations("landing");
   const { data: session, isPending } = useSession();
   const { role } = useUserRole();
   const pathname = usePathname();
   const isLandingPage = pathname === "/";
   const [scrolled, setScrolled] = useState(false);
+
+  const navLinks = [
+    { href: "#benefits", label: t("nav.benefits") },
+    { href: "#walkthrough", label: t("nav.product") },
+    { href: "#pricing", label: t("nav.pricing") },
+    { href: "#faq", label: t("nav.faq") },
+  ];
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 16);
@@ -56,7 +58,7 @@ export function Header() {
 
           {isLandingPage ? (
             <nav className="hidden items-center gap-1 md:flex">
-              {NAV_LINKS.map((link) => (
+              {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}

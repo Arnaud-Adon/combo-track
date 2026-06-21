@@ -1,17 +1,24 @@
 import { SemanticSearchBar } from "@/components/features/search/semantic-search-bar";
+import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
-export const metadata = {
-  title: "Recherche sémantique",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("search");
 
-export default function SearchPage() {
+  return {
+    title: t("metadata.title"),
+  };
+}
+
+export default async function SearchPage() {
+  const t = await getTranslations("search");
+
   return (
     <div className="container mx-auto max-w-3xl px-4 py-8">
       <header className="mb-8">
-        <h1 className="text-3xl font-bold font-display">Recherche sémantique</h1>
+        <h1 className="text-3xl font-bold font-display">{t("page.title")}</h1>
         <p className="text-muted-foreground mt-2 text-sm">
-          Cherche dans tes notes timestampées, tes mémos et les articles du
-          glossaire par sens, pas seulement par mots-clés.
+          {t("page.description")}
         </p>
       </header>
       <SemanticSearchBar />

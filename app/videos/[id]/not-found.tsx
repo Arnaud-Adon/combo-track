@@ -1,12 +1,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getTranslations } from "next-intl/server";
 
-export default function NotFound() {
+export default async function NotFound() {
+  const t = await getTranslations("video");
+
   return (
     <div>
       <Card>
         <CardContent>
           <CardHeader>
-            <CardTitle>Aucune vidéo trouvée</CardTitle>
+            <CardTitle>{t("notFound.title")}</CardTitle>
           </CardHeader>
         </CardContent>
       </Card>

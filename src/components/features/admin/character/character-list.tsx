@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAction } from "next-safe-action/hooks";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Edit, Trash2, MoreVertical } from "lucide-react";
 
@@ -35,6 +36,8 @@ interface CharacterListProps {
 
 export function CharacterList({ characters }: CharacterListProps) {
   const router = useRouter();
+  const t = useTranslations("admin");
+  const tCommon = useTranslations("common");
   const [deleteDialog, setDeleteDialog] = useState<{
     open: boolean;
     character: AdminCharacterList[number] | null;
@@ -45,12 +48,12 @@ export function CharacterList({ characters }: CharacterListProps) {
 
   const { execute, isPending } = useAction(deleteCharacterAction, {
     onSuccess: () => {
-      toast.success("Personnage supprimé avec succès");
+      toast.success(t("character.toast.deleted"));
       setDeleteDialog({ open: false, character: null });
       router.refresh();
     },
     onError: ({ error }) => {
-      toast.error(error.serverError ?? "Erreur lors de la suppression");
+      toast.error(error.serverError ?? t("character.toast.deleteError"));
     },
   });
 
@@ -67,12 +70,10 @@ export function CharacterList({ characters }: CharacterListProps) {
   if (characters.length === 0) {
     return (
       <div className="py-12 text-center">
-        <p className="text-muted-foreground mb-4">
-          Aucun personnage pour le moment
-        </p>
+        <p className="text-muted-foreground mb-4">{t("character.list.empty")}</p>
         <Button asChild>
           <Link href="/admin/characters/new">
-            Créer votre premier personnage
+            {t("character.list.createFirst")}
           </Link>
         </Button>
       </div>
@@ -120,7 +121,7 @@ export function CharacterList({ characters }: CharacterListProps) {
                               className="flex items-center"
                             >
                               <Edit className="mr-2 h-4 w-4" />
-                              Éditer
+                              {t("actions.edit")}
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuItem
@@ -128,7 +129,7 @@ export function CharacterList({ characters }: CharacterListProps) {
                             className="text-destructive"
                           >
                             <Trash2 className="mr-2 h-4 w-4" />
-                            Supprimer
+                            {tCommon("buttons.delete")}
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
@@ -136,8 +137,16 @@ export function CharacterList({ characters }: CharacterListProps) {
                   </CardHeader>
                   <CardContent>
                     <div className="text-muted-foreground flex items-center gap-4 text-xs">
-                      <span>{character._count.combos} combos</span>
-                      <span>{character._count.notes} notes</span>
+                      <span>
+                        {t("character.list.combosCount", {
+                          count: character._count.combos,
+                        })}
+                      </span>
+                      <span>
+                        {t("character.list.notesCount", {
+                          count: character._count.notes,
+                        })}
+                      </span>
                     </div>
                   </CardContent>
                 </Card>
@@ -155,23 +164,26 @@ export function CharacterList({ characters }: CharacterListProps) {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Supprimer ce personnage ?</AlertDialogTitle>
+            <AlertDialogTitle>
+              {t("character.deleteDialog.title")}
+            </AlertDialogTitle>
             <AlertDialogDescription>
               {deleteDialog.character?.name}
               <br />
               <br />
-              Cela supprimera aussi tous les combos associés. Les notes liées
-              seront détachées. Cette action est irréversible.
+              {t("character.deleteDialog.description")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isPending}>Annuler</AlertDialogCancel>
+            <AlertDialogCancel disabled={isPending}>
+              {tCommon("buttons.cancel")}
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               disabled={isPending}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              {isPending ? "Suppression..." : "Supprimer"}
+              {isPending ? t("actions.deleting") : tCommon("buttons.delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

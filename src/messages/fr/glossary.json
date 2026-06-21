@@ -1,0 +1,24 @@
+{
+  "backToGlossary": "Retour au glossaire",
+  "list": {
+    "eyebrow": "FGC // Base de connaissances",
+    "title": "Glossaire",
+    "count": "{count} entrées",
+    "emptyCategory": "Aucun article dans cette catégorie.",
+    "emptyAll": "Aucun article disponible pour le moment."
+  },
+  "card": {
+    "noDescription": "Aucune description disponible",
+    "author": "Par {name}",
+    "read": "Lire"
+  },
+  "detail": {
+    "createdAt": "Créé le {date}",
+    "updatedAt": "Mis à jour le {date}",
+    "createdBy": "Créé par {name}"
+  },
+  "notFound": {
+    "title": "Article non trouvé",
+    "description": "L'article que vous recherchez n'existe pas ou n'est pas publié."
+  }
+}

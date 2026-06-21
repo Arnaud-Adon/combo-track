@@ -46,7 +46,7 @@ export const createNoteAction = actionClient
 export const updateNoteAction = actionClient
   .inputSchema(
     z.object({
-      noteId: z.string().min(1, { error: "L'ID de la note est requis" }),
+      noteId: z.string().min(1, { error: "video.validation.noteIdRequired" }),
       content: z
         .string()
         .min(2, { error: "Note must be at least 2 characters" }),
@@ -70,7 +70,7 @@ export const updateNoteAction = actionClient
 export const deleteNoteAction = actionClient
   .inputSchema(
     z.object({
-      noteId: z.string().min(1, { error: "L'ID de la note est requis" }),
+      noteId: z.string().min(1, { error: "video.validation.noteIdRequired" }),
     }),
   )
   .action(async ({ parsedInput }) => {

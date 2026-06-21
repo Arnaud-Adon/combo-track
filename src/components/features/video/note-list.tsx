@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Swords, Trash2 } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
+import { useTranslations } from "next-intl";
 
 import { Note, Tag } from "@/../generated/prisma";
 import {
@@ -38,6 +39,7 @@ type NoteItemProps = {
 };
 
 function NoteItem({ note, isActive, onClick, onDelete }: NoteItemProps) {
+  const t = useTranslations("video.noteList");
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -66,7 +68,7 @@ function NoteItem({ note, isActive, onClick, onDelete }: NoteItemProps) {
               ? "bg-primary text-primary-foreground"
               : "bg-accent text-primary",
           )}
-          aria-label={`Aller à ${formatTime(note.timestamp)}`}
+          aria-label={t("seekTo", { time: formatTime(note.timestamp) })}
         >
           {formatTime(note.timestamp)}
         </div>
@@ -75,10 +77,10 @@ function NoteItem({ note, isActive, onClick, onDelete }: NoteItemProps) {
             href={`/combos/new?fromNote=${note.id}`}
             onClick={(e) => e.stopPropagation()}
             className="text-muted-foreground hover:bg-accent hover:text-primary rounded-md p-1.5 transition-colors"
-            aria-label="Extraire en combo"
+            aria-label={t("extractToCombo")}
           >
             <Swords className="h-4 w-4" />
-            <span className="sr-only">Extraire en combo</span>
+            <span className="sr-only">{t("extractToCombo")}</span>
           </Link>
           <button
             type="button"
@@ -87,10 +89,10 @@ function NoteItem({ note, isActive, onClick, onDelete }: NoteItemProps) {
               onDelete(note);
             }}
             className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive rounded-md p-1.5 transition-colors"
-            aria-label="Supprimer la note"
+            aria-label={t("deleteNote")}
           >
             <Trash2 className="h-4 w-4" />
-            <span className="sr-only">Supprimer la note</span>
+            <span className="sr-only">{t("deleteNote")}</span>
           </button>
         </div>
       </div>
@@ -115,6 +117,8 @@ function NoteItem({ note, isActive, onClick, onDelete }: NoteItemProps) {
 export function NoteList(props: NoteListProps) {
   const { notes } = props;
   const router = useRouter();
+  const t = useTranslations("video.noteList");
+  const tCommon = useTranslations("common.buttons");
   const seekToTimestamp = useVideoPlayerStore((state) => state.seekToTimestamp);
   const currentTime = useVideoPlayerStore((state) => state.currentTime);
 
@@ -161,10 +165,8 @@ export function NoteList(props: NoteListProps) {
   if (notes.length === 0) {
     return (
       <div className="border-border text-muted-foreground flex flex-col items-center gap-2 rounded-xl border border-dashed py-10 text-center">
-        <p className="font-mono text-sm">Aucune note pour l&apos;instant.</p>
-        <p className="text-sm">
-          Pause au bon moment et pose ta première note.
-        </p>
+        <p className="font-mono text-sm">{t("empty")}</p>
+        <p className="text-sm">{t("emptyHint")}</p>
       </div>
     );
   }
@@ -191,24 +193,24 @@ export function NoteList(props: NoteListProps) {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>
-              Voulez-vous supprimer cette note ?
-            </AlertDialogTitle>
+            <AlertDialogTitle>{t("deleteTitle")}</AlertDialogTitle>
             <AlertDialogDescription>
               {deleteDialog.note?.content}
               <br />
               <br />
-              Cette action est irréversible.
+              {t("deleteIrreversible")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isPending}>Annuler</AlertDialogCancel>
+            <AlertDialogCancel disabled={isPending}>
+              {tCommon("cancel")}
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               disabled={isPending}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              {isPending ? "Suppression..." : "Supprimer"}
+              {isPending ? t("deleting") : tCommon("delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
           {result.serverError && (

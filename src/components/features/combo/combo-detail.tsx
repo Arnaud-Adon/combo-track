@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAction } from "next-safe-action/hooks";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Copy, Edit, ExternalLink, Gauge, Heart, Trash2, Zap } from "lucide-react";
 
@@ -30,25 +31,27 @@ interface ComboDetailProps {
 
 export function ComboDetail({ combo }: ComboDetailProps) {
   const router = useRouter();
+  const t = useTranslations("combo");
+  const tCommon = useTranslations("common");
   const [deleteOpen, setDeleteOpen] = useState(false);
 
   const { execute, isPending } = useAction(deleteComboAction, {
     onSuccess: () => {
-      toast.success("Combo supprimé");
+      toast.success(t("toast.deleted"));
       router.push("/combos");
       router.refresh();
     },
     onError: ({ error }) => {
-      toast.error(error.serverError ?? "Erreur lors de la suppression");
+      toast.error(error.serverError ?? t("toast.deleteError"));
     },
   });
 
   const handleCopyNotation = async () => {
     try {
       await navigator.clipboard.writeText(combo.notation);
-      toast.success("Notation copiée");
+      toast.success(t("toast.notationCopied"));
     } catch {
-      toast.error("Impossible de copier");
+      toast.error(t("toast.copyError"));
     }
   };
 
@@ -71,12 +74,12 @@ export function ComboDetail({ combo }: ComboDetailProps) {
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" onClick={handleCopyNotation}>
               <Copy className="mr-2 h-4 w-4" />
-              Copier
+              {t("detail.copy")}
             </Button>
             <Button variant="outline" asChild>
               <Link href={`/combos/${combo.id}/edit`}>
                 <Edit className="mr-2 h-4 w-4" />
-                Éditer
+                {t("detail.edit")}
               </Link>
             </Button>
             <Button
@@ -85,14 +88,14 @@ export function ComboDetail({ combo }: ComboDetailProps) {
               className="text-destructive hover:text-destructive"
             >
               <Trash2 className="mr-2 h-4 w-4" />
-              Supprimer
+              {tCommon("buttons.delete")}
             </Button>
           </div>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Notation</CardTitle>
+            <CardTitle className="text-base">{t("detail.notationTitle")}</CardTitle>
           </CardHeader>
           <CardContent>
             <code className="bg-muted block rounded-md p-4 font-mono text-base break-words">
@@ -106,7 +109,9 @@ export function ComboDetail({ combo }: ComboDetailProps) {
             <CardContent className="flex items-center gap-3 p-6">
               <Heart className="text-muted-foreground h-5 w-5" />
               <div>
-                <p className="text-muted-foreground text-xs">Dégâts</p>
+                <p className="text-muted-foreground text-xs">
+                  {t("detail.damageLabel")}
+                </p>
                 <p className="text-lg font-semibold">{combo.damage ?? "—"}</p>
               </div>
             </CardContent>
@@ -115,7 +120,9 @@ export function ComboDetail({ combo }: ComboDetailProps) {
             <CardContent className="flex items-center gap-3 p-6">
               <Zap className="text-muted-foreground h-5 w-5" />
               <div>
-                <p className="text-muted-foreground text-xs">Jauge</p>
+                <p className="text-muted-foreground text-xs">
+                  {t("detail.meterLabel")}
+                </p>
                 <p className="text-lg font-semibold">
                   {combo.meterUsed ?? "—"}
                 </p>
@@ -126,7 +133,9 @@ export function ComboDetail({ combo }: ComboDetailProps) {
             <CardContent className="flex items-center gap-3 p-6">
               <Gauge className="text-muted-foreground h-5 w-5" />
               <div>
-                <p className="text-muted-foreground text-xs">Difficulté</p>
+                <p className="text-muted-foreground text-xs">
+                  {t("detail.difficultyLabel")}
+                </p>
                 <p className="text-lg font-semibold">
                   {combo.difficulty ? `${combo.difficulty}/5` : "—"}
                 </p>
@@ -138,7 +147,7 @@ export function ComboDetail({ combo }: ComboDetailProps) {
         {combo.notes && (
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Notes</CardTitle>
+              <CardTitle className="text-base">{t("detail.notesTitle")}</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm whitespace-pre-wrap">{combo.notes}</p>
@@ -149,11 +158,15 @@ export function ComboDetail({ combo }: ComboDetailProps) {
         {combo.sourceNote && (
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Note source</CardTitle>
+              <CardTitle className="text-base">
+                {t("detail.sourceNoteTitle")}
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-muted-foreground text-sm">
-                Extrait depuis : {combo.sourceNote.match.title}
+                {t("detail.sourceNoteExtract", {
+                  title: combo.sourceNote.match.title,
+                })}
               </p>
               <p className="text-sm">{combo.sourceNote.content}</p>
               <Button variant="outline" size="sm" asChild>
@@ -161,7 +174,7 @@ export function ComboDetail({ combo }: ComboDetailProps) {
                   href={`/videos/${combo.sourceNote.match.id}?t=${combo.sourceNote.timestamp}`}
                 >
                   <ExternalLink className="mr-2 h-4 w-4" />
-                  Voir la note dans le replay
+                  {t("detail.viewNoteInReplay")}
                 </Link>
               </Button>
             </CardContent>
@@ -172,22 +185,24 @@ export function ComboDetail({ combo }: ComboDetailProps) {
       <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Supprimer ce combo ?</AlertDialogTitle>
+            <AlertDialogTitle>{t("deleteDialog.title")}</AlertDialogTitle>
             <AlertDialogDescription>
               {combo.title}
               <br />
               <br />
-              Cette action est irréversible.
+              {t("deleteDialog.description")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isPending}>Annuler</AlertDialogCancel>
+            <AlertDialogCancel disabled={isPending}>
+              {tCommon("buttons.cancel")}
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={() => execute({ id: combo.id })}
               disabled={isPending}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              {isPending ? "Suppression..." : "Supprimer"}
+              {isPending ? t("form.deleting") : tCommon("buttons.delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

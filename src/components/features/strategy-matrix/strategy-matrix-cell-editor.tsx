@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Eye, Pencil } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -46,6 +47,8 @@ export function StrategyMatrixCellEditor({
   opponentLevelLabel,
   onSave,
 }: Props) {
+  const t = useTranslations("strategyMatrix");
+  const tc = useTranslations("common");
   const [content, setContent] = useState(initialContent);
   const [showPreview, setShowPreview] = useState(false);
   const [confirmCloseOpen, setConfirmCloseOpen] = useState(false);
@@ -113,7 +116,7 @@ export function StrategyMatrixCellEditor({
         >
           <DialogHeader>
             <div className="text-muted-foreground font-mono text-[10px] tracking-[0.2em] uppercase">
-              Cellule de stratégie
+              {t("cellEditor.eyebrow")}
             </div>
             <DialogTitle className="font-display flex items-center gap-2 uppercase">
               <span className="text-primary">{myLevelLabel}</span>
@@ -121,8 +124,7 @@ export function StrategyMatrixCellEditor({
               <span>{opponentLevelLabel}</span>
             </DialogTitle>
             <DialogDescription>
-              Décris ta stratégie pour cette combinaison d&apos;états. Markdown
-              supporté.
+              {t("cellEditor.description")}
             </DialogDescription>
           </DialogHeader>
 
@@ -140,12 +142,12 @@ export function StrategyMatrixCellEditor({
                 {showPreview ? (
                   <>
                     <Pencil className="mr-2 h-3 w-3" />
-                    Édition
+                    {t("cellEditor.edit")}
                   </>
                 ) : (
                   <>
                     <Eye className="mr-2 h-3 w-3" />
-                    Aperçu
+                    {t("cellEditor.preview")}
                   </>
                 )}
               </Button>
@@ -166,7 +168,7 @@ export function StrategyMatrixCellEditor({
                   remarkPlugins={[remarkGfm]}
                   components={notationComponents}
                 >
-                  {content || "*Aucun contenu*"}
+                  {content || t("cellEditor.emptyPreview")}
                 </ReactMarkdown>
               </div>
             ) : (
@@ -176,7 +178,7 @@ export function StrategyMatrixCellEditor({
                 onChange={(e) =>
                   setContent(e.target.value.slice(0, MAX_CELL_LENGTH))
                 }
-                placeholder="Ex: Punish max → cr.HP xx Super..."
+                placeholder={t("cellEditor.placeholder")}
                 className="min-h-[200px]"
               />
             )}
@@ -186,10 +188,10 @@ export function StrategyMatrixCellEditor({
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={requestClose}>
-              Annuler
+              {tc("buttons.cancel")}
             </Button>
             <Button type="button" onClick={handleSave}>
-              Enregistrer
+              {tc("buttons.save")}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -198,16 +200,15 @@ export function StrategyMatrixCellEditor({
       <AlertDialog open={confirmCloseOpen} onOpenChange={setConfirmCloseOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Abandonner les modifications ?</AlertDialogTitle>
+            <AlertDialogTitle>{t("cellEditor.discardTitle")}</AlertDialogTitle>
             <AlertDialogDescription>
-              Les changements apportés à cette cellule ne sont pas enregistrés.
-              Voulez-vous vraiment fermer l&apos;éditeur ?
+              {t("cellEditor.discardDescription")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Continuer l&apos;édition</AlertDialogCancel>
+            <AlertDialogCancel>{t("cellEditor.keepEditing")}</AlertDialogCancel>
             <AlertDialogAction onClick={handleConfirmDiscard}>
-              Abandonner
+              {t("cellEditor.discard")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

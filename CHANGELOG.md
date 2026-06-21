@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## 2026-06-21
 
+### Fixed: Scope the homepage e2e "ComboTrack" link locator to the header (resolve strict-mode flake from the duplicate footer logo link)
+
+### Added: Extract all hardcoded French UI strings into next-intl catalogs across every feature domain (landing, dashboard, admin, glossary, strategy-matrix, video, memo, combo, match, auth, nav, capture, stream, search)
+
+### Added: i18n foundation with next-intl (single FR locale without routing, per-namespace fr catalog, typed message keys, translated FormMessage)
+
+### Docs: Add i18n translation-policy rule (next-intl, single FR locale, namespacing, Zod keys, no hardcoded strings)
+
 ### Added: Language filter on the streams page to filter live SF6 streams by language
 
 ### Added: Quick-access icon rail (Replays, Combos, Matrices, Mémos, Glossaire) as a right-edge overlay from the lg breakpoint, with accessible labels and tooltips

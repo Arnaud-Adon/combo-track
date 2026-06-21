@@ -1,36 +1,32 @@
 import { cn } from "@/lib/utils";
 import { Check, X } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
 type NotionVsCombotrackSectionProps = {
   className?: string;
 };
 
-const ROWS = [
-  {
-    feature: "Player YouTube intégré au timecode",
-    notion: false,
-    combotrack: true,
-  },
-  { feature: "Notation de combos en monospace dédiée", notion: false, combotrack: true },
-  { feature: "Matrices de matchup générées par IA", notion: false, combotrack: true },
-  {
-    feature: "Recherche sémantique sur notes + mémos + glossaire",
-    notion: false,
-    combotrack: true,
-  },
-  { feature: "Rapport d'analyse de match en 1 clic", notion: false, combotrack: true },
-  {
-    feature: "Glossaire FGC intégré (oki, neutral, frame data…)",
-    notion: false,
-    combotrack: true,
-  },
-  { feature: "Pages, bases de données, wikis", notion: true, combotrack: false },
+const ROW_FLAGS = [
+  { notion: false, combotrack: true },
+  { notion: false, combotrack: true },
+  { notion: false, combotrack: true },
+  { notion: false, combotrack: true },
+  { notion: false, combotrack: true },
+  { notion: false, combotrack: true },
+  { notion: true, combotrack: false },
 ];
 
-export function NotionVsCombotrackSection(
+export async function NotionVsCombotrackSection(
   props: NotionVsCombotrackSectionProps,
 ) {
   const { className } = props;
+
+  const t = await getTranslations("landing");
+  const features = t.raw("comparison.rows") as string[];
+  const rows = ROW_FLAGS.map((flags, idx) => ({
+    feature: features[idx],
+    ...flags,
+  }));
 
   return (
     <section
@@ -43,25 +39,22 @@ export function NotionVsCombotrackSection(
       <div className="relative mx-auto max-w-5xl px-4 py-24 sm:px-6 md:py-32 lg:px-8">
         <div className="mb-12 max-w-2xl md:mb-16">
           <span className="font-mono-fgc text-fgc-accent mb-4 inline-block text-[10px] tracking-[0.3em] uppercase">
-            {"// Comparatif"}
+            {t("comparison.eyebrow")}
           </span>
           <h2 className="marketing-h1 text-fgc-text text-4xl md:text-5xl lg:text-6xl">
-            « Notion fait pareil. »
+            {t("comparison.titlePart1")}
             <br />
-            <span className="text-fgc-muted">Pas vraiment.</span>
+            <span className="text-fgc-muted">{t("comparison.titleHighlight")}</span>
           </h2>
           <p className="text-fgc-muted mt-6 max-w-xl text-sm leading-relaxed md:text-base">
-            Notion est un super outil généraliste. ComboTrack est construit
-            pour la FGC — chaque feature existe parce qu&apos;un joueur
-            compétitif en avait besoin, pas parce que c&apos;est pratique dans
-            un outil de docs.
+            {t("comparison.intro")}
           </p>
         </div>
 
         <div className="border-fgc-border bg-fgc-surface overflow-hidden rounded-xl border">
           <div className="border-fgc-border bg-fgc-bg/60 grid grid-cols-[1fr_auto_auto] gap-4 border-b px-5 py-3 md:gap-12 md:px-8">
             <span className="text-fgc-muted font-mono-fgc text-[10px] tracking-wider uppercase">
-              Capacité
+              {t("comparison.headerCapability")}
             </span>
             <span className="text-fgc-muted font-mono-fgc w-16 text-center text-[10px] tracking-wider uppercase md:w-24">
               Notion
@@ -72,7 +65,7 @@ export function NotionVsCombotrackSection(
           </div>
 
           <div className="divide-fgc-border divide-y">
-            {ROWS.map((row) => (
+            {rows.map((row) => (
               <div
                 key={row.feature}
                 className="hover:bg-fgc-bg/40 grid grid-cols-[1fr_auto_auto] items-center gap-4 px-5 py-4 transition-colors md:gap-12 md:px-8"

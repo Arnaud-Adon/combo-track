@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/tooltip";
 import { FolderOpen, Trash2 } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -33,22 +34,24 @@ type Props = {
 
 export function MemoList({ memos }: Props) {
   const router = useRouter();
+  const t = useTranslations("memo.list");
+  const tCommon = useTranslations("common.buttons");
   const { execute, isPending } = useAction(deleteMemoAction, {
     onSuccess: () => {
-      toast.success("Mémo supprimé");
+      toast.success(t("deleted"));
       router.refresh();
     },
     onError: ({ error }) => {
-      toast.error(error.serverError ?? "Erreur lors de la suppression");
+      toast.error(error.serverError ?? t("deleteError"));
     },
   });
 
   if (memos.length === 0) {
     return (
       <div className="flex flex-col items-center gap-4 rounded-lg border border-dashed p-12 text-center">
-        <p className="text-muted-foreground">Aucun mémo pour le moment.</p>
+        <p className="text-muted-foreground">{t("empty")}</p>
         <Button asChild>
-          <Link href="/notes/memo/new">Créer mon premier mémo</Link>
+          <Link href="/notes/memo/new">{t("createFirst")}</Link>
         </Button>
       </div>
     );
@@ -67,7 +70,7 @@ export function MemoList({ memos }: Props) {
             )}
           </div>
           <div className="text-muted-foreground text-xs">
-            Mis à jour le{" "}
+            {t("updatedOn")}{" "}
             {new Date(memo.updatedAt).toLocaleDateString("fr-FR", {
               day: "2-digit",
               month: "short",
@@ -78,12 +81,12 @@ export function MemoList({ memos }: Props) {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button asChild size="icon" variant="outline">
-                  <Link href={`/notes/memo/${memo.id}`} aria-label="Ouvrir">
+                  <Link href={`/notes/memo/${memo.id}`} aria-label={t("open")}>
                     <FolderOpen className="h-4 w-4" />
                   </Link>
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>Ouvrir</TooltipContent>
+              <TooltipContent>{t("open")}</TooltipContent>
             </Tooltip>
             <MemoVisualizeDialog title={memo.title} content={memo.content} />
             <AlertDialog>
@@ -94,26 +97,25 @@ export function MemoList({ memos }: Props) {
                       variant="outline"
                       size="icon"
                       disabled={isPending}
-                      aria-label="Supprimer"
+                      aria-label={t("delete")}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </AlertDialogTrigger>
                 </TooltipTrigger>
-                <TooltipContent>Supprimer</TooltipContent>
+                <TooltipContent>{t("delete")}</TooltipContent>
               </Tooltip>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Supprimer ce mémo ?</AlertDialogTitle>
+                  <AlertDialogTitle>{t("deleteTitle")}</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Cette action est irréversible. Le mémo « {memo.title} » sera
-                    définitivement supprimé.
+                    {t("deleteDescription", { title: memo.title })}
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>Annuler</AlertDialogCancel>
+                  <AlertDialogCancel>{tCommon("cancel")}</AlertDialogCancel>
                   <AlertDialogAction onClick={() => execute({ id: memo.id })}>
-                    Supprimer
+                    {tCommon("delete")}
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>

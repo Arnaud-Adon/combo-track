@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import {
@@ -45,19 +46,19 @@ interface CharacterFormProps {
 
 export function CharacterForm({ mode, character, games }: CharacterFormProps) {
   const router = useRouter();
+  const t = useTranslations("admin");
+  const tCommon = useTranslations("common");
 
   const { execute: createExecute, isPending: isCreating } = useAction(
     createCharacterAction,
     {
       onSuccess: () => {
-        toast.success("Personnage créé avec succès");
+        toast.success(t("character.toast.created"));
         router.push("/admin/characters");
         router.refresh();
       },
       onError: ({ error }) => {
-        toast.error(
-          error.serverError ?? "Erreur lors de la création du personnage",
-        );
+        toast.error(error.serverError ?? t("character.toast.createError"));
       },
     },
   );
@@ -66,14 +67,12 @@ export function CharacterForm({ mode, character, games }: CharacterFormProps) {
     updateCharacterAction,
     {
       onSuccess: () => {
-        toast.success("Personnage mis à jour avec succès");
+        toast.success(t("character.toast.updated"));
         router.push("/admin/characters");
         router.refresh();
       },
       onError: ({ error }) => {
-        toast.error(
-          error.serverError ?? "Erreur lors de la mise à jour du personnage",
-        );
+        toast.error(error.serverError ?? t("character.toast.updateError"));
       },
     },
   );
@@ -117,7 +116,7 @@ export function CharacterForm({ mode, character, games }: CharacterFormProps) {
           name="gameId"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Jeu</FormLabel>
+              <FormLabel>{t("character.form.gameLabel")}</FormLabel>
               <Select
                 value={field.value}
                 onValueChange={field.onChange}
@@ -125,7 +124,9 @@ export function CharacterForm({ mode, character, games }: CharacterFormProps) {
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Sélectionner un jeu" />
+                    <SelectValue
+                      placeholder={t("character.form.gamePlaceholder")}
+                    />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -146,11 +147,11 @@ export function CharacterForm({ mode, character, games }: CharacterFormProps) {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nom</FormLabel>
+              <FormLabel>{t("character.form.nameLabel")}</FormLabel>
               <FormControl>
                 <Input
                   {...field}
-                  placeholder="Ex : Ryu"
+                  placeholder={t("character.form.namePlaceholder")}
                   onBlur={handleNameBlur}
                 />
               </FormControl>
@@ -164,12 +165,15 @@ export function CharacterForm({ mode, character, games }: CharacterFormProps) {
           name="slug"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Slug</FormLabel>
+              <FormLabel>{t("character.form.slugLabel")}</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="ryu" />
+                <Input
+                  {...field}
+                  placeholder={t("character.form.slugPlaceholder")}
+                />
               </FormControl>
               <FormDescription>
-                Identifiant URL-friendly (auto-généré depuis le nom)
+                {t("character.form.slugDescription")}
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -181,12 +185,12 @@ export function CharacterForm({ mode, character, games }: CharacterFormProps) {
           name="iconUrl"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>URL de l&apos;icône (optionnel)</FormLabel>
+              <FormLabel>{t("character.form.iconUrlLabel")}</FormLabel>
               <FormControl>
                 <Input
                   {...field}
                   value={field.value ?? ""}
-                  placeholder="https://..."
+                  placeholder={t("character.form.iconUrlPlaceholder")}
                 />
               </FormControl>
               <FormMessage />
@@ -201,16 +205,16 @@ export function CharacterForm({ mode, character, games }: CharacterFormProps) {
             onClick={() => router.push("/admin/characters")}
             disabled={isPending}
           >
-            Annuler
+            {tCommon("buttons.cancel")}
           </Button>
           <Button type="submit" disabled={isPending}>
             {isPending
               ? mode === "create"
-                ? "Création..."
-                : "Mise à jour..."
+                ? t("character.form.creating")
+                : t("character.form.updating")
               : mode === "create"
-                ? "Créer le personnage"
-                : "Mettre à jour"}
+                ? t("character.form.createSubmit")
+                : t("character.form.updateSubmit")}
           </Button>
         </div>
       </form>

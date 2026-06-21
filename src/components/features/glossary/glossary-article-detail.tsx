@@ -3,6 +3,7 @@
 import { renderInlineNotation } from "@/components/features/notation/notation-renderer";
 import { highlightFrameData } from "@/components/features/strategy-matrix/frame-data-renderer";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useTranslations } from "next-intl";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import type { ArticleDetail } from "../../../../prisma/query/glossary.query";
@@ -13,6 +14,8 @@ interface ArticleDetailProps {
 }
 
 export function ArticleDetail({ article }: ArticleDetailProps) {
+  const t = useTranslations("glossary");
+
   return (
     <article className="space-y-6">
       {article.image && (
@@ -32,11 +35,15 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
         <div className="text-muted-foreground flex items-center gap-4 text-sm">
           {article.category && <CategoryBadge category={article.category} />}
           <time dateTime={article.createdAt.toString()}>
-            Créé le {new Date(article.createdAt).toLocaleDateString()}
+            {t("detail.createdAt", {
+              date: new Date(article.createdAt).toLocaleDateString(),
+            })}
           </time>
           {article.updatedAt && (
             <time dateTime={article.updatedAt.toString()}>
-              Mis à jour le {new Date(article.updatedAt).toLocaleDateString()}
+              {t("detail.updatedAt", {
+                date: new Date(article.updatedAt).toLocaleDateString(),
+              })}
             </time>
           )}
         </div>
@@ -127,7 +134,7 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
           </Avatar>
           <div>
             <p className="text-sm font-medium">
-              Créé par {article.creator.name}
+              {t("detail.createdBy", { name: article.creator.name })}
             </p>
             <p className="text-muted-foreground text-xs">
               {new Date(article.createdAt).toLocaleDateString()}

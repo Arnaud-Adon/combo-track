@@ -1,4 +1,5 @@
 import { Plus } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -10,21 +11,27 @@ type RecentMatchesSectionProps = {
   matches: RecentMatches;
 };
 
-export function RecentMatchesSection({ matches }: RecentMatchesSectionProps) {
+export async function RecentMatchesSection({
+  matches,
+}: RecentMatchesSectionProps) {
+  const t = await getTranslations("dashboard");
+
   return (
     <section className="space-y-5">
-      <SectionHeader index="02" title="Derniers replays" href="/videos" />
+      <SectionHeader
+        index="02"
+        title={t("recentMatches.title")}
+        href="/videos"
+      />
 
       {matches.length === 0 ? (
         <div className="border-border text-muted-foreground flex flex-col items-center gap-3 rounded-xl border border-dashed py-12 text-center">
-          <p className="font-mono text-sm">Aucun replay pour le moment.</p>
-          <p className="text-sm">
-            Colle un lien YouTube et commence à labber.
-          </p>
+          <p className="font-mono text-sm">{t("recentMatches.empty")}</p>
+          <p className="text-sm">{t("recentMatches.emptyHint")}</p>
           <Button asChild variant="outline" size="sm" className="mt-1">
             <Link href="/videos/new">
               <Plus className="size-4" />
-              Nouveau replay
+              {t("actions.newReplay")}
             </Link>
           </Button>
         </div>

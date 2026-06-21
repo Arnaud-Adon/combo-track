@@ -7,6 +7,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Loader2, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 type NoteSuggestTagsButtonProps = {
   onSuggest: () => void;
@@ -19,6 +20,8 @@ export function NoteSuggestTagsButton({
   isSuggesting,
   disabled,
 }: NoteSuggestTagsButtonProps) {
+  const t = useTranslations("video.suggestTags");
+
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -35,15 +38,11 @@ export function NoteSuggestTagsButton({
             ) : (
               <Sparkles className="h-4 w-4" />
             )}
-            {isSuggesting ? "Suggestion en cours..." : "Suggérer des tags"}
+            {isSuggesting ? t("suggesting") : t("suggest")}
           </Button>
         </span>
       </TooltipTrigger>
-      {disabled && (
-        <TooltipContent>
-          La note doit contenir au moins 10 caractères
-        </TooltipContent>
-      )}
+      {disabled && <TooltipContent>{t("minChars")}</TooltipContent>}
     </Tooltip>
   );
 }

@@ -1,0 +1,24 @@
+{
+  "buttons": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer",
+    "confirm": "Confirmer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "retry": "Réessayer"
+  },
+  "states": {
+    "loading": "Chargement…",
+    "errorGeneric": "Une erreur s'est produite",
+    "empty": "Aucun élément pour le moment"
+  },
+  "validation": {
+    "required": "Ce champ est requis",
+    "maxChars": "Maximum {count} caractères",
+    "minChars": "Minimum {count} caractères"
+  }
+}

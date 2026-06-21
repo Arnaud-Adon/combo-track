@@ -1,0 +1,350 @@
+{
+  "nav": {
+    "benefits": "Bénéfices",
+    "product": "Produit",
+    "pricing": "Pricing",
+    "faq": "FAQ",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "authenticated": {
+      "dashboard": "Dashboard",
+      "stream": "Stream",
+      "admin": "Admin",
+      "glossary": "Glossaire",
+      "games": "Jeux",
+      "characters": "Personnages",
+      "menuLabel": "Menu",
+      "labHeading": "Labo",
+      "replays": "Replays",
+      "combos": "Combos",
+      "matrices": "Matrices",
+      "memos": "Mémos"
+    }
+  },
+  "hero": {
+    "titleLine1": "Download tes adversaires.",
+    "titleLine2": "Retiens chaque combo.",
+    "titleLine3": "Monte en ranked.",
+    "description": "ComboTrack centralise tes notes timestampées sur YouTube, ton carnet de combos par perso, tes matrices de <matchup>matchup</matchup> stratégiques, tes mémos personnels et un rapport d'analyse par IA. Tout est connecté, tout est retrouvable en une recherche.",
+    "ctaPrimary": "Commencer gratuitement",
+    "searchCta": "Essayer la recherche",
+    "trustForever": "Gratuit pour toujours",
+    "trustNoCard": "Pas de CB requise",
+    "trustNoInstall": "Aucune installation",
+    "notationLabel": "Notation",
+    "productMock": {
+      "notesLabel": "Notes timestampées",
+      "notes": [
+        "Drive Rush whiff punish",
+        "Anti-air DP — confirmé en super",
+        "Throw loop oki sur wakeup",
+        "Erreur neutral — burned 2 drive"
+      ],
+      "generateReport": "Génère le rapport IA"
+    }
+  },
+  "problem": {
+    "eyebrow": "// Problème",
+    "titlePart1": "Tu analyses.",
+    "titlePart2": " Tu oublies.",
+    "titlePart3": "Tu recommences.",
+    "pains": {
+      "notes": {
+        "title": "Tes notes de replay ne servent à rien",
+        "body": "Tu regardes un match sur YouTube, tu remarques un setup intéressant. Tu l'écris dans un message Discord. Deux jours plus tard, impossible de le retrouver. Ce pattern se répète depuis des mois."
+      },
+      "combos": {
+        "title": "Tes combos disparaissent entre deux sessions",
+        "body": "Tu lab un combo pendant 45 minutes, tu le rentres 50 fois. Le lendemain en ranked, tu peux plus le replacer. Parce qu'il était dans ta tête, pas quelque part de fiable."
+      },
+      "matchup": {
+        "title": "Chaque matchup difficile, tu repars de zéro",
+        "body": "Tu joues contre le même perso pour la dixième fois. Tu as les mêmes lacunes qu'il y a trois semaines. Parce que tu n'as jamais écrit ce qui marchait — et ce qui ne marchait pas."
+      }
+    },
+    "conclusion": "Le problème, c'est pas le manque de motivation. Tu regardes des VODs, tu lab, tu analyses. Le problème, c'est que tout ce travail disparaît. Dispersé dans dix outils qui ne se parlent pas, perdu dans des messages Discord introuvables, évaporé après le prochain patch. <strong>Le grind sans système, c'est du grind à vide.</strong>"
+  },
+  "solution": {
+    "eyebrow": "// Solution",
+    "titlePart1": "Un seul endroit pour",
+    "titleHighlight": "tout ce qui te fait progresser.",
+    "description": "ComboTrack connecte tes replays, tes combos, tes matchups et tes mémos dans un seul <lab>labo</lab> dédié à la FGC. Ce que tu observes en vidéo devient un combo dans ton carnet. Ce que tu comprends d'un matchup devient une matrice consultable avant ton prochain set. Ce qui te passe par la tête en plein lab devient un mémo retrouvable en deux frappes (⌘K). L'IA synthétise ce que tu n'as pas vu seul."
+  },
+  "benefits": {
+    "eyebrow": "// Bénéfices",
+    "titlePart1": "Six modules.",
+    "titleHighlight": "Un seul flux.",
+    "intro": "Tout ce qu'un joueur compétitif fait après une session — annoter, structurer, comparer, synthétiser, retrouver. Au même endroit.",
+    "items": {
+      "matchNotebook": {
+        "tag": "Match Notebook",
+        "title": "Notes timestampées. Rien ne se perd.",
+        "body": "Tu colles l'URL de n'importe quelle vidéo YouTube. Tu annotes au bon moment : combo punish, oki setup, erreur de neutral. Chaque note est liée au timecode exact. Dans six mois, tu retrouves tout en trois secondes."
+      },
+      "comboNotebook": {
+        "tag": "Combo Notebook",
+        "title": "Tes BnBs. Structurés. Par perso.",
+        "body": "Chaque combo a sa fiche : notation, dégâts, meter, difficulté, tags. Lié à la vidéo source. Ton carnet évolue avec toi — pas avec le prochain patch."
+      },
+      "strategyMatrix": {
+        "tag": "Strategy Matrix",
+        "title": "Prépare chaque matchup avant d'entrer en jeu.",
+        "body": "Crée une matrice pour un adversaire précis : tes options face à ses options. Remplis les cellules — ou laisse l'IA les générer en 10 secondes. Épingle, consulte avant ton set."
+      },
+      "aiReport": {
+        "tag": "AI Match Report",
+        "title": "L'IA qui voit ce que tu as raté.",
+        "body": "Génère un rapport complet en un clic : résumé, points forts, UN point faible prioritaire, moments clés horodatés, exercices concrets pour ta prochaine session de lab."
+      },
+      "memos": {
+        "tag": "Mémos",
+        "title": "Capture une idée en 5 secondes.",
+        "body": "Une intuition pendant le lab, une routine d'échauffement, une checklist pré-tournoi. Pas besoin d'un match ni d'un perso. Indexé avec tout le reste."
+      },
+      "search": {
+        "tag": "Recherche ⌘K",
+        "title": "Tout ton labo, à une frappe.",
+        "body": "Recherche sémantique. Tape « anti-air dive kick » et retrouve ta note où tu avais écrit « DP punish jump-in Akuma ». Plus besoin de te souvenir des mots exacts."
+      }
+    }
+  },
+  "walkthrough": {
+    "eyebrow": "// Produit",
+    "titlePart1": "Du replay au plan de lab.",
+    "titleHighlight": "En trois étapes.",
+    "steps": {
+      "capture": {
+        "eyebrow": "Capture",
+        "title": "Colle une URL. Annote au timecode exact.",
+        "body": "Replay perso, set pro, tutoriel — peu importe la source. Le player YouTube est intégré. Tu écris ta note à la seconde précise, elle reste liée pour toujours."
+      },
+      "structure": {
+        "eyebrow": "Structure",
+        "title": "Construis une matrice de matchup en 10 secondes.",
+        "body": "Tes options face aux siennes. L'IA propose, tu valides. Épingle la matrice, consulte-la depuis ton téléphone entre deux sets."
+      },
+      "synthesis": {
+        "eyebrow": "Synthèse",
+        "title": "L'IA lit tes notes et te dit où tu fuites.",
+        "body": "Résumé, points forts, le point faible prioritaire à corriger, moments clés cliquables, exercices concrets pour ta prochaine session de lab."
+      }
+    },
+    "matchNotebookMock": {
+      "notes": [
+        "5HK whiff punish — confirm CA",
+        "Drive Rush spacing trop court",
+        "Oki throw loop wakeup arrière"
+      ]
+    },
+    "aiReportMock": {
+      "summaryLabel": "Résumé",
+      "summary": "Pressure neutral solide, mais 3 commit non sûrs sur Drive Rush ont coûté la game 2. Burnout mal géré round 3.",
+      "weaknessLabel": "Point faible prioritaire",
+      "weakness": "Drive Rush 5MK abusé sur knockdown — adversaire DI 2 fois sur 3.",
+      "exercisesLabel": "Exercices"
+    }
+  },
+  "cmdk": {
+    "eyebrow": "// ⌘K",
+    "titlePart1": "Tout ton labo,",
+    "titleHighlight": "à une frappe.",
+    "description": "Recherche sémantique. Tape une idée — pas un mot-clé. Indexe tes notes, tes mémos et le glossaire.",
+    "queries": [
+      "anti-air contre dive kick",
+      "punir burnout JP",
+      "oki setup wakeup Marisa",
+      "BnB Drive Rush 5MK confirm"
+    ],
+    "results": {
+      "note": {
+        "badge": "MATCH",
+        "title": "DP anti-air sur jump-in Akuma — confirmé en super"
+      },
+      "memo": {
+        "badge": "MÉMO",
+        "title": "Anti-air timing : delay 3 frames sur dive kick rapide"
+      },
+      "glossary": {
+        "badge": "GLOSSAIRE",
+        "title": "Dive kick — option aérienne descendante punissable AA"
+      }
+    },
+    "navigate": "naviguer",
+    "open": "ouvrir",
+    "availableEverywhere": "Disponible partout dans l'app —"
+  },
+  "comparison": {
+    "eyebrow": "// Comparatif",
+    "titlePart1": "« Notion fait pareil. »",
+    "titleHighlight": "Pas vraiment.",
+    "intro": "Notion est un super outil généraliste. ComboTrack est construit pour la FGC — chaque feature existe parce qu'un joueur compétitif en avait besoin, pas parce que c'est pratique dans un outil de docs.",
+    "headerCapability": "Capacité",
+    "rows": [
+      "Player YouTube intégré au timecode",
+      "Notation de combos en monospace dédiée",
+      "Matrices de matchup générées par IA",
+      "Recherche sémantique sur notes + mémos + glossaire",
+      "Rapport d'analyse de match en 1 clic",
+      "Glossaire FGC intégré (oki, neutral, frame data…)",
+      "Pages, bases de données, wikis"
+    ]
+  },
+  "testimonials": {
+    "eyebrow": "// Témoignages",
+    "titlePart1": "Ce que disent les joueurs",
+    "titleHighlight": "qui l'utilisent.",
+    "items": {
+      "theo": {
+        "quote": "Je regardais des VODs depuis des mois sans progresser. Depuis ComboTrack, chaque session d'analyse génère des combos dans mon carnet et une matrice à réviser. Mon rank a monté d'une division en trois semaines.",
+        "name": "Théo M."
+      },
+      "sarah": {
+        "quote": "Le rapport AI après mes matchs de tournoi est incroyable. Il identifie exactement le pattern que je répète sans m'en rendre compte. C'est comme avoir un coach qui a regardé tous mes sets.",
+        "name": "Sarah K."
+      },
+      "marc": {
+        "quote": "La Strategy Matrix avant un tournoi local, c'est devenu mon ritual. Je prépare les matchups difficiles la veille, je consulte sur mon téléphone entre les sets. Ça m'a sauvé deux fois en bracket.",
+        "name": "Marc D."
+      }
+    },
+    "trust": [
+      "Compatible SF6, Tekken 8, Guilty Gear Strive",
+      "Données 100% privées — tes notes appartiennent à toi",
+      "Fonctionne sur tous les navigateurs, aucune installation"
+    ]
+  },
+  "pricing": {
+    "eyebrow": "// Pricing",
+    "titlePart1": "Commence gratuitement.",
+    "titleHighlight": "Upgrade quand tu veux.",
+    "billingMonthly": "Mensuel",
+    "billingYearly": "Annuel",
+    "perMonth": "/mois",
+    "popularBadge": "Le plus populaire",
+    "tiers": {
+      "free": {
+        "description": "Tester l'outil, voir la valeur.",
+        "cta": "Commencer gratuitement",
+        "features": [
+          "5 matches / mois",
+          "20 combos",
+          "2 matrices",
+          "10 mémos",
+          "1 jeu",
+          "Recherche ⌘K sémantique"
+        ]
+      },
+      "challenger": {
+        "description": "Le joueur compétitif qui analyse régulièrement.",
+        "cta": "Passer Challenger",
+        "features": [
+          "Matches illimités",
+          "Combos illimités",
+          "Matrices illimitées",
+          "Mémos illimités",
+          "10 rapports AI / mois",
+          "Génération IA des matrices",
+          "Suggestions de tags IA",
+          "Tous les jeux disponibles"
+        ]
+      },
+      "pro": {
+        "description": "Tournois, très actifs, > 10 analyses / mois.",
+        "cta": "Passer Pro",
+        "features": [
+          "Tout Challenger",
+          "Rapports AI illimités",
+          "Export carnet de combos (PDF)",
+          "Partage de matrices (liens publics)",
+          "Early access nouvelles features",
+          "Support prioritaire"
+        ]
+      }
+    },
+    "guarantee": "Pas satisfait dans les <b>7 premiers jours</b> après ton upgrade ? On te rembourse, sans question."
+  },
+  "faq": {
+    "eyebrow": "// FAQ",
+    "titlePart1": "Les questions",
+    "titleHighlight": "qu'on nous pose le plus.",
+    "items": [
+      {
+        "q": "Quels jeux sont supportés ?",
+        "a": "SF6, Tekken 8 et Guilty Gear Strive sont disponibles au lancement. D'autres jeux sont ajoutés régulièrement. Le système de notation et de tags est générique — tu peux utiliser ComboTrack pour n'importe quel jeu de combat même si ton jeu n'est pas encore listé."
+      },
+      {
+        "q": "Est-ce que le tier gratuit est vraiment utile ?",
+        "a": "Oui. Le tier gratuit te donne accès aux 4 modules (Match Notebook, Combo Notebook, Strategy Matrix, Glossaire) avec des limites raisonnables : 5 matches par mois, 20 combos, 2 matrices. Assez pour voir la valeur avant de t'engager."
+      },
+      {
+        "q": "Comment fonctionne le rapport AI ?",
+        "a": "Tu annotes ton match, puis tu cliques « Générer le rapport ». L'IA (Groq, modèle Llama 3.3) analyse tes notes et produit un rapport structuré : résumé, 2-3 points forts, 1 point faible prioritaire, moments clés avec timecodes, et 2-3 recommandations d'exercices. Le rapport est sauvegardé avec le match."
+      },
+      {
+        "q": "Puis-je annuler à tout moment ?",
+        "a": "Oui, sans friction. Aucun engagement minimum, aucun appel de rétention. Tu gères ton abonnement depuis ton compte."
+      },
+      {
+        "q": "L'IA peut vraiment remplir une Strategy Matrix ?",
+        "a": "Oui — et le résultat est calibré FGC. Tu fournis le contexte (ton perso, le perso adverse, les axes de ta matrice), l'IA génère chaque cellule avec une stratégie concrète en vocabulaire FGC (frame trap, whiff punish, oki, mixup). Tu édites ce qui ne te convient pas."
+      },
+      {
+        "q": "Mes données sont-elles sauvegardées si je change de navigateur ?",
+        "a": "Tout est stocké dans le cloud, lié à ton compte. Tu accèdes à ComboTrack depuis n'importe quel navigateur ou machine avec ta session."
+      },
+      {
+        "q": "C'est quoi la différence entre une note et un mémo ?",
+        "a": "Une note est timestampée et attachée à un match YouTube précis (« au timecode 1:23, oki setup wakeup »). Un mémo est un bloc-notes libre, sans vidéo ni perso obligatoire (« checklist tournoi », « routine d'échauffement », « idées de tech à tester »). Les deux sont indexés et remontent dans la recherche universelle ⌘K."
+      },
+      {
+        "q": "La recherche fonctionne comment ?",
+        "a": "Recherche sémantique. Tu tapes une idée en langage naturel, ComboTrack remonte les notes, mémos et articles de glossaire qui ont du sens, même si les mots exacts ne sont pas là. Exemple : « comment punir un dive kick » trouve une note où tu as écrit « DP anti-air sur jump-in Akuma ». Raccourci ⌘K (ou Ctrl+K) accessible depuis n'importe quel écran."
+      }
+    ]
+  },
+  "cta": {
+    "eyebrow": "// Game on",
+    "titlePart1": "Ton prochain rank",
+    "titleHighlight": "commence ici.",
+    "description": "Les matchs que tu regardes en boucle sans progresser — c'est derrière toi. ComboTrack transforme chaque replay en plan de lab, chaque observation en combo structuré, chaque matchup difficile en matrice consultable.",
+    "button": "Commencer gratuitement — c'est immédiat",
+    "trustForever": "Gratuit pour toujours",
+    "trustNoCard": "Pas de CB",
+    "trustCancel": "Annulable à tout moment"
+  },
+  "footer": {
+    "tagline": "Ton labo FGC, enfin centralisé. Tes replays, tes combos et tes matchups au même endroit.",
+    "productHeading": "Produit",
+    "labHeading": "Ton labo",
+    "lab": {
+      "dashboard": "Dashboard",
+      "combos": "Combos",
+      "matrices": "Matrices",
+      "glossary": "Glossaire"
+    },
+    "copyright": "© {year} ComboTrack",
+    "madeForFgc": "Fait pour la FGC"
+  },
+  "mobileCta": {
+    "freeForever": "Free forever",
+    "tagline": "Ton labo FGC, en 30 secondes.",
+    "cta": "Commencer"
+  },
+  "fgcTerm": {
+    "bnb": "Bread and Butter — combo de base, fiable, ton outil par défaut quand l'occasion se présente.",
+    "oki": "Okizeme — pression et mix-up appliqués pendant le réveil de l'adversaire au sol.",
+    "neutral": "Phase de jeu où aucun joueur n'a l'avantage. Spacing, baits, whiff punish.",
+    "punish": "Punir un move adverse non sûr (gros startup, gros recovery) avec ton meilleur combo.",
+    "setup": "Situation reproductible que tu crées pour forcer un mix-up ou une lecture.",
+    "download": "Étudier méthodiquement un adversaire — ses habitudes, ses options, ses tells.",
+    "lab": "Training mode actif : tester, mesurer, valider une situation jusqu'à la maîtriser.",
+    "grind": "Effort répété et continu — sessions longues, intentionnelles.",
+    "matchup": "L'affrontement spécifique d'un perso contre un autre.",
+    "frameData": "Données précises de chaque move : startup, active, recovery, advantage.",
+    "whiffPunish": "Punir un move qui rate (whiff) avec ton meilleur outil à portée.",
+    "driveRush": "Mécanique de dash chargé en SF6 qui modifie le frame advantage. Move dans l'écosystème SF6.",
+    "meter": "La jauge — Drive en SF6, Heat en T8, Tension en Strive.",
+    "frameTrap": "Enchaînement laissant juste assez de frames pour piéger une pression adverse.",
+    "mixup": "Choisir entre deux options non-réagissables (high/low, left/right)."
+  }
+}

@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 
 type SectionHeaderProps = {
@@ -8,8 +9,10 @@ type SectionHeaderProps = {
   linkLabel?: string;
 };
 
-export function SectionHeader(props: SectionHeaderProps) {
-  const { index, title, href, linkLabel = "Voir tout" } = props;
+export async function SectionHeader(props: SectionHeaderProps) {
+  const { index, title, href, linkLabel } = props;
+  const t = await getTranslations("dashboard");
+  const resolvedLinkLabel = linkLabel ?? t("sectionHeader.seeAll");
 
   return (
     <div className="space-y-3">
@@ -22,7 +25,7 @@ export function SectionHeader(props: SectionHeaderProps) {
           href={href}
           className="text-muted-foreground hover:text-foreground flex items-center gap-1 font-mono text-xs tracking-wider uppercase transition-colors"
         >
-          {linkLabel}
+          {resolvedLinkLabel}
           <ArrowRight className="size-3.5" />
         </Link>
       </div>

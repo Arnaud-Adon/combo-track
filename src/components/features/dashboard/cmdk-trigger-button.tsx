@@ -1,6 +1,7 @@
 "use client";
 
 import { Command } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
 import { useSearchDialogStore } from "@/stores/search-dialog";
@@ -11,8 +12,10 @@ type CmdkTriggerButtonProps = {
 };
 
 export function CmdkTriggerButton(props: CmdkTriggerButtonProps) {
-  const { className, label = "Chercher dans ton labo" } = props;
+  const { className, label } = props;
+  const t = useTranslations("dashboard");
   const setOpen = useSearchDialogStore((state) => state.setOpen);
+  const resolvedLabel = label ?? t("cmdk.placeholder");
 
   return (
     <button
@@ -25,7 +28,7 @@ export function CmdkTriggerButton(props: CmdkTriggerButtonProps) {
     >
       <Command className="size-3.5" />
       <span className="font-mono tracking-wider">⌘K</span>
-      <span>{label}</span>
+      <span>{resolvedLabel}</span>
     </button>
   );
 }

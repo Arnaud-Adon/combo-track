@@ -1,30 +1,35 @@
+import { getTranslations } from "next-intl/server";
+
 import type { MatchStatus, MatchType } from "@/../generated/prisma";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-export function getMatchTypeLabel(matchType: MatchType): string {
+export type MatchTranslator = (key: string) => string;
+
+export function getMatchTypeLabel(
+  matchType: MatchType,
+  t: MatchTranslator,
+): string {
   switch (matchType) {
     case "RANKED":
-      return "Ranked";
     case "TOURNAMENT":
-      return "Tournoi";
     case "TRAINING":
-      return "Training";
+      return t(`type.${matchType}`);
     default:
       return matchType;
   }
 }
 
-export function getStatusLabel(status: MatchStatus): string {
+export function getStatusLabel(
+  status: MatchStatus,
+  t: MatchTranslator,
+): string {
   switch (status) {
     case "DRAFT":
-      return "Brouillon";
     case "COMPLETED":
-      return "Complété";
     case "ANALYZED":
-      return "Analysé";
     case "IN_PROGRESS":
-      return "En cours";
+      return t(`status.${status}`);
     default:
       return status;
   }
@@ -45,8 +50,9 @@ type MatchStatusBadgeProps = {
   className?: string;
 };
 
-export function MatchStatusBadge(props: MatchStatusBadgeProps) {
+export async function MatchStatusBadge(props: MatchStatusBadgeProps) {
   const { status, className } = props;
+  const t = await getTranslations("match");
 
   return (
     <Badge
@@ -56,7 +62,7 @@ export function MatchStatusBadge(props: MatchStatusBadgeProps) {
         className,
       )}
     >
-      {getStatusLabel(status)}
+      {getStatusLabel(status, t as unknown as MatchTranslator)}
     </Badge>
   );
 }

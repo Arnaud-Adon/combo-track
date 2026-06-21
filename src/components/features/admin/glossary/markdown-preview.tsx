@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -10,6 +11,8 @@ interface MarkdownPreviewProps {
 }
 
 export function MarkdownPreview({ content }: MarkdownPreviewProps) {
+  const t = useTranslations("admin");
+
   return (
     <div className="prose prose-invert border-border bg-card text-accent-foreground max-w-none rounded-lg border p-4">
       <ReactMarkdown
@@ -26,7 +29,7 @@ export function MarkdownPreview({ content }: MarkdownPreviewProps) {
           ),
         }}
       >
-        {content || "*Aucun contenu à prévisualiser*"}
+        {content || t("article.preview.empty")}
       </ReactMarkdown>
     </div>
   );
