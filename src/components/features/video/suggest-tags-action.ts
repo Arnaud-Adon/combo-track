@@ -8,11 +8,11 @@ export const suggestTagsAction = actionClient
   .inputSchema(
     z.object({
       noteText: z.string().min(10, {
-        error: "La note doit contenir au moins 10 caractères",
+        error: "video.suggestTags.minChars",
       }),
       availableTagNames: z
         .array(z.string())
-        .min(1, { error: "Au moins un tag disponible requis" }),
+        .min(1, { error: "video.suggestTags.tagRequired" }),
     }),
   )
   .action(async ({ parsedInput }) => {

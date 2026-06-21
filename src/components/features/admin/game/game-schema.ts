@@ -3,19 +3,16 @@ import z from "zod";
 export const gameFormSchema = z.object({
   name: z
     .string()
-    .min(2, "Le nom doit contenir au moins 2 caractères")
-    .max(80, "Le nom ne peut pas dépasser 80 caractères"),
+    .min(2, "admin.validation.game.nameMin")
+    .max(80, "admin.validation.game.nameMax"),
   slug: z
     .string()
-    .min(2, "Le slug doit contenir au moins 2 caractères")
-    .max(40, "Le slug ne peut pas dépasser 40 caractères")
-    .regex(
-      /^[a-z0-9-]+$/,
-      "Le slug ne peut contenir que des lettres minuscules, chiffres et tirets",
-    ),
+    .min(2, "admin.validation.game.slugMin")
+    .max(40, "admin.validation.game.slugMax")
+    .regex(/^[a-z0-9-]+$/, "admin.validation.game.slugFormat"),
   iconUrl: z
     .string()
-    .url("L'URL de l'icône n'est pas valide")
+    .url("admin.validation.game.iconUrlInvalid")
     .optional()
     .or(z.literal("")),
 });

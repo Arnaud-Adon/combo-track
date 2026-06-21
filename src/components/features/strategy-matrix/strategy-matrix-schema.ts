@@ -12,8 +12,8 @@ export const levelSchema = z.object({
   id: z.string().min(1),
   label: z
     .string()
-    .min(1, { error: "Le libellé du niveau est requis" })
-    .max(60, { error: "Maximum 60 caractères" }),
+    .min(1, { error: "strategyMatrix.validation.levelLabelRequired" })
+    .max(60, { error: "strategyMatrix.validation.levelLabelMax" }),
   order: z.number().int().min(0),
 });
 
@@ -21,17 +21,17 @@ export const axisSchema = z
   .object({
     label: z
       .string()
-      .min(1, { error: "Le libellé de l'axe est requis" })
-      .max(60, { error: "Maximum 60 caractères" }),
+      .min(1, { error: "strategyMatrix.validation.axisLabelRequired" })
+      .max(60, { error: "strategyMatrix.validation.axisLabelMax" }),
     resource: z.enum(RESOURCE_TYPES),
     levels: z
       .array(levelSchema)
-      .min(2, { error: "Au moins 2 niveaux requis" })
-      .max(5, { error: "Maximum 5 niveaux" }),
+      .min(2, { error: "strategyMatrix.validation.levelsMin" })
+      .max(5, { error: "strategyMatrix.validation.levelsMax" }),
   })
   .refine(
     (axis) => new Set(axis.levels.map((l) => l.id)).size === axis.levels.length,
-    { error: "Les identifiants de niveaux doivent être uniques" },
+    { error: "strategyMatrix.validation.levelIdsUnique" },
   );
 
 export const cellSchema = z.object({
@@ -39,18 +39,18 @@ export const cellSchema = z.object({
   opponentLevelId: z.string().min(1),
   content: z
     .string()
-    .max(2000, { error: "Maximum 2000 caractères par cellule" }),
+    .max(2000, { error: "strategyMatrix.validation.cellContentMax" }),
 });
 
 const matrixBaseSchema = z
   .object({
     title: z
       .string()
-      .min(1, { error: "Le titre est requis" })
-      .max(120, { error: "Maximum 120 caractères" }),
+      .min(1, { error: "strategyMatrix.validation.titleRequired" })
+      .max(120, { error: "strategyMatrix.validation.titleMax" }),
     description: z
       .string()
-      .max(500, { error: "Maximum 500 caractères" })
+      .max(500, { error: "strategyMatrix.validation.descriptionMax" })
       .optional(),
     gameId: z.string().min(1).optional(),
     myCharacterId: z.string().min(1).optional(),
@@ -67,7 +67,7 @@ const matrixBaseSchema = z
         (c) => myIds.has(c.myLevelId) && oppIds.has(c.opponentLevelId),
       );
     },
-    { error: "Cellules orphelines détectées" },
+    { error: "strategyMatrix.validation.orphanCells" },
   )
   .refine(
     (data) => {
@@ -75,7 +75,7 @@ const matrixBaseSchema = z
       if (data.opponentCharacterId && !data.gameId) return false;
       return true;
     },
-    { error: "Un jeu doit être sélectionné pour associer un personnage" },
+    { error: "strategyMatrix.validation.gameRequiredForCharacter" },
   );
 
 export const strategyMatrixCreateSchema = matrixBaseSchema;
@@ -86,7 +86,7 @@ export const strategyMatrixUpdateSchema = z.intersection(
 );
 
 export const strategyMatrixDeleteSchema = z.object({
-  id: z.string().min(1, { error: "L'ID de la matrice est requis" }),
+  id: z.string().min(1, { error: "strategyMatrix.validation.idRequired" }),
 });
 
 export type Level = z.infer<typeof levelSchema>;

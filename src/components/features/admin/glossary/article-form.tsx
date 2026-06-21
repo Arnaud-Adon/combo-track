@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import {
@@ -45,19 +46,19 @@ function generateSlug(title: string): string {
 
 export function ArticleForm({ mode, article }: ArticleFormProps) {
   const router = useRouter();
+  const t = useTranslations("admin");
+  const tCommon = useTranslations("common");
 
   const { execute: createExecute, isPending: isCreating } = useAction(
     createArticleAction,
     {
       onSuccess: () => {
-        toast.success("Article créé avec succès");
+        toast.success(t("article.toast.created"));
         router.push("/admin/glossary");
         router.refresh();
       },
       onError: ({ error }) => {
-        toast.error(
-          error.serverError ?? "Erreur lors de la création de l'article",
-        );
+        toast.error(error.serverError ?? t("article.toast.createError"));
       },
     },
   );
@@ -66,14 +67,12 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
     updateArticleAction,
     {
       onSuccess: () => {
-        toast.success("Article mis à jour avec succès");
+        toast.success(t("article.toast.updated"));
         router.push("/admin/glossary");
         router.refresh();
       },
       onError: ({ error }) => {
-        toast.error(
-          error.serverError ?? "Erreur lors de la mise à jour de l'article",
-        );
+        toast.error(error.serverError ?? t("article.toast.updateError"));
       },
     },
   );
@@ -123,11 +122,11 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Titre</FormLabel>
+                  <FormLabel>{t("article.form.titleLabel")}</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="Titre de l'article"
+                      placeholder={t("article.form.titlePlaceholder")}
                       onBlur={handleTitleBlur}
                     />
                   </FormControl>
@@ -141,12 +140,15 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
               name="slug"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Slug</FormLabel>
+                  <FormLabel>{t("article.form.slugLabel")}</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="slug-de-l-article" />
+                    <Input
+                      {...field}
+                      placeholder={t("article.form.slugPlaceholder")}
+                    />
                   </FormControl>
                   <FormDescription>
-                    URL-friendly identifier (auto-généré depuis le titre)
+                    {t("article.form.slugDescription")}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -158,11 +160,11 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
               name="category"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Catégorie</FormLabel>
+                  <FormLabel>{t("article.form.categoryLabel")}</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="Ex: Techniques, Personnages, Termes"
+                      placeholder={t("article.form.categoryPlaceholder")}
                     />
                   </FormControl>
                   <FormMessage />
@@ -175,7 +177,7 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
               name="image"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Image de couverture</FormLabel>
+                  <FormLabel>{t("article.form.imageLabel")}</FormLabel>
                   <FormControl>
                     <ImageField
                       value={field.value ?? ""}
@@ -183,7 +185,7 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
                     />
                   </FormControl>
                   <FormDescription>
-                    Affichée dans la liste des articles (optionnel)
+                    {t("article.form.imageDescription")}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -195,17 +197,17 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
               name="excerpt"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Extrait</FormLabel>
+                  <FormLabel>{t("article.form.excerptLabel")}</FormLabel>
                   <FormControl>
                     <Textarea
                       {...field}
                       value={field.value ?? ""}
-                      placeholder="Court résumé de l'article (optionnel)"
+                      placeholder={t("article.form.excerptPlaceholder")}
                       className="min-h-[80px]"
                     />
                   </FormControl>
                   <FormDescription>
-                    Affiché dans la liste des articles
+                    {t("article.form.excerptDescription")}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -217,7 +219,7 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
               name="content"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Contenu (Markdown)</FormLabel>
+                  <FormLabel>{t("article.form.contentLabel")}</FormLabel>
                   <FormControl>
                     <ContentField
                       value={field.value}
@@ -225,8 +227,7 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
                     />
                   </FormControl>
                   <FormDescription>
-                    Utilisez la syntaxe Markdown pour formater le contenu.
-                    Insérez des images directement dans le texte.
+                    {t("article.form.contentDescription")}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -239,9 +240,9 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
               render={({ field }) => (
                 <FormItem className="flex items-center justify-between rounded-lg border p-4">
                   <div className="space-y-0.5">
-                    <FormLabel>Publié</FormLabel>
+                    <FormLabel>{t("article.form.publishedLabel")}</FormLabel>
                     <FormDescription>
-                      Rendre cet article visible publiquement
+                      {t("article.form.publishedDescription")}
                     </FormDescription>
                   </div>
                   <FormControl>
@@ -258,9 +259,11 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
           {/* Right: Markdown Preview */}
           <div className="space-y-4">
             <div>
-              <h3 className="text-lg font-semibold">Prévisualisation</h3>
+              <h3 className="text-lg font-semibold">
+                {t("article.form.previewTitle")}
+              </h3>
               <p className="text-muted-foreground text-sm">
-                Aperçu du rendu markdown
+                {t("article.form.previewSubtitle")}
               </p>
             </div>
             <MarkdownPreview content={content} />
@@ -274,16 +277,16 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
             onClick={() => router.push("/admin/glossary")}
             disabled={isPending}
           >
-            Annuler
+            {tCommon("buttons.cancel")}
           </Button>
           <Button type="submit" disabled={isPending}>
             {isPending
               ? mode === "create"
-                ? "Création..."
-                : "Mise à jour..."
+                ? t("article.form.creating")
+                : t("article.form.updating")
               : mode === "create"
-                ? "Créer l'article"
-                : "Mettre à jour"}
+                ? t("article.form.createSubmit")
+                : t("article.form.updateSubmit")}
           </Button>
         </div>
       </form>

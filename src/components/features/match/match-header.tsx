@@ -1,11 +1,13 @@
 import { ArrowLeft, CalendarDays, Clock, StickyNote } from "lucide-react";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 
 import type { Match } from "@/../generated/prisma";
 import { DeleteMatchDialog } from "@/components/features/match/delete-match-dialog";
 import {
   getMatchTypeLabel,
   MatchStatusBadge,
+  type MatchTranslator,
 } from "@/components/features/match/match-labels";
 import { MatchReportDialog } from "@/components/features/video/match-report-dialog";
 import type { MatchReportData } from "@/components/features/video/match-report-schema";
@@ -18,13 +20,14 @@ type MatchHeaderProps = {
   existingReport: MatchReportData | null;
 };
 
-export function MatchHeader(props: MatchHeaderProps) {
+export async function MatchHeader(props: MatchHeaderProps) {
   const { match, noteCount, existingReport } = props;
+  const t = await getTranslations("match");
 
   return (
     <div className="space-y-5">
       <div className="flex items-start gap-4">
-        <Link href="/videos" aria-label="Retour aux replays">
+        <Link href="/videos" aria-label={t("header.back")}>
           <Button
             variant="outline"
             size="icon"
@@ -36,9 +39,14 @@ export function MatchHeader(props: MatchHeaderProps) {
 
         <div className="min-w-0 flex-1">
           <div className="text-muted-foreground mb-2 flex items-center gap-2 font-mono text-[10px] tracking-[0.2em] uppercase">
-            <span className="text-primary">Replay</span>
+            <span className="text-primary">{t("header.replayLabel")}</span>
             <span className="bg-border size-1 rounded-full" />
-            <span>{getMatchTypeLabel(match.matchType)}</span>
+            <span>
+              {getMatchTypeLabel(
+                match.matchType,
+                t as unknown as MatchTranslator,
+              )}
+            </span>
           </div>
 
           <h1 className="font-display text-2xl uppercase md:text-3xl">
@@ -55,7 +63,7 @@ export function MatchHeader(props: MatchHeaderProps) {
             )}
             <span className="flex items-center gap-1.5">
               <StickyNote className="size-3.5" />
-              {noteCount} note{noteCount > 1 ? "s" : ""}
+              {t("header.noteCount", { count: noteCount })}
             </span>
             <span className="flex items-center gap-1.5">
               <CalendarDays className="size-3.5" />

@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { adminActionClient } from "@/lib/admin-action";
 import { revalidatePath } from "next/cache";
+import { getTranslations } from "next-intl/server";
 import {
   createCharacterSchema,
   updateCharacterSchema,
@@ -12,11 +13,12 @@ import z from "zod";
 export const createCharacterAction = adminActionClient
   .inputSchema(createCharacterSchema)
   .action(async ({ parsedInput }) => {
+    const t = await getTranslations("admin");
     const { gameId, name, slug, iconUrl } = parsedInput;
 
     const game = await prisma.game.findUnique({ where: { id: gameId } });
     if (!game) {
-      throw new Error("Le jeu sélectionné est introuvable");
+      throw new Error(t("character.errors.gameNotFound"));
     }
 
     const existing = await prisma.character.findFirst({
@@ -24,9 +26,7 @@ export const createCharacterAction = adminActionClient
     });
 
     if (existing) {
-      throw new Error(
-        "Un personnage avec ce slug existe déjà pour ce jeu",
-      );
+      throw new Error(t("character.errors.slugExists"));
     }
 
     const character = await prisma.character.create({
@@ -47,11 +47,12 @@ export const createCharacterAction = adminActionClient
 export const updateCharacterAction = adminActionClient
   .inputSchema(updateCharacterSchema)
   .action(async ({ parsedInput }) => {
+    const t = await getTranslations("admin");
     const { id, gameId, name, slug, iconUrl } = parsedInput;
 
     const game = await prisma.game.findUnique({ where: { id: gameId } });
     if (!game) {
-      throw new Error("Le jeu sélectionné est introuvable");
+      throw new Error(t("character.errors.gameNotFound"));
     }
 
     const existing = await prisma.character.findFirst({
@@ -63,9 +64,7 @@ export const updateCharacterAction = adminActionClient
     });
 
     if (existing) {
-      throw new Error(
-        "Un personnage avec ce slug existe déjà pour ce jeu",
-      );
+      throw new Error(t("character.errors.slugExists"));
     }
 
     const character = await prisma.character.update({
@@ -87,7 +86,7 @@ export const updateCharacterAction = adminActionClient
 export const deleteCharacterAction = adminActionClient
   .inputSchema(
     z.object({
-      id: z.string().min(1, "L'ID du personnage est requis"),
+      id: z.string().min(1, "admin.validation.character.idRequired"),
     }),
   )
   .action(async ({ parsedInput }) => {

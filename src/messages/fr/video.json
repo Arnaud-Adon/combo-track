@@ -1,0 +1,104 @@
+{
+  "notFound": {
+    "title": "Aucune vidéo trouvée"
+  },
+  "noteForm": {
+    "label": "Note",
+    "placeholder": "Ajouter une note à ce moment de la vidéo...",
+    "description": "Votre note sera horodatée automatiquement",
+    "tagsLabel": "Tags ({count}/10)",
+    "tagsDescription": "Sélectionnez les tags qui décrivent cette note",
+    "suggestedByAi": "Tags suggérés par l'IA",
+    "acceptAll": "Tout accepter",
+    "selectAtLeastOneTag": "Veuillez sélectionner au moins un tag",
+    "submitting": "Ajout en cours...",
+    "submit": "Poser la note à {time}",
+    "voiceUnsupported": "Votre navigateur ne supporte pas la reconnaissance vocale"
+  },
+  "noteList": {
+    "seekTo": "Aller à {time}",
+    "extractToCombo": "Extraire en combo",
+    "deleteNote": "Supprimer la note",
+    "empty": "Aucune note pour l'instant.",
+    "emptyHint": "Pause au bon moment et pose ta première note.",
+    "deleteTitle": "Voulez-vous supprimer cette note ?",
+    "deleteIrreversible": "Cette action est irréversible.",
+    "deleting": "Suppression..."
+  },
+  "voiceRecorder": {
+    "stop": "Arrêter la dictée vocale",
+    "start": "Démarrer la dictée vocale",
+    "dictate": "Dicter une note"
+  },
+  "suggestTags": {
+    "suggesting": "Suggestion en cours...",
+    "suggest": "Suggérer des tags",
+    "minChars": "La note doit contenir au moins 10 caractères",
+    "tagRequired": "Au moins un tag disponible requis"
+  },
+  "templateSelector": {
+    "label": "Utiliser un modèle de note"
+  },
+  "report": {
+    "trigger": "Rapport IA",
+    "tooltipExisting": "Consulter ou regénérer le rapport d'analyse IA de ce match",
+    "tooltipNew": "Analyser vos notes avec l'IA pour obtenir un bilan structuré du match",
+    "dialogTitle": "Rapport d'analyse IA",
+    "dialogDescriptionExisting": "Analyse générée à partir de vos notes de match",
+    "dialogDescriptionNew": "Générez un rapport d'analyse basé sur vos notes",
+    "analyzing": "Analyse en cours...",
+    "ctaWithNotes": "Cliquez sur le bouton ci-dessous pour générer un rapport d'analyse basé sur vos notes.",
+    "notEnoughNotes": "Il faut au moins 3 notes pour générer un rapport ({count} actuellement).",
+    "regenerate": "Regénérer",
+    "generate": "Générer le rapport",
+    "confirmTitleExisting": "Regénérer le rapport ?",
+    "confirmTitleNew": "Générer le rapport ?",
+    "confirmDescriptionExisting": "Le rapport actuel sera remplacé par une nouvelle analyse. L'IA réexaminera l'ensemble de vos notes pour produire un nouveau bilan. Cette action est irréversible.",
+    "confirmDescriptionNew": "L'IA va analyser vos {count} notes pour générer un bilan structuré : résumé du match, points forts, axe d'amélioration, moments clés et recommandations d'entraînement.",
+    "confirmGenerate": "Générer",
+    "generated": "Rapport généré avec succès",
+    "generationError": "Erreur lors de la génération",
+    "sectionSummary": "Résumé",
+    "sectionStrengths": "Points forts",
+    "sectionWeakness": "Point à améliorer",
+    "sectionKeyMoments": "Moments clés",
+    "sectionRecommendations": "Recommandations"
+  },
+  "errors": {
+    "matchNotFound": "Match introuvable",
+    "notEnoughNotes": "Il faut au moins 3 notes pour générer un rapport d'analyse",
+    "generationFailed": "Erreur lors de la génération du rapport. Vérifiez la clé API Groq."
+  },
+  "timecode": {
+    "label": "Timecode"
+  },
+  "validation": {
+    "noteMin": "La note doit contenir au moins 2 caractères",
+    "tagRequired": "Au moins un tag doit être sélectionné",
+    "tagMax": "Maximum 10 tags autorisés",
+    "noteIdRequired": "L'ID de la note est requis"
+  },
+  "noteTemplates": {
+    "dropped-combo": "Combo dropped. Travailler l'exécution de [input spécifique].",
+    "missed-punish": "L'adversaire était minus/unsafe. J'aurais dû punir avec [move].",
+    "reset-opportunity": "Opportunité de reset ici. J'aurais pu prolonger la pressure au lieu de les laisser recover.",
+    "frame-trap-failed": "Frame trap avec un gap trop grand. Resserrer l'enchaînement [move A] dans [move B].",
+    "whiff-punish": "L'adversaire a whiff [move]. J'aurais dû whiff punish depuis cette range.",
+    "failed-anti-air": "Je me suis fait jump-in dessus. Pas d'anti-air à temps ou mauvaise option choisie.",
+    "bad-wakeup": "Reversal au wakeup baité. Mieux vaut block au wakeup la plupart du temps.",
+    "throw-tech-missed": "Je me suis fait throw. Rester attentif et tech pendant la pressure.",
+    "wrong-block": "Touché en low/overhead. Ajuster le block pendant les strings de mixup.",
+    "got-crossed-up": "Direction de block pas ajustée assez vite sur le crossup.",
+    "spacing-control-lost": "Repoussé dans le corner trop facilement. Améliorer les footsies pour contrôler l'espace.",
+    "footsies-read": "Bon read sur le pattern de pokes de l'adversaire. Capitaliser sur ce spacing la prochaine fois.",
+    "backdash-timing": "Backdash trop lent pour échapper à la pressure. Backdash plus tôt ou trouver une option plus safe.",
+    "downloaded-opponent": "L'adversaire répète [pattern]. Counter avec [stratégie] la prochaine fois.",
+    "need-to-adapt": "Ils ont compris mon [stratégie]. Changer d'approche en mixant.",
+    "good-adaptation": "Ajusté au [habit] de l'adversaire et ça a marché. Garder ce read.",
+    "input-error": "Le special n'est pas sorti. Probablement un input de motion dropped.",
+    "timing-issue": "Link pas assez tight. [Move A] vers [Move B] demande plus de pratique.",
+    "combo-route-choice": "Route de combo suboptimale. Meilleure option disponible pour plus de damage/oki.",
+    "oki-setup-missed": "Knockdown obtenu mais avantage gâché. J'aurais dû faire [option d'oki].",
+    "pressure-gap": "Gap laissé dans la pressure. L'adversaire a mashé out. Resserrer le blockstring."
+  }
+}

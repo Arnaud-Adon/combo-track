@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
@@ -6,24 +7,25 @@ type FooterProps = {
   className?: string;
 };
 
-const PRODUCT_LINKS = [
-  { href: "/#benefits", label: "Bénéfices" },
-  { href: "/#walkthrough", label: "Produit" },
-  { href: "/#pricing", label: "Pricing" },
-  { href: "/#faq", label: "FAQ" },
-];
-
-const LAB_LINKS = [
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/combos", label: "Combos" },
-  { href: "/notes/strategy", label: "Matrices" },
-  { href: "/glossary", label: "Glossaire" },
-];
-
-export function Footer(props: FooterProps) {
+export async function Footer(props: FooterProps) {
   const { className } = props;
 
+  const t = await getTranslations("landing");
   const currentYear = new Date().getFullYear();
+
+  const productLinks = [
+    { href: "/#benefits", label: t("nav.benefits") },
+    { href: "/#walkthrough", label: t("nav.product") },
+    { href: "/#pricing", label: t("nav.pricing") },
+    { href: "/#faq", label: t("nav.faq") },
+  ];
+
+  const labLinks = [
+    { href: "/dashboard", label: t("footer.lab.dashboard") },
+    { href: "/combos", label: t("footer.lab.combos") },
+    { href: "/notes/strategy", label: t("footer.lab.matrices") },
+    { href: "/glossary", label: t("footer.lab.glossary") },
+  ];
 
   return (
     <footer
@@ -57,8 +59,7 @@ export function Footer(props: FooterProps) {
             </Link>
 
             <p className="text-fgc-muted mt-4 max-w-xs text-sm leading-relaxed">
-              Ton labo FGC, enfin centralisé. Tes replays, tes combos et tes
-              matchups au même endroit.
+              {t("footer.tagline")}
             </p>
 
             <div className="border-fgc-border bg-fgc-surface/70 text-fgc-muted mt-5 inline-flex w-fit items-center gap-2 rounded-full border px-3 py-1">
@@ -71,9 +72,9 @@ export function Footer(props: FooterProps) {
 
           <div className="flex flex-col gap-3">
             <span className="font-mono-fgc text-fgc-muted text-[10px] tracking-[0.2em] uppercase">
-              Produit
+              {t("footer.productHeading")}
             </span>
-            {PRODUCT_LINKS.map((link) => (
+            {productLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -86,9 +87,9 @@ export function Footer(props: FooterProps) {
 
           <div className="flex flex-col gap-3">
             <span className="font-mono-fgc text-fgc-muted text-[10px] tracking-[0.2em] uppercase">
-              Ton labo
+              {t("footer.labHeading")}
             </span>
-            {LAB_LINKS.map((link) => (
+            {labLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -102,10 +103,10 @@ export function Footer(props: FooterProps) {
 
         <div className="border-fgc-border mt-12 flex flex-col items-center justify-between gap-2 border-t pt-6 sm:flex-row">
           <p className="text-fgc-muted font-mono-fgc text-xs">
-            © {currentYear} ComboTrack
+            {t("footer.copyright", { year: currentYear })}
           </p>
           <p className="text-fgc-muted font-mono-fgc text-[10px] tracking-[0.2em] uppercase">
-            Fait pour la FGC
+            {t("footer.madeForFgc")}
           </p>
         </div>
       </div>

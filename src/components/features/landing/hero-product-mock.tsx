@@ -1,19 +1,23 @@
 import { cn } from "@/lib/utils";
 import { Play, Sparkles } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
 type HeroProductMockProps = {
   className?: string;
 };
 
-const TIMESTAMPS = [
-  { time: "0:14", label: "Drive Rush whiff punish", accent: false },
-  { time: "0:32", label: "Anti-air DP — confirmé en super", accent: true },
-  { time: "1:08", label: "Throw loop oki sur wakeup", accent: false },
-  { time: "1:47", label: "Erreur neutral — burned 2 drive", accent: false },
-];
-
-export function HeroProductMock(props: HeroProductMockProps) {
+export async function HeroProductMock(props: HeroProductMockProps) {
   const { className } = props;
+
+  const t = await getTranslations("landing");
+  const notes = t.raw("hero.productMock.notes") as string[];
+
+  const timestamps = [
+    { time: "0:14", label: notes[0], accent: false },
+    { time: "0:32", label: notes[1], accent: true },
+    { time: "1:08", label: notes[2], accent: false },
+    { time: "1:47", label: notes[3], accent: false },
+  ];
 
   return (
     <div
@@ -68,15 +72,15 @@ export function HeroProductMock(props: HeroProductMockProps) {
         <div className="border-fgc-border bg-fgc-bg flex flex-col gap-2 border-t p-3 md:border-t-0 md:border-l">
           <div className="flex items-center justify-between">
             <span className="font-mono-fgc text-fgc-muted text-[10px] tracking-[0.2em] uppercase">
-              Notes timestampées
+              {t("hero.productMock.notesLabel")}
             </span>
             <span className="text-fgc-accent font-mono-fgc text-[10px]">
-              {TIMESTAMPS.length}
+              {timestamps.length}
             </span>
           </div>
 
           <ul className="space-y-1.5">
-            {TIMESTAMPS.map((note, idx) => (
+            {timestamps.map((note, idx) => (
               <li
                 key={note.time}
                 className={cn(
@@ -108,7 +112,7 @@ export function HeroProductMock(props: HeroProductMockProps) {
           >
             <Sparkles className="text-fgc-accent size-3.5 shrink-0" />
             <span className="text-fgc-text text-[11px] leading-snug">
-              Génère le rapport IA
+              {t("hero.productMock.generateReport")}
             </span>
           </div>
         </div>

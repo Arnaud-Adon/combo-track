@@ -9,49 +9,47 @@ import {
   Search,
   StickyNote,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { useEffect, useMemo, useState } from "react";
 
 type CmdkShowcaseSectionProps = {
   className?: string;
 };
 
-const QUERIES = [
-  "anti-air contre dive kick",
-  "punir burnout JP",
-  "oki setup wakeup Marisa",
-  "BnB Drive Rush 5MK confirm",
-];
-
-const RESULTS = [
-  {
-    type: "note",
-    icon: FileText,
-    badge: "MATCH",
-    title: "DP anti-air sur jump-in Akuma — confirmé en super",
-    sub: "sf6 · luke vs akuma · 01:42",
-  },
-  {
-    type: "memo",
-    icon: StickyNote,
-    badge: "MÉMO",
-    title: "Anti-air timing : delay 3 frames sur dive kick rapide",
-    sub: "personal · pinned",
-  },
-  {
-    type: "glossary",
-    icon: BookMarked,
-    badge: "GLOSSAIRE",
-    title: "Dive kick — option aérienne descendante punissable AA",
-    sub: "fgc · universal",
-  },
-];
-
 export function CmdkShowcaseSection(props: CmdkShowcaseSectionProps) {
   const { className } = props;
+  const t = useTranslations("landing");
   const [queryIdx, setQueryIdx] = useState(0);
   const [chars, setChars] = useState(0);
 
-  const currentQuery = QUERIES[queryIdx] ?? "";
+  const queries = useMemo(() => t.raw("cmdk.queries") as string[], [t]);
+
+  const results = [
+    {
+      type: "note",
+      icon: FileText,
+      badge: t("cmdk.results.note.badge"),
+      title: t("cmdk.results.note.title"),
+      sub: "sf6 · luke vs akuma · 01:42",
+    },
+    {
+      type: "memo",
+      icon: StickyNote,
+      badge: t("cmdk.results.memo.badge"),
+      title: t("cmdk.results.memo.title"),
+      sub: "personal · pinned",
+    },
+    {
+      type: "glossary",
+      icon: BookMarked,
+      badge: t("cmdk.results.glossary.badge"),
+      title: t("cmdk.results.glossary.title"),
+      sub: "fgc · universal",
+    },
+  ];
+
+  const queryCount = queries.length;
+  const currentQuery = queries[queryIdx] ?? "";
 
   useEffect(() => {
     if (chars < currentQuery.length) {
@@ -60,10 +58,10 @@ export function CmdkShowcaseSection(props: CmdkShowcaseSectionProps) {
     }
     const id = setTimeout(() => {
       setChars(0);
-      setQueryIdx((i) => (i + 1) % QUERIES.length);
+      setQueryIdx((i) => (i + 1) % queryCount);
     }, 2400);
     return () => clearTimeout(id);
-  }, [chars, currentQuery.length]);
+  }, [chars, currentQuery.length, queryCount]);
 
   return (
     <section
@@ -85,16 +83,15 @@ export function CmdkShowcaseSection(props: CmdkShowcaseSectionProps) {
       <div className="relative mx-auto max-w-5xl px-4 py-24 sm:px-6 md:py-32 lg:px-8">
         <div className="mb-12 text-center md:mb-16">
           <span className="font-mono-fgc text-fgc-accent mb-4 inline-block text-[10px] tracking-[0.3em] uppercase">
-            {"// ⌘K"}
+            {t("cmdk.eyebrow")}
           </span>
           <h2 className="marketing-h1 text-fgc-text mx-auto max-w-3xl text-balance text-4xl md:text-5xl lg:text-6xl">
-            Tout ton labo,
+            {t("cmdk.titlePart1")}
             <br />
-            <span className="text-fgc-accent">à une frappe.</span>
+            <span className="text-fgc-accent">{t("cmdk.titleHighlight")}</span>
           </h2>
           <p className="text-fgc-muted mx-auto mt-6 max-w-xl text-base leading-relaxed md:text-lg">
-            Recherche sémantique. Tape une idée — pas un mot-clé. Indexe tes
-            notes, tes mémos et le glossaire.
+            {t("cmdk.description")}
           </p>
         </div>
 
@@ -110,7 +107,7 @@ export function CmdkShowcaseSection(props: CmdkShowcaseSectionProps) {
           </div>
 
           <div className="divide-fgc-border max-h-[320px] divide-y overflow-hidden">
-            {RESULTS.map((result, idx) => {
+            {results.map((result, idx) => {
               const Icon = result.icon;
               return (
                 <div
@@ -166,18 +163,18 @@ export function CmdkShowcaseSection(props: CmdkShowcaseSectionProps) {
             <span className="flex items-center gap-3">
               <span className="flex items-center gap-1">
                 <kbd className="border-fgc-border rounded border px-1">↑↓</kbd>
-                naviguer
+                {t("cmdk.navigate")}
               </span>
               <span className="flex items-center gap-1">
                 <kbd className="border-fgc-border rounded border px-1">↵</kbd>
-                ouvrir
+                {t("cmdk.open")}
               </span>
             </span>
           </div>
         </div>
 
         <div className="text-fgc-muted mt-8 flex items-center justify-center gap-2 text-xs">
-          <span>Disponible partout dans l&apos;app —</span>
+          <span>{t("cmdk.availableEverywhere")}</span>
           <kbd className="border-fgc-border bg-fgc-surface font-mono-fgc inline-flex items-center gap-1 rounded border px-2 py-0.5 text-[10px]">
             <Command className="size-3" />K
           </kbd>

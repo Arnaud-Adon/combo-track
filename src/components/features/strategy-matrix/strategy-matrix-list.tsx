@@ -19,6 +19,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { FolderOpen, Trash2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useAction } from "next-safe-action/hooks";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -39,22 +40,24 @@ function safeAxisLabel(value: unknown): string {
 
 export function StrategyMatrixList({ matrices }: Props) {
   const router = useRouter();
+  const t = useTranslations("strategyMatrix");
+  const tc = useTranslations("common");
   const { execute, isPending } = useAction(deleteStrategyMatrixAction, {
     onSuccess: () => {
-      toast.success("Matrice supprimée");
+      toast.success(t("list.toast.deleted"));
       router.refresh();
     },
     onError: ({ error }) => {
-      toast.error(error.serverError ?? "Erreur lors de la suppression");
+      toast.error(error.serverError ?? t("list.toast.deleteError"));
     },
   });
 
   if (matrices.length === 0) {
     return (
       <div className="flex flex-col items-center gap-4 rounded-lg border border-dashed p-12 text-center">
-        <p className="text-muted-foreground">Aucune matrice pour le moment.</p>
+        <p className="text-muted-foreground">{t("list.empty")}</p>
         <Button asChild>
-          <Link href="/notes/strategy/new">Créer ma première matrice</Link>
+          <Link href="/notes/strategy/new">{t("list.createFirst")}</Link>
         </Button>
       </div>
     );
@@ -102,13 +105,13 @@ export function StrategyMatrixList({ matrices }: Props) {
                   <Button asChild size="icon" variant="outline">
                     <Link
                       href={`/notes/strategy/${matrix.id}`}
-                      aria-label="Ouvrir"
+                      aria-label={t("list.open")}
                     >
                       <FolderOpen className="h-4 w-4" />
                     </Link>
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>Ouvrir</TooltipContent>
+                <TooltipContent>{t("list.open")}</TooltipContent>
               </Tooltip>
               <StrategyMatrixVisualizeDialog
                 title={matrix.title}
@@ -124,30 +127,27 @@ export function StrategyMatrixList({ matrices }: Props) {
                         variant="outline"
                         size="icon"
                         disabled={isPending}
-                        aria-label="Supprimer"
+                        aria-label={tc("buttons.delete")}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </AlertDialogTrigger>
                   </TooltipTrigger>
-                  <TooltipContent>Supprimer</TooltipContent>
+                  <TooltipContent>{tc("buttons.delete")}</TooltipContent>
                 </Tooltip>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Supprimer cette matrice ?
-                    </AlertDialogTitle>
+                    <AlertDialogTitle>{t("list.deleteTitle")}</AlertDialogTitle>
                     <AlertDialogDescription>
-                      Cette action est irréversible. La matrice « {matrix.title}{" "}
-                      » sera définitivement supprimée.
+                      {t("list.deleteDescription", { title: matrix.title })}
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel>Annuler</AlertDialogCancel>
+                    <AlertDialogCancel>{tc("buttons.cancel")}</AlertDialogCancel>
                     <AlertDialogAction
                       onClick={() => execute({ id: matrix.id })}
                     >
-                      Supprimer
+                      {tc("buttons.delete")}
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>

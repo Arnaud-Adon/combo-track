@@ -7,20 +7,26 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
-export const metadata = {
-  title: "Connexion | ComboTrack",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("auth");
 
-export default function SignInPage() {
+  return {
+    title: t("signIn.metadataTitle"),
+  };
+}
+
+export default async function SignInPage() {
+  const t = await getTranslations("auth");
+
   return (
     <div className="bg-background flex min-h-screen items-center justify-center px-4">
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle>Connexion</CardTitle>
-          <CardDescription>
-            Connectez-vous à votre compte ComboTrack
-          </CardDescription>
+          <CardTitle>{t("signIn.title")}</CardTitle>
+          <CardDescription>{t("signIn.description")}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <SignInForm />
@@ -31,7 +37,7 @@ export default function SignInPage() {
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-background text-muted-foreground px-2">
-                ou
+                {t("signIn.divider")}
               </span>
             </div>
           </div>

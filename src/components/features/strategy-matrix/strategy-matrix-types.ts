@@ -1,12 +1,4 @@
-import type { Axis, Cell, ResourceType } from "./strategy-matrix-schema";
-
-export const RESOURCE_TYPE_LABELS: Record<ResourceType, string> = {
-  HP: "Vie",
-  METER: "Jauge Super",
-  DRIVE: "Drive Gauge",
-  POSITION: "Position",
-  CUSTOM: "Personnalisé",
-};
+import type { Axis, Cell } from "./strategy-matrix-schema";
 
 type NotationItem = { value: string; label: string };
 

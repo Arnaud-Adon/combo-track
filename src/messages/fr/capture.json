@@ -1,0 +1,16 @@
+{
+  "panel": {
+    "title": "Capture rapide",
+    "regionLabel": "Capture rapide",
+    "collapse": "Réduire la capture",
+    "placeholder": "Note rapide… (perso, matchup, setup)",
+    "submit": "Capturer",
+    "submitting": "Capture…",
+    "captured": "Mémo capturé",
+    "error": "Erreur lors de la capture",
+    "voiceUnsupported": "Votre navigateur ne supporte pas la reconnaissance vocale"
+  },
+  "launcher": {
+    "ariaLabel": "Capture rapide (C)"
+  }
+}

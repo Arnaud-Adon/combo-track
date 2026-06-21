@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import {
@@ -30,17 +31,19 @@ interface GameFormProps {
 
 export function GameForm({ mode, game }: GameFormProps) {
   const router = useRouter();
+  const t = useTranslations("admin");
+  const tCommon = useTranslations("common");
 
   const { execute: createExecute, isPending: isCreating } = useAction(
     createGameAction,
     {
       onSuccess: () => {
-        toast.success("Jeu créé avec succès");
+        toast.success(t("game.toast.created"));
         router.push("/admin/games");
         router.refresh();
       },
       onError: ({ error }) => {
-        toast.error(error.serverError ?? "Erreur lors de la création du jeu");
+        toast.error(error.serverError ?? t("game.toast.createError"));
       },
     },
   );
@@ -49,12 +52,12 @@ export function GameForm({ mode, game }: GameFormProps) {
     updateGameAction,
     {
       onSuccess: () => {
-        toast.success("Jeu mis à jour avec succès");
+        toast.success(t("game.toast.updated"));
         router.push("/admin/games");
         router.refresh();
       },
       onError: ({ error }) => {
-        toast.error(error.serverError ?? "Erreur lors de la mise à jour du jeu");
+        toast.error(error.serverError ?? t("game.toast.updateError"));
       },
     },
   );
@@ -94,11 +97,11 @@ export function GameForm({ mode, game }: GameFormProps) {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nom</FormLabel>
+              <FormLabel>{t("game.form.nameLabel")}</FormLabel>
               <FormControl>
                 <Input
                   {...field}
-                  placeholder="Ex : Street Fighter 6"
+                  placeholder={t("game.form.namePlaceholder")}
                   onBlur={handleNameBlur}
                 />
               </FormControl>
@@ -112,13 +115,14 @@ export function GameForm({ mode, game }: GameFormProps) {
           name="slug"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Slug</FormLabel>
+              <FormLabel>{t("game.form.slugLabel")}</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="street-fighter-6" />
+                <Input
+                  {...field}
+                  placeholder={t("game.form.slugPlaceholder")}
+                />
               </FormControl>
-              <FormDescription>
-                Identifiant URL-friendly (auto-généré depuis le nom)
-              </FormDescription>
+              <FormDescription>{t("game.form.slugDescription")}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -129,12 +133,12 @@ export function GameForm({ mode, game }: GameFormProps) {
           name="iconUrl"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>URL de l&apos;icône (optionnel)</FormLabel>
+              <FormLabel>{t("game.form.iconUrlLabel")}</FormLabel>
               <FormControl>
                 <Input
                   {...field}
                   value={field.value ?? ""}
-                  placeholder="https://..."
+                  placeholder={t("game.form.iconUrlPlaceholder")}
                 />
               </FormControl>
               <FormMessage />
@@ -149,16 +153,16 @@ export function GameForm({ mode, game }: GameFormProps) {
             onClick={() => router.push("/admin/games")}
             disabled={isPending}
           >
-            Annuler
+            {tCommon("buttons.cancel")}
           </Button>
           <Button type="submit" disabled={isPending}>
             {isPending
               ? mode === "create"
-                ? "Création..."
-                : "Mise à jour..."
+                ? t("game.form.creating")
+                : t("game.form.updating")
               : mode === "create"
-                ? "Créer le jeu"
-                : "Mettre à jour"}
+                ? t("game.form.createSubmit")
+                : t("game.form.updateSubmit")}
           </Button>
         </div>
       </form>

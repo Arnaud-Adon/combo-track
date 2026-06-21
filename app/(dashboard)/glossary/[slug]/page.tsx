@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { getArticleBySlug } from "../../../../prisma/query/glossary.query";
 
 interface ArticlePageProps {
@@ -17,12 +18,14 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     notFound();
   }
 
+  const t = await getTranslations("glossary");
+
   return (
     <div className="container mx-auto max-w-4xl px-4 py-8">
       <Link href="/glossary" className="mb-6 inline-block">
         <Button variant="ghost" size="sm" className="gap-2">
           <ArrowLeft className="h-4 w-4" />
-          Retour au glossaire
+          {t("backToGlossary")}
         </Button>
       </Link>
 

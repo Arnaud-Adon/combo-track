@@ -15,6 +15,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { ClipboardList } from "lucide-react";
+import { useTranslations } from "next-intl";
 import {
   NOTE_TEMPLATE_CATEGORIES,
   NOTE_TEMPLATES,
@@ -38,6 +39,9 @@ type NoteTemplateSelectorProps = {
 };
 
 export function NoteTemplateSelector({ onSelect }: NoteTemplateSelectorProps) {
+  const t = useTranslations("video.templateSelector");
+  const tTemplates = useTranslations("video.noteTemplates");
+
   return (
     <DropdownMenu>
       <Tooltip>
@@ -48,13 +52,13 @@ export function NoteTemplateSelector({ onSelect }: NoteTemplateSelectorProps) {
               variant="ghost"
               size="icon"
               className="h-8 w-8"
-              aria-label="Utiliser un modèle de note"
+              aria-label={t("label")}
             >
               <ClipboardList className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
         </TooltipTrigger>
-        <TooltipContent>Utiliser un modèle de note</TooltipContent>
+        <TooltipContent>{t("label")}</TooltipContent>
       </Tooltip>
       <DropdownMenuContent align="end" className="max-h-80 overflow-y-auto">
         {NOTE_TEMPLATE_CATEGORIES.map((category, index) => (
@@ -65,16 +69,23 @@ export function NoteTemplateSelector({ onSelect }: NoteTemplateSelectorProps) {
             >
               {category}
             </DropdownMenuLabel>
-            {NOTE_TEMPLATES.filter((t) => t.category === category).map(
-              (template) => (
-                <DropdownMenuItem
-                  key={template.id}
-                  onClick={() => onSelect(template)}
-                >
-                  {template.name}
-                </DropdownMenuItem>
-              ),
-            )}
+            {NOTE_TEMPLATES.filter(
+              (template) => template.category === category,
+            ).map((template) => (
+              <DropdownMenuItem
+                key={template.id}
+                onClick={() =>
+                  onSelect({
+                    ...template,
+                    content: tTemplates(
+                      template.id as Parameters<typeof tTemplates.has>[0],
+                    ),
+                  })
+                }
+              >
+                {template.name}
+              </DropdownMenuItem>
+            ))}
           </div>
         ))}
       </DropdownMenuContent>

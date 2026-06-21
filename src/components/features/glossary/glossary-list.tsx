@@ -1,4 +1,5 @@
 import { BookOpen } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import type { PublishedArticles } from "../../../../prisma/query/glossary.query";
 import { ArticleCard } from "./glossary-article-card";
 
@@ -7,10 +8,11 @@ interface GlossaryListProps {
   selectedCategory?: string | null;
 }
 
-export function GlossaryList({
+export async function GlossaryList({
   articles,
   selectedCategory,
 }: GlossaryListProps) {
+  const t = await getTranslations("glossary");
   const filteredArticles = selectedCategory
     ? articles.filter((article) => article.category === selectedCategory)
     : articles;
@@ -19,14 +21,16 @@ export function GlossaryList({
     <section className="space-y-8">
       <header className="border-border space-y-3 border-b pb-6">
         <p className="font-display text-primary text-xs tracking-[0.2em] uppercase">
-          FGC // Base de connaissances
+          {t("list.eyebrow")}
         </p>
         <div className="flex items-end justify-between gap-4">
           <h1 className="font-display text-foreground text-4xl tracking-tight uppercase">
-            Glossaire
+            {t("list.title")}
           </h1>
           <span className="text-muted-foreground font-mono text-sm tabular-nums">
-            {filteredArticles.length.toString().padStart(2, "0")} entrées
+            {t("list.count", {
+              count: filteredArticles.length.toString().padStart(2, "0"),
+            })}
           </span>
         </div>
       </header>
@@ -36,8 +40,8 @@ export function GlossaryList({
           <BookOpen className="mb-4 h-10 w-10 opacity-50" />
           <p className="font-mono text-sm">
             {selectedCategory
-              ? "Aucun article dans cette catégorie."
-              : "Aucun article disponible pour le moment."}
+              ? t("list.emptyCategory")
+              : t("list.emptyAll")}
           </p>
         </div>
       ) : (

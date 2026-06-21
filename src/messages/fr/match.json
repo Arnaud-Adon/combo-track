@@ -1,0 +1,52 @@
+{
+  "pages": {
+    "newTitle": "Nouveau replay",
+    "newCardTitle": "Ajouter un replay YouTube"
+  },
+  "type": {
+    "RANKED": "Ranked",
+    "TOURNAMENT": "Tournoi",
+    "TRAINING": "Training"
+  },
+  "status": {
+    "DRAFT": "Brouillon",
+    "COMPLETED": "Complété",
+    "ANALYZED": "Analysé",
+    "IN_PROGRESS": "En cours"
+  },
+  "header": {
+    "back": "Retour aux replays",
+    "replayLabel": "Replay",
+    "noteCount": "{count, plural, one {# note} other {# notes}}"
+  },
+  "form": {
+    "videoUrlLabel": "URL YouTube",
+    "videoUrlPlaceholder": "https://www.youtube.com/watch?v=...",
+    "titleLabel": "Titre",
+    "titlePlaceholder": "Titre du match",
+    "creating": "Création...",
+    "createSubmit": "Créer le replay"
+  },
+  "deleteDialog": {
+    "trigger": "Supprimer le match",
+    "title": "Supprimer ce match ?",
+    "description": "Cette action est irréversible. Le match « {title} » et toutes ses notes seront définitivement supprimés.",
+    "deleting": "Suppression..."
+  },
+  "toast": {
+    "created": "Match créé avec succès",
+    "deleted": "Match supprimé avec succès",
+    "deleteError": "Erreur lors de la suppression"
+  },
+  "errors": {
+    "invalidYoutubeUrl": "URL YouTube invalide",
+    "notStreetFighter6": "Cette vidéo ne semble pas être liée à Street Fighter 6"
+  },
+  "validation": {
+    "urlInvalid": "L'URL n'est pas valide",
+    "urlNotYoutube": "L'URL doit être un lien YouTube",
+    "titleMin": "Le titre doit contenir au moins 3 caractères",
+    "titleMax": "Le titre ne peut pas dépasser 200 caractères",
+    "idRequired": "L'ID du match est requis"
+  }
+}

@@ -28,6 +28,7 @@ import {
 import { useVideoPlayerStore } from "@/stores/video-player";
 import { formatTime } from "@/utils";
 import { CheckCircle, FileText, Loader2, Target } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAction } from "next-safe-action/hooks";
@@ -47,6 +48,8 @@ export function MatchReportDialog({
   existingReport,
 }: MatchReportDialogProps) {
   const router = useRouter();
+  const t = useTranslations("video.report");
+  const tCommon = useTranslations("common.buttons");
   const seekToTimestamp = useVideoPlayerStore((state) => state.seekToTimestamp);
   const [report, setReport] = useState<MatchReportData | null>(existingReport);
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -55,12 +58,12 @@ export function MatchReportDialog({
     onSuccess: ({ data }) => {
       if (data) {
         setReport(data);
-        toast.success("Rapport généré avec succès");
+        toast.success(t("generated"));
         router.refresh();
       }
     },
     onError: ({ error }) => {
-      toast.error(error.serverError ?? "Erreur lors de la génération");
+      toast.error(error.serverError ?? t("generationError"));
     },
   });
 
@@ -86,7 +89,7 @@ export function MatchReportDialog({
               className="gap-2"
             >
               <FileText className="size-4" />
-              Rapport IA
+              {t("trigger")}
               {report && (
                 <span className="bg-primary size-2 rounded-full" />
               )}
@@ -94,35 +97,31 @@ export function MatchReportDialog({
           </DialogTrigger>
         </TooltipTrigger>
         <TooltipContent side="bottom">
-          {report
-            ? "Consulter ou regénérer le rapport d'analyse IA de ce match"
-            : "Analyser vos notes avec l'IA pour obtenir un bilan structuré du match"}
+          {report ? t("tooltipExisting") : t("tooltipNew")}
         </TooltipContent>
       </Tooltip>
       <DialogContent className="max-h-[80vh] overflow-y-auto sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Rapport d&apos;analyse IA</DialogTitle>
+          <DialogTitle>{t("dialogTitle")}</DialogTitle>
           <DialogDescription>
             {report
-              ? "Analyse générée à partir de vos notes de match"
-              : "Générez un rapport d'analyse basé sur vos notes"}
+              ? t("dialogDescriptionExisting")
+              : t("dialogDescriptionNew")}
           </DialogDescription>
         </DialogHeader>
 
         {isPending ? (
           <div className="flex flex-col items-center gap-4 py-12">
             <Loader2 className="text-primary size-8 animate-spin" />
-            <p className="text-muted-foreground text-sm">
-              Analyse en cours...
-            </p>
+            <p className="text-muted-foreground text-sm">{t("analyzing")}</p>
           </div>
         ) : report ? (
           <ReportContent report={report} onTimestampClick={seekToTimestamp} />
         ) : (
           <div className="text-muted-foreground py-8 text-center text-sm">
             {canGenerate
-              ? "Cliquez sur le bouton ci-dessous pour générer un rapport d'analyse basé sur vos notes."
-              : `Il faut au moins 3 notes pour générer un rapport (${noteCount} actuellement).`}
+              ? t("ctaWithNotes")
+              : t("notEnoughNotes", { count: noteCount })}
           </div>
         )}
 
@@ -137,7 +136,7 @@ export function MatchReportDialog({
             ) : (
               <FileText className="size-4" />
             )}
-            {report ? "Regénérer" : "Générer le rapport"}
+            {report ? t("regenerate") : t("generate")}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -146,18 +145,18 @@ export function MatchReportDialog({
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              {report ? "Regénérer le rapport ?" : "Générer le rapport ?"}
+              {report ? t("confirmTitleExisting") : t("confirmTitleNew")}
             </AlertDialogTitle>
             <AlertDialogDescription>
               {report
-                ? "Le rapport actuel sera remplacé par une nouvelle analyse. L'IA réexaminera l'ensemble de vos notes pour produire un nouveau bilan. Cette action est irréversible."
-                : `L'IA va analyser vos ${noteCount} notes pour générer un bilan structuré : résumé du match, points forts, axe d'amélioration, moments clés et recommandations d'entraînement.`}
+                ? t("confirmDescriptionExisting")
+                : t("confirmDescriptionNew", { count: noteCount })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogCancel>{tCommon("cancel")}</AlertDialogCancel>
             <AlertDialogAction onClick={handleConfirmGenerate}>
-              {report ? "Regénérer" : "Générer"}
+              {report ? t("regenerate") : t("confirmGenerate")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -173,11 +172,13 @@ function ReportContent({
   report: MatchReportData;
   onTimestampClick: (seconds: number) => void;
 }) {
+  const t = useTranslations("video.report");
+
   return (
     <div className="space-y-6">
       <section>
         <h3 className="text-muted-foreground mb-2 font-mono text-[10px] tracking-[0.2em] uppercase">
-          Résumé
+          {t("sectionSummary")}
         </h3>
         <p className="text-foreground text-sm leading-relaxed">
           {report.summary}
@@ -186,7 +187,7 @@ function ReportContent({
 
       <section>
         <h3 className="text-muted-foreground mb-2 font-mono text-[10px] tracking-[0.2em] uppercase">
-          Points forts
+          {t("sectionStrengths")}
         </h3>
         <ul className="space-y-1.5">
           {report.strengths.map((strength, i) => (
@@ -200,14 +201,14 @@ function ReportContent({
 
       <section className="border-l-primary bg-accent rounded-r-md border-l-2 px-4 py-3">
         <h3 className="text-primary mb-1 font-mono text-[10px] tracking-[0.2em] uppercase">
-          Point à améliorer
+          {t("sectionWeakness")}
         </h3>
         <p className="text-foreground text-sm">{report.weakness}</p>
       </section>
 
       <section>
         <h3 className="text-muted-foreground mb-2 font-mono text-[10px] tracking-[0.2em] uppercase">
-          Moments clés
+          {t("sectionKeyMoments")}
         </h3>
         <ul className="space-y-1.5">
           {report.keyMoments.map((moment, i) => (
@@ -227,7 +228,7 @@ function ReportContent({
 
       <section>
         <h3 className="text-muted-foreground mb-2 font-mono text-[10px] tracking-[0.2em] uppercase">
-          Recommandations
+          {t("sectionRecommendations")}
         </h3>
         <ol className="list-inside list-decimal space-y-1.5">
           {report.recommendations.map((rec, i) => (

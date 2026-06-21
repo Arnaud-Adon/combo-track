@@ -4,6 +4,7 @@ import { RecentCombosSection } from "@/components/features/dashboard/recent-comb
 import { RecentMatchesSection } from "@/components/features/dashboard/recent-matches-section";
 import { RecentStrategyMatricesSection } from "@/components/features/dashboard/recent-strategy-matrices-section";
 import { auth } from "@/lib/auth";
+import { getTranslations } from "next-intl/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getRecentCombosForUser } from "../../../prisma/query/combo.query";
@@ -17,6 +18,8 @@ export default async function DashboardPage() {
 
   if (!session?.user) redirect("/sign-in");
 
+  const t = await getTranslations("dashboard");
+
   const [recentMatches, recentStrategyMatrices, recentCombos] =
     await Promise.all([
       getRecentMatches({ userId: session.user.id }),
@@ -24,7 +27,8 @@ export default async function DashboardPage() {
       getRecentCombosForUser({ userId: session.user.id }),
     ]);
 
-  const firstName = session.user.name?.trim().split(/\s+/)[0] ?? "joueur";
+  const firstName =
+    session.user.name?.trim().split(/\s+/)[0] ?? t("hero.fallbackName");
 
   return (
     <div className="relative">
@@ -45,8 +49,7 @@ export default async function DashboardPage() {
               image: "",
               link: "https://fullmeter.com/fatonline/#/quicksearch",
               title: "Full Meter",
-              description:
-                "Frame data complète SF6 et autres jeux — la référence pour vérifier tes punishs.",
+              description: t("resources.fullMeterDescription"),
             },
           ]}
         />

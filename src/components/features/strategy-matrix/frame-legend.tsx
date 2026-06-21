@@ -1,9 +1,12 @@
+"use client";
+
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 const ITEMS = [
-  { sample: "(+N)", label: "Avantage", cls: "text-frame-positive" },
-  { sample: "(-N)", label: "Désavantage", cls: "text-frame-negative" },
-  { sample: "(0)", label: "Neutre", cls: "text-frame-neutral" },
+  { sample: "(+N)", key: "advantage", cls: "text-frame-positive" },
+  { sample: "(-N)", key: "disadvantage", cls: "text-frame-negative" },
+  { sample: "(0)", key: "neutral", cls: "text-frame-neutral" },
 ] as const;
 
 type FrameLegendProps = {
@@ -12,20 +15,23 @@ type FrameLegendProps = {
 
 export function FrameLegend(props: FrameLegendProps) {
   const { className } = props;
+  const t = useTranslations("strategyMatrix");
 
   return (
     <div
       className={cn("flex flex-wrap items-center gap-x-4 gap-y-1", className)}
     >
       <span className="text-muted-foreground font-mono text-[10px] tracking-[0.2em] uppercase">
-        Frame data
+        {t("frameLegend.heading")}
       </span>
       {ITEMS.map((item) => (
-        <span key={item.label} className="flex items-center gap-1.5 text-xs">
+        <span key={item.key} className="flex items-center gap-1.5 text-xs">
           <code className={cn("font-mono font-semibold", item.cls)}>
             {item.sample}
           </code>
-          <span className="text-muted-foreground">{item.label}</span>
+          <span className="text-muted-foreground">
+            {t(`frameLegend.${item.key}`)}
+          </span>
         </span>
       ))}
     </div>

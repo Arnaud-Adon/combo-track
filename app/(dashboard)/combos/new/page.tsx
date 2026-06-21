@@ -1,3 +1,5 @@
+import { getTranslations } from "next-intl/server";
+
 import { requireAuth } from "@/lib/auth-utils";
 import { prisma } from "@/lib/prisma";
 import { getAllCharactersWithGame } from "@/../prisma/query/character.query";
@@ -10,6 +12,7 @@ interface NewComboPageProps {
 export default async function NewComboPage({ searchParams }: NewComboPageProps) {
   const user = await requireAuth();
   const { fromNote, characterId } = await searchParams;
+  const t = await getTranslations("combo");
 
   const [characters, tags] = await Promise.all([
     getAllCharactersWithGame(),
@@ -41,7 +44,9 @@ export default async function NewComboPage({ searchParams }: NewComboPageProps) 
 
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
-      <h1 className="mb-6 text-3xl font-bold font-display">Créer un nouveau combo</h1>
+      <h1 className="mb-6 text-3xl font-bold font-display">
+        {t("pages.newTitle")}
+      </h1>
       <ComboForm
         mode="create"
         characters={characters}

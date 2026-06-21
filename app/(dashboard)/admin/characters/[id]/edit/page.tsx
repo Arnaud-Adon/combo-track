@@ -3,6 +3,7 @@ import { getCharacterByIdForAdmin } from "@/../prisma/query/admin-character.quer
 import { getGameOptions } from "@/../prisma/query/game.query";
 import { CharacterForm } from "@/components/features/admin/character/character-form";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 
 interface EditCharacterPageProps {
   params: Promise<{ id: string }>;
@@ -22,9 +23,13 @@ export default async function EditCharacterPage({
     notFound();
   }
 
+  const t = await getTranslations("admin");
+
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
-      <h1 className="mb-6 text-3xl font-bold font-display">Modifier le personnage</h1>
+      <h1 className="mb-6 text-3xl font-bold font-display">
+        {t("character.pages.editTitle")}
+      </h1>
       <CharacterForm mode="edit" character={character} games={games} />
     </div>
   );

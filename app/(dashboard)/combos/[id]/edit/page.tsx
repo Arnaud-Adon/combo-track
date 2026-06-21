@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 
 import { requireAuth } from "@/lib/auth-utils";
 import { prisma } from "@/lib/prisma";
@@ -24,9 +25,13 @@ export default async function EditComboPage({ params }: EditComboPageProps) {
     notFound();
   }
 
+  const t = await getTranslations("combo");
+
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
-      <h1 className="mb-6 text-3xl font-bold font-display">Modifier le combo</h1>
+      <h1 className="mb-6 text-3xl font-bold font-display">
+        {t("pages.editTitle")}
+      </h1>
       <ComboForm
         mode="edit"
         combo={combo}

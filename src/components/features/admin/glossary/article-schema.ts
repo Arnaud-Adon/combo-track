@@ -3,26 +3,25 @@ import z from "zod";
 export const articleFormSchema = z.object({
   title: z
     .string()
-    .min(3, "Le titre doit contenir au moins 3 caractères")
-    .max(200, "Le titre ne peut pas dépasser 200 caractères"),
+    .min(3, "admin.validation.article.titleMin")
+    .max(200, "admin.validation.article.titleMax"),
   slug: z
     .string()
-    .min(3, "Le slug doit contenir au moins 3 caractères")
-    .max(200, "Le slug ne peut pas dépasser 200 caractères")
-    .regex(
-      /^[a-z0-9-]+$/,
-      "Le slug ne peut contenir que des lettres minuscules, chiffres et tirets",
-    ),
-  content: z
-    .string()
-    .min(10, "Le contenu doit contenir au moins 10 caractères"),
+    .min(3, "admin.validation.article.slugMin")
+    .max(200, "admin.validation.article.slugMax")
+    .regex(/^[a-z0-9-]+$/, "admin.validation.article.slugFormat"),
+  content: z.string().min(10, "admin.validation.article.contentMin"),
   excerpt: z
     .string()
-    .max(500, "L'extrait ne peut pas dépasser 500 caractères")
+    .max(500, "admin.validation.article.excerptMax")
     .optional()
     .or(z.literal("")),
-  category: z.string().min(1, "La catégorie est requise"),
-  image: z.string().url("L'image doit être une URL valide").optional().or(z.literal("")),
+  category: z.string().min(1, "admin.validation.article.categoryRequired"),
+  image: z
+    .string()
+    .url("admin.validation.article.imageInvalid")
+    .optional()
+    .or(z.literal("")),
   published: z.boolean(),
 });
 

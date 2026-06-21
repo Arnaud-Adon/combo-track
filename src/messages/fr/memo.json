@@ -1,0 +1,51 @@
+{
+  "pages": {
+    "listTitle": "Mémos",
+    "listSubtitle": "Vos aide-mémoires personnels : notations, frame data, situations.",
+    "newCta": "Nouveau mémo",
+    "newTitle": "Nouveau mémo",
+    "newSubtitle": "Notez une stratégie, un punish, une combinaison.",
+    "editTitle": "Modifier le mémo"
+  },
+  "form": {
+    "titleLabel": "Titre",
+    "titlePlaceholder": "Ex: Punish maxi sur DI bloqué",
+    "contentLabel": "Contenu",
+    "contentPlaceholder": "Ex: Sur DI bloqué → cr.HP xx Super (+8)...",
+    "edit": "Édition",
+    "preview": "Aperçu",
+    "emptyPreview": "*Aucun contenu*",
+    "saving": "Enregistrement…",
+    "update": "Mettre à jour",
+    "create": "Créer le mémo",
+    "created": "Mémo créé",
+    "createError": "Erreur lors de la création",
+    "updated": "Mémo mis à jour",
+    "updateError": "Erreur lors de la mise à jour"
+  },
+  "list": {
+    "empty": "Aucun mémo pour le moment.",
+    "createFirst": "Créer mon premier mémo",
+    "updatedOn": "Mis à jour le",
+    "open": "Ouvrir",
+    "delete": "Supprimer",
+    "deleteTitle": "Supprimer ce mémo ?",
+    "deleteDescription": "Cette action est irréversible. Le mémo « {title} » sera définitivement supprimé.",
+    "deleted": "Mémo supprimé",
+    "deleteError": "Erreur lors de la suppression"
+  },
+  "visualize": {
+    "trigger": "Visualiser",
+    "emptyContent": "Aucun contenu."
+  },
+  "errors": {
+    "notFound": "Mémo introuvable",
+    "unauthorized": "Non autorisé"
+  },
+  "validation": {
+    "titleRequired": "Le titre est requis",
+    "titleMax": "Maximum 120 caractères",
+    "contentMax": "Maximum 2000 caractères",
+    "idRequired": "L'ID du mémo est requis"
+  }
+}

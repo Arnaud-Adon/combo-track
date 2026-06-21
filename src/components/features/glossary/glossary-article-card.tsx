@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import type { PublishedArticles } from "../../../../prisma/query/glossary.query";
 import { CategoryBadge } from "./glossary-category-badge";
 
@@ -15,7 +16,9 @@ function formatDate(date: Date) {
   });
 }
 
-export function ArticleCard({ article }: ArticleCardProps) {
+export async function ArticleCard({ article }: ArticleCardProps) {
+  const t = await getTranslations("glossary");
+
   return (
     <Link
       href={`/glossary/${article.slug}`}
@@ -61,14 +64,14 @@ export function ArticleCard({ article }: ArticleCardProps) {
             {article.title}
           </h3>
           <p className="text-muted-foreground line-clamp-3 text-sm leading-relaxed">
-            {article.excerpt ?? "Aucune description disponible"}
+            {article.excerpt ?? t("card.noDescription")}
           </p>
           <div className="border-border mt-auto flex items-center justify-between border-t pt-3">
             <span className="text-muted-foreground font-mono text-[11px]">
-              Par {article.creator.name}
+              {t("card.author", { name: article.creator.name })}
             </span>
             <span className="text-primary inline-flex translate-x-1 items-center gap-1 text-xs font-medium opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100">
-              Lire <ArrowUpRight className="h-3.5 w-3.5" />
+              {t("card.read")} <ArrowUpRight className="h-3.5 w-3.5" />
             </span>
           </div>
         </div>

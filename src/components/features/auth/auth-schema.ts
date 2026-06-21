@@ -1,24 +1,24 @@
 import z from "zod";
 
 export const signInSchema = z.object({
-  email: z.string().email().min(1, "Adresse email invalide"),
-  password: z.string().min(1, "Le mot de passe est requis"),
+  email: z.string().email().min(1, "auth.validation.emailInvalid"),
+  password: z.string().min(1, "auth.validation.passwordRequired"),
 });
 
 export const signUpSchema = z
   .object({
-    name: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
-    email: z.string().email("Adresse email invalide"),
+    name: z.string().min(2, "auth.validation.nameMin"),
+    email: z.string().email("auth.validation.emailInvalid"),
     password: z
       .string()
-      .min(8, "Le mot de passe doit contenir au moins 8 caractères")
-      .regex(/[A-Z]/, "Le mot de passe doit contenir une majuscule")
-      .regex(/[0-9]/, "Le mot de passe doit contenir un chiffre"),
+      .min(8, "auth.validation.passwordMin")
+      .regex(/[A-Z]/, "auth.validation.passwordUppercase")
+      .regex(/[0-9]/, "auth.validation.passwordNumber"),
     confirmPassword: z.string(),
     image: z.string().url().optional().nullable(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Les mots de passe ne correspondent pas",
+    message: "auth.validation.passwordsMismatch",
     path: ["confirmPassword"],
   });
 

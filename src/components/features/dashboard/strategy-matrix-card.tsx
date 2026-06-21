@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatDate } from "@/utils";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { RecentStrategyMatrices } from "../../../../prisma/query/strategy-matrix.query";
 
@@ -8,7 +9,8 @@ interface StrategyMatrixCardProps {
   matrix: RecentStrategyMatrices[number];
 }
 
-export function StrategyMatrixCard({ matrix }: StrategyMatrixCardProps) {
+export async function StrategyMatrixCard({ matrix }: StrategyMatrixCardProps) {
+  const t = await getTranslations("dashboard");
   const hasMatchup = matrix.myCharacter ?? matrix.opponentCharacter;
 
   return (
@@ -49,8 +51,9 @@ export function StrategyMatrixCard({ matrix }: StrategyMatrixCardProps) {
               )}
             </div>
             <p className="font-mono text-xs">
-              {matrix.filledCellCount} cellule
-              {matrix.filledCellCount > 1 ? "s" : ""}
+              {t("strategyMatrixCard.cellCount", {
+                count: matrix.filledCellCount,
+              })}
             </p>
           </div>
         </CardContent>

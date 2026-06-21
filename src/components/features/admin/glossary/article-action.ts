@@ -5,12 +5,14 @@ import { adminActionClient } from "@/lib/admin-action";
 import { embedGlossaryArticleIfNeeded } from "@/lib/rag/embed-content";
 import { revalidatePath } from "next/cache";
 import { after } from "next/server";
+import { getTranslations } from "next-intl/server";
 import { createArticleSchema, updateArticleSchema } from "./article-schema";
 import z from "zod";
 
 export const createArticleAction = adminActionClient
   .inputSchema(createArticleSchema)
   .action(async ({ parsedInput, ctx }) => {
+    const t = await getTranslations("admin");
     const { title, slug, content, excerpt, category, image, published } =
       parsedInput;
 
@@ -20,7 +22,7 @@ export const createArticleAction = adminActionClient
     });
 
     if (existing) {
-      throw new Error("Un article avec ce slug existe déjà");
+      throw new Error(t("article.errors.slugExists"));
     }
 
     const article = await prisma.glossaryArticle.create({
@@ -53,6 +55,7 @@ export const createArticleAction = adminActionClient
 export const updateArticleAction = adminActionClient
   .inputSchema(updateArticleSchema)
   .action(async ({ parsedInput }) => {
+    const t = await getTranslations("admin");
     const { id, title, slug, content, excerpt, category, image, published } =
       parsedInput;
 
@@ -65,7 +68,7 @@ export const updateArticleAction = adminActionClient
     });
 
     if (existing) {
-      throw new Error("Un article avec ce slug existe déjà");
+      throw new Error(t("article.errors.slugExists"));
     }
 
     const article = await prisma.glossaryArticle.update({
@@ -98,7 +101,7 @@ export const updateArticleAction = adminActionClient
 export const deleteArticleAction = adminActionClient
   .inputSchema(
     z.object({
-      id: z.string().min(1, "L'ID de l'article est requis"),
+      id: z.string().min(1, "admin.validation.article.idRequired"),
     }),
   )
   .action(async ({ parsedInput }) => {

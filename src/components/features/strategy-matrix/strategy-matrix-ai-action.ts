@@ -3,6 +3,7 @@
 import { generateStrategyMatrixCells } from "@/lib/ai/groq";
 import { authActionClient } from "@/lib/auth-action";
 import { prisma } from "@/lib/prisma";
+import { getTranslations } from "next-intl/server";
 import z from "zod";
 import { axisSchema } from "./strategy-matrix-schema";
 
@@ -51,9 +52,8 @@ export const fillStrategyMatrixWithAiAction = authActionClient
     });
 
     if (!cells) {
-      throw new Error(
-        "Erreur lors de la génération IA. Vérifiez la clé API Groq.",
-      );
+      const t = await getTranslations("strategyMatrix");
+      throw new Error(t("errors.aiGeneration"));
     }
 
     return { cells };

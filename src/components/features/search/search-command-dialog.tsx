@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
@@ -14,6 +15,7 @@ import { useSearchDialogStore } from "@/stores/search-dialog";
 import { SemanticSearchBar } from "./semantic-search-bar";
 
 export function SearchCommandDialog() {
+  const t = useTranslations("search");
   const open = useSearchDialogStore((state) => state.open);
   const setOpen = useSearchDialogStore((state) => state.setOpen);
   const toggle = useSearchDialogStore((state) => state.toggle);
@@ -38,10 +40,8 @@ export function SearchCommandDialog() {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Recherche sémantique</DialogTitle>
-          <DialogDescription>
-            Cherche par sens dans tes notes, tes mémos et le glossaire.
-          </DialogDescription>
+          <DialogTitle>{t("dialog.title")}</DialogTitle>
+          <DialogDescription>{t("dialog.description")}</DialogDescription>
         </DialogHeader>
         <SemanticSearchBar autoFocus onResultClick={() => setOpen(false)} />
       </DialogContent>

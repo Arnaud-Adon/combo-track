@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { uploadAvatarAction } from "@/lib/actions/upload-avatar";
 import { signUp, useSession } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -22,6 +23,7 @@ import { SignUpInput, signUpSchema } from "./auth-schema";
 import { ImageUploadField } from "./image-upload-field";
 
 export function SignUpForm() {
+  const t = useTranslations("auth");
   const router = useRouter();
   const { refetch } = useSession();
   const [error, setError] = useState<string | null>(null);
@@ -50,7 +52,7 @@ export function SignUpForm() {
     });
 
     if (result.error) {
-      setError(result.error.message ?? "Échec de la création du compte");
+      setError(result.error.message ?? t("signUp.error"));
       return;
     }
 
@@ -83,13 +85,13 @@ export function SignUpForm() {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nom complet</FormLabel>
+              <FormLabel>{t("fields.nameLabel")}</FormLabel>
               <FormControl>
                 <Input
                   {...field}
                   type="text"
                   autoComplete="name"
-                  placeholder="Jean Dupont"
+                  placeholder={t("fields.namePlaceholder")}
                   aria-required="true"
                 />
               </FormControl>
@@ -125,13 +127,13 @@ export function SignUpForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>{t("fields.emailLabel")}</FormLabel>
               <FormControl>
                 <Input
                   {...field}
                   type="email"
                   autoComplete="email"
-                  placeholder="vous@exemple.com"
+                  placeholder={t("fields.emailPlaceholder")}
                   aria-required="true"
                 />
               </FormControl>
@@ -145,7 +147,7 @@ export function SignUpForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Mot de passe</FormLabel>
+              <FormLabel>{t("fields.passwordLabel")}</FormLabel>
               <FormControl>
                 <Input
                   {...field}
@@ -165,7 +167,7 @@ export function SignUpForm() {
           name="confirmPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Confirmer le mot de passe</FormLabel>
+              <FormLabel>{t("fields.confirmPasswordLabel")}</FormLabel>
               <FormControl>
                 <Input
                   {...field}
@@ -186,14 +188,14 @@ export function SignUpForm() {
           disabled={form.formState.isSubmitting}
         >
           {form.formState.isSubmitting
-            ? "Création du compte..."
-            : "Créer un compte"}
+            ? t("signUp.submitting")
+            : t("signUp.submit")}
         </Button>
 
         <div className="text-center text-sm">
-          Déjà un compte ?{" "}
+          {t("signUp.hasAccount")}{" "}
           <Link href="/sign-in" className="text-primary hover:underline">
-            Se connecter
+            {t("signUp.signInLink")}
           </Link>
         </div>
       </form>

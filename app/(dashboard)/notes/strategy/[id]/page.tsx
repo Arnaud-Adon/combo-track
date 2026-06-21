@@ -1,6 +1,7 @@
 import { StrategyMatrixForm } from "@/components/features/strategy-matrix/strategy-matrix-form";
 import { StrategyMatrixHelpDialog } from "@/components/features/strategy-matrix/strategy-matrix-help-dialog";
 import { requireAuth } from "@/lib/auth-utils";
+import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import {
   getAllCharactersGroupedByGame,
@@ -15,6 +16,7 @@ export default async function StrategyMatrixDetailPage({
 }) {
   const { id } = await params;
   const user = await requireAuth();
+  const t = await getTranslations("strategyMatrix");
   const [matrix, games, charactersByGame] = await Promise.all([
     getStrategyMatrixById({ id, userId: user.id }),
     getGameOptions(),
@@ -44,7 +46,10 @@ export default async function StrategyMatrixDetailPage({
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0 space-y-2">
             <div className="text-muted-foreground mb-1 font-mono text-[10px] tracking-[0.2em] uppercase">
-              <span className="text-primary">Matrice</span> · Édition
+              <span className="text-primary">
+                {t("page.detail.eyebrowLabel")}
+              </span>{" "}
+              · {t("page.detail.eyebrowValue")}
             </div>
             <h1 className="font-display text-2xl uppercase md:text-3xl">
               {matrix.title}

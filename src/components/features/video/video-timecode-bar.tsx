@@ -1,11 +1,13 @@
 "use client";
 
 import { Radio } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { useVideoPlayerStore } from "@/stores/video-player";
 import { formatTime } from "@/utils";
 
 export function VideoTimecodeBar() {
+  const t = useTranslations("video.timecode");
   const currentTime = useVideoPlayerStore((state) => state.currentTime);
   const duration = useVideoPlayerStore((state) => state.duration);
 
@@ -16,7 +18,7 @@ export function VideoTimecodeBar() {
     <div className="border-border bg-card flex items-center gap-4 rounded-xl border px-4 py-3">
       <div className="text-muted-foreground flex items-center gap-1.5 font-mono text-[10px] tracking-[0.2em] uppercase">
         <Radio className="text-primary size-3.5" />
-        Timecode
+        {t("label")}
       </div>
 
       <div className="text-primary font-mono text-sm font-bold tabular-nums">

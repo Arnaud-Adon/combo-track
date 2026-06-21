@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useTranslations } from "next-intl";
 import type {
   CharacterOption,
   GameOption,
@@ -33,6 +34,7 @@ export function StrategyMatrixMatchupSelector({
   value,
   onChange,
 }: Props) {
+  const t = useTranslations("strategyMatrix");
   const characters = value.gameId ? (charactersByGame[value.gameId] ?? []) : [];
 
   const handleGameChange = (raw: string) => {
@@ -58,17 +60,19 @@ export function StrategyMatrixMatchupSelector({
     <div className="grid gap-3 md:grid-cols-3">
       <div className="space-y-1">
         <label className="text-muted-foreground font-mono text-[10px] tracking-[0.2em] uppercase">
-          Jeu
+          {t("matchupSelector.game")}
         </label>
         <Select
           value={value.gameId ?? NONE_VALUE}
           onValueChange={handleGameChange}
         >
           <SelectTrigger>
-            <SelectValue placeholder="Aucun" />
+            <SelectValue placeholder={t("matchupSelector.none")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value={NONE_VALUE}>Aucun</SelectItem>
+            <SelectItem value={NONE_VALUE}>
+              {t("matchupSelector.none")}
+            </SelectItem>
             {games.map((g) => (
               <SelectItem key={g.id} value={g.id}>
                 {g.name}
@@ -80,7 +84,7 @@ export function StrategyMatrixMatchupSelector({
 
       <div className="space-y-1">
         <label className="text-muted-foreground font-mono text-[10px] tracking-[0.2em] uppercase">
-          Mon personnage
+          {t("matchupSelector.myCharacter")}
         </label>
         <Select
           value={value.myCharacterId ?? NONE_VALUE}
@@ -88,10 +92,12 @@ export function StrategyMatrixMatchupSelector({
           disabled={!value.gameId || characters.length === 0}
         >
           <SelectTrigger>
-            <SelectValue placeholder="Aucun" />
+            <SelectValue placeholder={t("matchupSelector.none")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value={NONE_VALUE}>Aucun</SelectItem>
+            <SelectItem value={NONE_VALUE}>
+              {t("matchupSelector.none")}
+            </SelectItem>
             {characters.map((c) => (
               <SelectItem key={c.id} value={c.id}>
                 {c.name}
@@ -103,7 +109,7 @@ export function StrategyMatrixMatchupSelector({
 
       <div className="space-y-1">
         <label className="text-muted-foreground font-mono text-[10px] tracking-[0.2em] uppercase">
-          Personnage adverse
+          {t("matchupSelector.opponentCharacter")}
         </label>
         <Select
           value={value.opponentCharacterId ?? NONE_VALUE}
@@ -111,10 +117,12 @@ export function StrategyMatrixMatchupSelector({
           disabled={!value.gameId || characters.length === 0}
         >
           <SelectTrigger>
-            <SelectValue placeholder="Aucun" />
+            <SelectValue placeholder={t("matchupSelector.none")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value={NONE_VALUE}>Aucun</SelectItem>
+            <SelectItem value={NONE_VALUE}>
+              {t("matchupSelector.none")}
+            </SelectItem>
             {characters.map((c) => (
               <SelectItem key={c.id} value={c.id}>
                 {c.name}

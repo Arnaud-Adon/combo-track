@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import { Tag } from "@/../generated/prisma";
@@ -61,8 +62,10 @@ export function ComboForm({
   prefillContent,
 }: ComboFormProps) {
   const router = useRouter();
+  const t = useTranslations("combo");
+  const tCommon = useTranslations("common");
 
-  const initialTagIds = combo?.tags.map((t) => t.id) ?? [];
+  const initialTagIds = combo?.tags.map((tag) => tag.id) ?? [];
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>(initialTagIds);
 
   const initialCharacter = combo?.character.id
@@ -102,12 +105,12 @@ export function ComboForm({
     createComboAction,
     {
       onSuccess: () => {
-        toast.success("Combo créé avec succès");
+        toast.success(t("toast.created"));
         router.push("/combos");
         router.refresh();
       },
       onError: ({ error }) => {
-        toast.error(error.serverError ?? "Erreur lors de la création du combo");
+        toast.error(error.serverError ?? t("toast.createError"));
       },
     },
   );
@@ -116,14 +119,12 @@ export function ComboForm({
     updateComboAction,
     {
       onSuccess: () => {
-        toast.success("Combo mis à jour avec succès");
+        toast.success(t("toast.updated"));
         router.push(`/combos/${combo!.id}`);
         router.refresh();
       },
       onError: ({ error }) => {
-        toast.error(
-          error.serverError ?? "Erreur lors de la mise à jour du combo",
-        );
+        toast.error(error.serverError ?? t("toast.updateError"));
       },
     },
   );
@@ -172,7 +173,7 @@ export function ComboForm({
         className="max-w-2xl space-y-6"
       >
         <FormItem>
-          <FormLabel>Jeu</FormLabel>
+          <FormLabel>{t("form.gameLabel")}</FormLabel>
           <Select
             value={selectedGameId}
             onValueChange={(value) => {
@@ -182,7 +183,7 @@ export function ComboForm({
             disabled={isPending}
           >
             <SelectTrigger>
-              <SelectValue placeholder="Sélectionner un jeu" />
+              <SelectValue placeholder={t("form.gamePlaceholder")} />
             </SelectTrigger>
             <SelectContent>
               {games.map((game) => (
@@ -199,7 +200,7 @@ export function ComboForm({
           name="characterId"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Personnage</FormLabel>
+              <FormLabel>{t("form.characterLabel")}</FormLabel>
               <Select
                 value={field.value}
                 onValueChange={(value) =>
@@ -212,8 +213,8 @@ export function ComboForm({
                     <SelectValue
                       placeholder={
                         selectedGameId
-                          ? "Sélectionner un personnage"
-                          : "Sélectionnez un jeu d'abord"
+                          ? t("form.characterPlaceholder")
+                          : t("form.characterPlaceholderNoGame")
                       }
                     />
                   </SelectTrigger>
@@ -236,12 +237,9 @@ export function ComboForm({
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Titre</FormLabel>
+              <FormLabel>{t("form.titleLabel")}</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  placeholder="Ex : Bread and butter midscreen"
-                />
+                <Input {...field} placeholder={t("form.titlePlaceholder")} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -253,17 +251,15 @@ export function ComboForm({
           name="notation"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Notation</FormLabel>
+              <FormLabel>{t("form.notationLabel")}</FormLabel>
               <FormControl>
                 <Textarea
                   {...field}
-                  placeholder="Ex : 2MP > 2HP xx 236P, SA1"
+                  placeholder={t("form.notationPlaceholder")}
                   className="min-h-[100px] font-mono"
                 />
               </FormControl>
-              <FormDescription>
-                Utilisez la notation FGC habituelle (numpad ou directionnelle)
-              </FormDescription>
+              <FormDescription>{t("form.notationDescription")}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -275,7 +271,7 @@ export function ComboForm({
             name="damage"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Dégâts</FormLabel>
+                <FormLabel>{t("form.damageLabel")}</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
@@ -302,7 +298,7 @@ export function ComboForm({
             name="meterUsed"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Jauge utilisée</FormLabel>
+                <FormLabel>{t("form.meterLabel")}</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
@@ -329,7 +325,7 @@ export function ComboForm({
             name="difficulty"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Difficulté (1-5)</FormLabel>
+                <FormLabel>{t("form.difficultyLabel")}</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
@@ -357,12 +353,12 @@ export function ComboForm({
           name="notes"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Notes (optionnel)</FormLabel>
+              <FormLabel>{t("form.notesLabel")}</FormLabel>
               <FormControl>
                 <Textarea
                   {...field}
                   value={field.value ?? ""}
-                  placeholder="Détails, conditions, alternatives..."
+                  placeholder={t("form.notesPlaceholder")}
                   className="min-h-[80px]"
                 />
               </FormControl>
@@ -372,10 +368,10 @@ export function ComboForm({
         />
 
         <div className="space-y-3">
-          <FormLabel>Tags ({selectedTagIds.length}/10)</FormLabel>
-          <FormDescription>
-            Sélectionnez les tags qui décrivent ce combo
-          </FormDescription>
+          <FormLabel>
+            {t("form.tagsLabel", { count: selectedTagIds.length })}
+          </FormLabel>
+          <FormDescription>{t("form.tagsDescription")}</FormDescription>
           <div className="flex flex-wrap gap-2">
             {availableTags.map((tag) => {
               const isSelected = selectedTagIds.includes(tag.id);
@@ -408,16 +404,16 @@ export function ComboForm({
             onClick={() => router.back()}
             disabled={isPending}
           >
-            Annuler
+            {tCommon("buttons.cancel")}
           </Button>
           <Button type="submit" disabled={isPending}>
             {isPending
               ? mode === "create"
-                ? "Création..."
-                : "Mise à jour..."
+                ? t("form.creating")
+                : t("form.updating")
               : mode === "create"
-                ? "Créer le combo"
-                : "Mettre à jour"}
+                ? t("form.createSubmit")
+                : t("form.updateSubmit")}
           </Button>
         </div>
       </form>

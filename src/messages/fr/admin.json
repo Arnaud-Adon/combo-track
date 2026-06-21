@@ -1,0 +1,206 @@
+{
+  "actions": {
+    "edit": "Éditer",
+    "deleting": "Suppression..."
+  },
+  "game": {
+    "pages": {
+      "listTitle": "Gestion des jeux",
+      "count": "{count, plural, one {# jeu} other {# jeux}}",
+      "createCta": "Créer un jeu",
+      "newTitle": "Créer un nouveau jeu",
+      "editTitle": "Modifier le jeu"
+    },
+    "form": {
+      "nameLabel": "Nom",
+      "namePlaceholder": "Ex : Street Fighter 6",
+      "slugLabel": "Slug",
+      "slugPlaceholder": "street-fighter-6",
+      "slugDescription": "Identifiant URL-friendly (auto-généré depuis le nom)",
+      "iconUrlLabel": "URL de l'icône (optionnel)",
+      "iconUrlPlaceholder": "https://...",
+      "creating": "Création...",
+      "updating": "Mise à jour...",
+      "createSubmit": "Créer le jeu",
+      "updateSubmit": "Mettre à jour"
+    },
+    "list": {
+      "empty": "Aucun jeu pour le moment",
+      "createFirst": "Créer votre premier jeu",
+      "charactersCount": "{count} personnages",
+      "combosCount": "{count} combos",
+      "updatedAt": "Modifié le {date}"
+    },
+    "deleteDialog": {
+      "title": "Supprimer ce jeu ?",
+      "description": "Cela supprimera aussi tous les personnages et combos associés. Cette action est irréversible."
+    },
+    "toast": {
+      "created": "Jeu créé avec succès",
+      "createError": "Erreur lors de la création du jeu",
+      "updated": "Jeu mis à jour avec succès",
+      "updateError": "Erreur lors de la mise à jour du jeu",
+      "deleted": "Jeu supprimé avec succès",
+      "deleteError": "Erreur lors de la suppression"
+    },
+    "errors": {
+      "slugExists": "Un jeu avec ce slug existe déjà"
+    }
+  },
+  "character": {
+    "pages": {
+      "listTitle": "Gestion des personnages",
+      "count": "{count, plural, one {# personnage} other {# personnages}}",
+      "createCta": "Créer un personnage",
+      "newTitle": "Créer un nouveau personnage",
+      "editTitle": "Modifier le personnage"
+    },
+    "form": {
+      "gameLabel": "Jeu",
+      "gamePlaceholder": "Sélectionner un jeu",
+      "nameLabel": "Nom",
+      "namePlaceholder": "Ex : Ryu",
+      "slugLabel": "Slug",
+      "slugPlaceholder": "ryu",
+      "slugDescription": "Identifiant URL-friendly (auto-généré depuis le nom)",
+      "iconUrlLabel": "URL de l'icône (optionnel)",
+      "iconUrlPlaceholder": "https://...",
+      "creating": "Création...",
+      "updating": "Mise à jour...",
+      "createSubmit": "Créer le personnage",
+      "updateSubmit": "Mettre à jour"
+    },
+    "list": {
+      "empty": "Aucun personnage pour le moment",
+      "createFirst": "Créer votre premier personnage",
+      "combosCount": "{count} combos",
+      "notesCount": "{count} notes"
+    },
+    "deleteDialog": {
+      "title": "Supprimer ce personnage ?",
+      "description": "Cela supprimera aussi tous les combos associés. Les notes liées seront détachées. Cette action est irréversible."
+    },
+    "toast": {
+      "created": "Personnage créé avec succès",
+      "createError": "Erreur lors de la création du personnage",
+      "updated": "Personnage mis à jour avec succès",
+      "updateError": "Erreur lors de la mise à jour du personnage",
+      "deleted": "Personnage supprimé avec succès",
+      "deleteError": "Erreur lors de la suppression"
+    },
+    "errors": {
+      "gameNotFound": "Le jeu sélectionné est introuvable",
+      "slugExists": "Un personnage avec ce slug existe déjà pour ce jeu"
+    }
+  },
+  "article": {
+    "pages": {
+      "listTitle": "Gestion du Glossaire",
+      "count": "{count, plural, one {# article} other {# articles}}",
+      "createCta": "Créer un article",
+      "newTitle": "Créer un nouvel article",
+      "editTitle": "Modifier l'article"
+    },
+    "form": {
+      "titleLabel": "Titre",
+      "titlePlaceholder": "Titre de l'article",
+      "slugLabel": "Slug",
+      "slugPlaceholder": "slug-de-l-article",
+      "slugDescription": "URL-friendly identifier (auto-généré depuis le titre)",
+      "categoryLabel": "Catégorie",
+      "categoryPlaceholder": "Ex: Techniques, Personnages, Termes",
+      "imageLabel": "Image de couverture",
+      "imageDescription": "Affichée dans la liste des articles (optionnel)",
+      "excerptLabel": "Extrait",
+      "excerptPlaceholder": "Court résumé de l'article (optionnel)",
+      "excerptDescription": "Affiché dans la liste des articles",
+      "contentLabel": "Contenu (Markdown)",
+      "contentDescription": "Utilisez la syntaxe Markdown pour formater le contenu. Insérez des images directement dans le texte.",
+      "publishedLabel": "Publié",
+      "publishedDescription": "Rendre cet article visible publiquement",
+      "previewTitle": "Prévisualisation",
+      "previewSubtitle": "Aperçu du rendu markdown",
+      "creating": "Création...",
+      "updating": "Mise à jour...",
+      "createSubmit": "Créer l'article",
+      "updateSubmit": "Mettre à jour"
+    },
+    "list": {
+      "empty": "Aucun article pour le moment",
+      "createFirst": "Créer votre premier article",
+      "category": "Catégorie : {category}",
+      "author": "Par {name}",
+      "updatedAt": "Modifié le {date}"
+    },
+    "deleteDialog": {
+      "title": "Supprimer cet article ?",
+      "description": "Cette action est irréversible."
+    },
+    "status": {
+      "published": "Publié",
+      "draft": "Brouillon"
+    },
+    "preview": {
+      "empty": "*Aucun contenu à prévisualiser*"
+    },
+    "upload": {
+      "tooLarge": "L'image doit faire moins de 2 Mo",
+      "invalidFormat": "Formats acceptés : JPEG, PNG, WebP",
+      "uploadFailed": "Échec de l'upload de l'image"
+    },
+    "imageField": {
+      "previewAlt": "Aperçu",
+      "empty": "Aucune image",
+      "change": "Changer l'image",
+      "choose": "Choisir une image"
+    },
+    "contentField": {
+      "insertImage": "Insérer une image",
+      "placeholder": "Contenu de l'article en markdown..."
+    },
+    "toast": {
+      "created": "Article créé avec succès",
+      "createError": "Erreur lors de la création de l'article",
+      "updated": "Article mis à jour avec succès",
+      "updateError": "Erreur lors de la mise à jour de l'article",
+      "deleted": "Article supprimé avec succès",
+      "deleteError": "Erreur lors de la suppression"
+    },
+    "errors": {
+      "slugExists": "Un article avec ce slug existe déjà"
+    }
+  },
+  "validation": {
+    "game": {
+      "nameMin": "Le nom doit contenir au moins 2 caractères",
+      "nameMax": "Le nom ne peut pas dépasser 80 caractères",
+      "slugMin": "Le slug doit contenir au moins 2 caractères",
+      "slugMax": "Le slug ne peut pas dépasser 40 caractères",
+      "slugFormat": "Le slug ne peut contenir que des lettres minuscules, chiffres et tirets",
+      "iconUrlInvalid": "L'URL de l'icône n'est pas valide",
+      "idRequired": "L'ID du jeu est requis"
+    },
+    "character": {
+      "gameRequired": "Le jeu est requis",
+      "nameMin": "Le nom doit contenir au moins 2 caractères",
+      "nameMax": "Le nom ne peut pas dépasser 60 caractères",
+      "slugRequired": "Le slug est requis",
+      "slugMax": "Le slug ne peut pas dépasser 40 caractères",
+      "slugFormat": "Le slug ne peut contenir que des lettres minuscules, chiffres et tirets",
+      "iconUrlInvalid": "L'URL de l'icône n'est pas valide",
+      "idRequired": "L'ID du personnage est requis"
+    },
+    "article": {
+      "titleMin": "Le titre doit contenir au moins 3 caractères",
+      "titleMax": "Le titre ne peut pas dépasser 200 caractères",
+      "slugMin": "Le slug doit contenir au moins 3 caractères",
+      "slugMax": "Le slug ne peut pas dépasser 200 caractères",
+      "slugFormat": "Le slug ne peut contenir que des lettres minuscules, chiffres et tirets",
+      "contentMin": "Le contenu doit contenir au moins 10 caractères",
+      "excerptMax": "L'extrait ne peut pas dépasser 500 caractères",
+      "categoryRequired": "La catégorie est requise",
+      "imageInvalid": "L'image doit être une URL valide",
+      "idRequired": "L'ID de l'article est requis"
+    }
+  }
+}

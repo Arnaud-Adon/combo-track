@@ -1,6 +1,7 @@
 "use client";
 
 import { Search } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useAction } from "next-safe-action/hooks";
 import { useEffect, useState } from "react";
 
@@ -20,6 +21,7 @@ export function SemanticSearchBar({
   autoFocus = false,
   onResultClick,
 }: SemanticSearchBarProps = {}) {
+  const t = useTranslations("search");
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
 
@@ -50,9 +52,9 @@ export function SemanticSearchBar({
           type="search"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="Recherche sémantique dans tes notes et le glossaire…"
+          placeholder={t("bar.placeholder")}
           className="pl-10"
-          aria-label="Recherche sémantique"
+          aria-label={t("bar.ariaLabel")}
           autoFocus={autoFocus}
         />
       </div>

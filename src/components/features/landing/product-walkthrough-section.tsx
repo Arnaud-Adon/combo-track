@@ -1,39 +1,42 @@
 import { cn } from "@/lib/utils";
 import { Sparkles } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import { Fragment } from "react";
 
 type ProductWalkthroughSectionProps = {
   className?: string;
 };
 
-const STEPS = [
-  {
-    step: "01",
-    eyebrow: "Capture",
-    title: "Colle une URL. Annote au timecode exact.",
-    body: "Replay perso, set pro, tutoriel — peu importe la source. Le player YouTube est intégré. Tu écris ta note à la seconde précise, elle reste liée pour toujours.",
-    mock: <MatchNotebookMock />,
-  },
-  {
-    step: "02",
-    eyebrow: "Structure",
-    title: "Construis une matrice de matchup en 10 secondes.",
-    body: "Tes options face aux siennes. L'IA propose, tu valides. Épingle la matrice, consulte-la depuis ton téléphone entre deux sets.",
-    mock: <StrategyMatrixMock />,
-  },
-  {
-    step: "03",
-    eyebrow: "Synthèse",
-    title: "L'IA lit tes notes et te dit où tu fuites.",
-    body: "Résumé, points forts, le point faible prioritaire à corriger, moments clés cliquables, exercices concrets pour ta prochaine session de lab.",
-    mock: <AiReportMock />,
-  },
-];
-
-export function ProductWalkthroughSection(
+export async function ProductWalkthroughSection(
   props: ProductWalkthroughSectionProps,
 ) {
   const { className } = props;
+
+  const t = await getTranslations("landing");
+
+  const steps = [
+    {
+      step: "01",
+      eyebrow: t("walkthrough.steps.capture.eyebrow"),
+      title: t("walkthrough.steps.capture.title"),
+      body: t("walkthrough.steps.capture.body"),
+      mock: <MatchNotebookMock />,
+    },
+    {
+      step: "02",
+      eyebrow: t("walkthrough.steps.structure.eyebrow"),
+      title: t("walkthrough.steps.structure.title"),
+      body: t("walkthrough.steps.structure.body"),
+      mock: <StrategyMatrixMock />,
+    },
+    {
+      step: "03",
+      eyebrow: t("walkthrough.steps.synthesis.eyebrow"),
+      title: t("walkthrough.steps.synthesis.title"),
+      body: t("walkthrough.steps.synthesis.body"),
+      mock: <AiReportMock />,
+    },
+  ];
 
   return (
     <section
@@ -47,17 +50,17 @@ export function ProductWalkthroughSection(
       <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 md:py-32 lg:px-8">
         <div className="mb-16 max-w-3xl md:mb-24">
           <span className="font-mono-fgc text-fgc-accent mb-4 inline-block text-[10px] tracking-[0.3em] uppercase">
-            {"// Produit"}
+            {t("walkthrough.eyebrow")}
           </span>
           <h2 className="marketing-h1 text-fgc-text text-4xl md:text-5xl lg:text-6xl">
-            Du replay au plan de lab.
+            {t("walkthrough.titlePart1")}
             <br />
-            <span className="text-fgc-muted">En trois étapes.</span>
+            <span className="text-fgc-muted">{t("walkthrough.titleHighlight")}</span>
           </h2>
         </div>
 
         <div className="space-y-24 md:space-y-32">
-          {STEPS.map((step, idx) => (
+          {steps.map((step, idx) => (
             <div
               key={step.step}
               className={cn(
@@ -96,7 +99,10 @@ export function ProductWalkthroughSection(
   );
 }
 
-function MatchNotebookMock() {
+async function MatchNotebookMock() {
+  const t = await getTranslations("landing");
+  const notes = t.raw("walkthrough.matchNotebookMock.notes") as string[];
+
   return (
     <div className="border-fgc-border bg-fgc-surface relative overflow-hidden rounded-xl border shadow-xl">
       <div className="border-fgc-border bg-fgc-bg/60 flex items-center justify-between border-b px-4 py-2.5">
@@ -116,9 +122,9 @@ function MatchNotebookMock() {
       </div>
       <div className="space-y-2 p-4">
         {[
-          { t: "0:24", n: "5HK whiff punish — confirm CA" },
-          { t: "1:12", n: "Drive Rush spacing trop court" },
-          { t: "2:03", n: "Oki throw loop wakeup arrière" },
+          { t: "0:24", n: notes[0] },
+          { t: "1:12", n: notes[1] },
+          { t: "2:03", n: notes[2] },
         ].map((row) => (
           <div
             key={row.t}
@@ -186,7 +192,9 @@ function StrategyMatrixMock() {
   );
 }
 
-function AiReportMock() {
+async function AiReportMock() {
+  const t = await getTranslations("landing");
+
   return (
     <div className="border-fgc-border bg-fgc-surface relative overflow-hidden rounded-xl border shadow-xl">
       <div className="border-fgc-border bg-fgc-bg/60 flex items-center gap-2 border-b px-4 py-2.5">
@@ -198,28 +206,27 @@ function AiReportMock() {
       <div className="space-y-4 p-5">
         <div>
           <div className="text-fgc-muted font-mono-fgc mb-1.5 text-[9px] tracking-[0.2em] uppercase">
-            Résumé
+            {t("walkthrough.aiReportMock.summaryLabel")}
           </div>
           <p className="text-fgc-text text-xs leading-relaxed">
-            Pressure neutral solide, mais 3 commit non sûrs sur Drive Rush ont
-            coûté la game 2. Burnout mal géré round 3.
+            {t("walkthrough.aiReportMock.summary")}
           </p>
         </div>
 
         <div>
           <div className="text-fgc-muted font-mono-fgc mb-2 text-[9px] tracking-[0.2em] uppercase">
-            Point faible prioritaire
+            {t("walkthrough.aiReportMock.weaknessLabel")}
           </div>
           <div className="border-fgc-accent/40 bg-fgc-accent-soft border-l-2 py-2 pl-3">
             <p className="text-fgc-text text-xs">
-              Drive Rush 5MK abusé sur knockdown — adversaire DI 2 fois sur 3.
+              {t("walkthrough.aiReportMock.weakness")}
             </p>
           </div>
         </div>
 
         <div>
           <div className="text-fgc-muted font-mono-fgc mb-2 text-[9px] tracking-[0.2em] uppercase">
-            Exercices
+            {t("walkthrough.aiReportMock.exercisesLabel")}
           </div>
           <ul className="space-y-1.5">
             {[

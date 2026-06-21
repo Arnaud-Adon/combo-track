@@ -1,0 +1,29 @@
+{
+  "metadata": {
+    "title": "Recherche sémantique"
+  },
+  "page": {
+    "title": "Recherche sémantique",
+    "description": "Cherche dans tes notes timestampées, tes mémos et les articles du glossaire par sens, pas seulement par mots-clés."
+  },
+  "dialog": {
+    "title": "Recherche sémantique",
+    "description": "Cherche par sens dans tes notes, tes mémos et le glossaire."
+  },
+  "trigger": {
+    "ariaLabel": "Ouvrir la recherche",
+    "label": "Rechercher…"
+  },
+  "bar": {
+    "placeholder": "Recherche sémantique dans tes notes et le glossaire…",
+    "ariaLabel": "Recherche sémantique"
+  },
+  "results": {
+    "minLength": "Tape au moins 2 caractères pour lancer une recherche.",
+    "pending": "Recherche en cours…",
+    "empty": "Aucun résultat pour « {query} ».",
+    "notes": "Notes",
+    "memos": "Mémos",
+    "glossary": "Glossaire"
+  }
+}

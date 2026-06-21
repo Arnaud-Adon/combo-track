@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -12,6 +13,7 @@ type MobileCtaBarProps = {
 
 export function MobileCtaBar(props: MobileCtaBarProps) {
   const { className } = props;
+  const t = useTranslations("landing");
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -33,10 +35,10 @@ export function MobileCtaBar(props: MobileCtaBarProps) {
       <div className="flex items-center gap-3 px-4 py-3">
         <div className="min-w-0 flex-1">
           <div className="font-mono-fgc text-fgc-accent text-[10px] tracking-widest uppercase">
-            Free forever
+            {t("mobileCta.freeForever")}
           </div>
           <div className="text-fgc-text truncate text-sm font-medium">
-            Ton labo FGC, en 30 secondes.
+            {t("mobileCta.tagline")}
           </div>
         </div>
         <Button
@@ -44,7 +46,7 @@ export function MobileCtaBar(props: MobileCtaBarProps) {
           className="bg-fgc-accent hover:bg-fgc-accent-strong h-10 shrink-0 text-sm text-white"
         >
           <Link href="/signup" className="flex items-center gap-1.5">
-            Commencer
+            {t("mobileCta.cta")}
             <ArrowRight className="size-3.5" />
           </Link>
         </Button>

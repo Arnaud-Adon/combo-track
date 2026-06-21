@@ -1,4 +1,5 @@
 import { Plus } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -10,25 +11,27 @@ type RecentStrategyMatricesSectionProps = {
   matrices: RecentStrategyMatrices;
 };
 
-export function RecentStrategyMatricesSection({
+export async function RecentStrategyMatricesSection({
   matrices,
 }: RecentStrategyMatricesSectionProps) {
+  const t = await getTranslations("dashboard");
+
   return (
     <section className="space-y-5">
       <SectionHeader
         index="01"
-        title="Dernières matrices"
+        title={t("recentMatrices.title")}
         href="/notes/strategy"
       />
 
       {matrices.length === 0 ? (
         <div className="border-border text-muted-foreground flex flex-col items-center gap-3 rounded-xl border border-dashed py-12 text-center">
-          <p className="font-mono text-sm">Aucune matrice pour le moment.</p>
-          <p className="text-sm">Prépare ton premier matchup avant le set.</p>
+          <p className="font-mono text-sm">{t("recentMatrices.empty")}</p>
+          <p className="text-sm">{t("recentMatrices.emptyHint")}</p>
           <Button asChild variant="outline" size="sm" className="mt-1">
             <Link href="/notes/strategy/new">
               <Plus className="size-4" />
-              Nouvelle matrice
+              {t("actions.newMatrix")}
             </Link>
           </Button>
         </div>

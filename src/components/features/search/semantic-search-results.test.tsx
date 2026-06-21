@@ -1,10 +1,22 @@
 import { render, screen } from "@testing-library/react";
+import { NextIntlClientProvider } from "next-intl";
+import { type ReactNode } from "react";
 import { describe, expect, it } from "vitest";
+
+import { frMessages } from "@/i18n/messages";
 import { SemanticSearchResults } from "./semantic-search-results";
+
+function renderWithIntl(ui: ReactNode) {
+  return render(
+    <NextIntlClientProvider locale="fr" messages={frMessages}>
+      {ui}
+    </NextIntlClientProvider>,
+  );
+}
 
 describe("SemanticSearchResults", () => {
   it("prompts when query too short", () => {
-    render(
+    renderWithIntl(
       <SemanticSearchResults
         query=""
         isPending={false}
@@ -17,7 +29,7 @@ describe("SemanticSearchResults", () => {
   });
 
   it("shows pending state", () => {
-    render(
+    renderWithIntl(
       <SemanticSearchResults
         query="punish"
         isPending
@@ -30,7 +42,7 @@ describe("SemanticSearchResults", () => {
   });
 
   it("renders notes and glossary results", () => {
-    render(
+    renderWithIntl(
       <SemanticSearchResults
         query="punish"
         isPending={false}
@@ -65,7 +77,7 @@ describe("SemanticSearchResults", () => {
   });
 
   it("shows empty state when no results", () => {
-    render(
+    renderWithIntl(
       <SemanticSearchResults
         query="nothing"
         isPending={false}

@@ -16,6 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, Pencil } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -43,6 +44,8 @@ type Props =
 
 export function MemoForm(props: Props) {
   const router = useRouter();
+  const t = useTranslations("memo.form");
+  const tCommon = useTranslations("common.buttons");
   const [showPreview, setShowPreview] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -55,21 +58,21 @@ export function MemoForm(props: Props) {
 
   const createAction = useAction(createMemoAction, {
     onSuccess: ({ data }) => {
-      toast.success("Mémo créé");
+      toast.success(t("created"));
       if (data?.id) router.push(`/notes/memo/${data.id}`);
     },
     onError: ({ error }) => {
-      toast.error(error.serverError ?? "Erreur lors de la création");
+      toast.error(error.serverError ?? t("createError"));
     },
   });
 
   const updateAction = useAction(updateMemoAction, {
     onSuccess: () => {
-      toast.success("Mémo mis à jour");
+      toast.success(t("updated"));
       router.refresh();
     },
     onError: ({ error }) => {
-      toast.error(error.serverError ?? "Erreur lors de la mise à jour");
+      toast.error(error.serverError ?? t("updateError"));
     },
   });
 
@@ -91,9 +94,9 @@ export function MemoForm(props: Props) {
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Titre</FormLabel>
+              <FormLabel>{t("titleLabel")}</FormLabel>
               <FormControl>
-                <Input placeholder="Ex: Punish maxi sur DI bloqué" {...field} />
+                <Input placeholder={t("titlePlaceholder")} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -106,7 +109,7 @@ export function MemoForm(props: Props) {
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center justify-between">
-                <FormLabel>Contenu</FormLabel>
+                <FormLabel>{t("contentLabel")}</FormLabel>
                 <div className="flex items-center gap-2">
                   <span className="text-muted-foreground text-xs">
                     {field.value.length} / {MAX_MEMO_CONTENT_LENGTH}
@@ -120,12 +123,12 @@ export function MemoForm(props: Props) {
                     {showPreview ? (
                       <>
                         <Pencil className="mr-2 h-3 w-3" />
-                        Édition
+                        {t("edit")}
                       </>
                     ) : (
                       <>
                         <Eye className="mr-2 h-3 w-3" />
-                        Aperçu
+                        {t("preview")}
                       </>
                     )}
                   </Button>
@@ -148,7 +151,7 @@ export function MemoForm(props: Props) {
                       remarkPlugins={[remarkGfm]}
                       components={notationComponents}
                     >
-                      {field.value || "*Aucun contenu*"}
+                      {field.value || t("emptyPreview")}
                     </ReactMarkdown>
                   </div>
                 ) : (
@@ -160,7 +163,7 @@ export function MemoForm(props: Props) {
                         e.target.value.slice(0, MAX_MEMO_CONTENT_LENGTH),
                       )
                     }
-                    placeholder="Ex: Sur DI bloqué → cr.HP xx Super (+8)..."
+                    placeholder={t("contentPlaceholder")}
                     className="min-h-[240px]"
                   />
                 )}
@@ -177,14 +180,14 @@ export function MemoForm(props: Props) {
             onClick={() => router.back()}
             disabled={isPending}
           >
-            Annuler
+            {tCommon("cancel")}
           </Button>
           <Button type="submit" disabled={isPending}>
             {isPending
-              ? "Enregistrement…"
+              ? t("saving")
               : props.mode === "edit"
-                ? "Mettre à jour"
-                : "Créer le mémo"}
+                ? t("update")
+                : t("create")}
           </Button>
         </div>
       </form>

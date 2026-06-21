@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { signIn } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -20,6 +21,7 @@ import { useForm } from "react-hook-form";
 import { SignInInput, signInSchema } from "./auth-schema";
 
 export function SignInForm() {
+  const t = useTranslations("auth");
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [rememberMe, setRememberMe] = useState(false);
@@ -44,7 +46,7 @@ export function SignInForm() {
     });
 
     if (result.error) {
-      setError(result.error.message ?? "Échec de la connexion");
+      setError(result.error.message ?? t("signIn.error"));
       return;
     }
 
@@ -65,13 +67,13 @@ export function SignInForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>{t("fields.emailLabel")}</FormLabel>
               <FormControl>
                 <Input
                   {...field}
                   type="email"
                   autoComplete="email"
-                  placeholder="vous@exemple.com"
+                  placeholder={t("fields.emailPlaceholder")}
                   aria-required="true"
                 />
               </FormControl>
@@ -85,7 +87,7 @@ export function SignInForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Mot de passe</FormLabel>
+              <FormLabel>{t("fields.passwordLabel")}</FormLabel>
               <FormControl>
                 <Input
                   {...field}
@@ -109,7 +111,7 @@ export function SignInForm() {
             className="h-4 w-4"
           />
           <label htmlFor="rememberMe" className="cursor-pointer text-sm">
-            Se souvenir de moi
+            {t("signIn.rememberMe")}
           </label>
         </div>
 
@@ -118,13 +120,15 @@ export function SignInForm() {
           className="w-full"
           disabled={form.formState.isSubmitting}
         >
-          {form.formState.isSubmitting ? "Connexion..." : "Se connecter"}
+          {form.formState.isSubmitting
+            ? t("signIn.submitting")
+            : t("signIn.submit")}
         </Button>
 
         <div className="text-center text-sm">
-          Pas de compte ?{" "}
+          {t("signIn.noAccount")}{" "}
           <Link href="/sign-up" className="text-primary hover:underline">
-            Créer un compte
+            {t("signIn.createAccountLink")}
           </Link>
         </div>
       </form>

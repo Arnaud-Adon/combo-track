@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 
 import { Button } from "@/components/ui/button";
 import { ComboListItem } from "@/../prisma/query/combo.query";
@@ -9,15 +10,15 @@ interface ComboListProps {
   combos: ComboListItem[];
 }
 
-export function ComboList({ combos }: ComboListProps) {
+export async function ComboList({ combos }: ComboListProps) {
+  const t = await getTranslations("combo");
+
   if (combos.length === 0) {
     return (
       <div className="py-12 text-center">
-        <p className="text-muted-foreground mb-4">
-          Aucun combo pour le moment
-        </p>
+        <p className="text-muted-foreground mb-4">{t("list.empty")}</p>
         <Button asChild>
-          <Link href="/combos/new">Créer votre premier combo</Link>
+          <Link href="/combos/new">{t("list.createFirst")}</Link>
         </Button>
       </div>
     );

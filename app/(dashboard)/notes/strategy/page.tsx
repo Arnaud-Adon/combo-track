@@ -3,6 +3,7 @@ import { StrategyMatrixList } from "@/components/features/strategy-matrix/strate
 import { Button } from "@/components/ui/button";
 import { requireAuth } from "@/lib/auth-utils";
 import { Plus } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import {
   getAllCharactersGroupedByGame,
@@ -16,6 +17,7 @@ export default async function StrategyMatrixListPage({
   searchParams: Promise<{ gameId?: string; characterId?: string }>;
 }) {
   const user = await requireAuth();
+  const t = await getTranslations("strategyMatrix");
   const params = await searchParams;
   const filters = {
     gameId: params.gameId,
@@ -32,15 +34,15 @@ export default async function StrategyMatrixListPage({
     <div className="mx-auto max-w-7xl space-y-6 px-4 py-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Matrices de stratégie</h1>
+          <h1 className="text-3xl font-bold">{t("page.list.title")}</h1>
           <p className="text-muted-foreground mt-1">
-            Vos plans de jeu conditionnels par état des ressources.
+            {t("page.list.subtitle")}
           </p>
         </div>
         <Button asChild>
           <Link href="/notes/strategy/new">
             <Plus className="mr-2 h-4 w-4" />
-            Nouvelle matrice
+            {t("page.list.new")}
           </Link>
         </Button>
       </div>

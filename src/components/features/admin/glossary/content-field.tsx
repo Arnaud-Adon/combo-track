@@ -1,6 +1,7 @@
 "use client";
 
 import { ImageIcon, Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useRef, useState, type ChangeEvent } from "react";
 import { toast } from "sonner";
 
@@ -15,6 +16,7 @@ interface ContentFieldProps {
 }
 
 export function ContentField({ value, onChange }: ContentFieldProps) {
+  const t = useTranslations("admin");
   const [isUploading, setIsUploading] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -51,12 +53,12 @@ export function ContentField({ value, onChange }: ContentFieldProps) {
     }
 
     if (file.size > 2 * 1024 * 1024) {
-      toast.error("L'image doit faire moins de 2 Mo");
+      toast.error(t("article.upload.tooLarge"));
       return;
     }
 
     if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
-      toast.error("Formats acceptés : JPEG, PNG, WebP");
+      toast.error(t("article.upload.invalidFormat"));
       return;
     }
 
@@ -70,7 +72,7 @@ export function ContentField({ value, onChange }: ContentFieldProps) {
     setIsUploading(false);
 
     if (!result.success || !result.imageUrl) {
-      toast.error(result.error ?? "Échec de l'upload de l'image");
+      toast.error(result.error ?? t("article.upload.uploadFailed"));
       return;
     }
 
@@ -109,7 +111,7 @@ export function ContentField({ value, onChange }: ContentFieldProps) {
             ) : (
               <ImageIcon className="mr-2 h-4 w-4" />
             )}
-            Insérer une image
+            {t("article.contentField.insertImage")}
           </Button>
         </label>
       </div>
@@ -118,7 +120,7 @@ export function ContentField({ value, onChange }: ContentFieldProps) {
         ref={textareaRef}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="Contenu de l'article en markdown..."
+        placeholder={t("article.contentField.placeholder")}
         className="min-h-[300px] font-mono"
       />
     </div>

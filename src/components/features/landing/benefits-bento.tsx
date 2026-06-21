@@ -8,6 +8,7 @@ import {
   StickyNote,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
 type BenefitsBentoProps = {
   className?: string;
@@ -22,55 +23,57 @@ type Benefit = {
   accent?: boolean;
 };
 
-const BENEFITS: Benefit[] = [
-  {
-    icon: PlayCircle,
-    tag: "Match Notebook",
-    title: "Notes timestampées. Rien ne se perd.",
-    body: "Tu colles l'URL de n'importe quelle vidéo YouTube. Tu annotes au bon moment : combo punish, oki setup, erreur de neutral. Chaque note est liée au timecode exact. Dans six mois, tu retrouves tout en trois secondes.",
-    span: "md:col-span-2",
-    accent: true,
-  },
-  {
-    icon: BookOpen,
-    tag: "Combo Notebook",
-    title: "Tes BnBs. Structurés. Par perso.",
-    body: "Chaque combo a sa fiche : notation, dégâts, meter, difficulté, tags. Lié à la vidéo source. Ton carnet évolue avec toi — pas avec le prochain patch.",
-    span: "md:col-span-1",
-  },
-  {
-    icon: Grid3x3,
-    tag: "Strategy Matrix",
-    title: "Prépare chaque matchup avant d'entrer en jeu.",
-    body: "Crée une matrice pour un adversaire précis : tes options face à ses options. Remplis les cellules — ou laisse l'IA les générer en 10 secondes. Épingle, consulte avant ton set.",
-    span: "md:col-span-1",
-  },
-  {
-    icon: Sparkles,
-    tag: "AI Match Report",
-    title: "L'IA qui voit ce que tu as raté.",
-    body: "Génère un rapport complet en un clic : résumé, points forts, UN point faible prioritaire, moments clés horodatés, exercices concrets pour ta prochaine session de lab.",
-    span: "md:col-span-2",
-    accent: true,
-  },
-  {
-    icon: StickyNote,
-    tag: "Mémos",
-    title: "Capture une idée en 5 secondes.",
-    body: "Une intuition pendant le lab, une routine d'échauffement, une checklist pré-tournoi. Pas besoin d'un match ni d'un perso. Indexé avec tout le reste.",
-    span: "md:col-span-1",
-  },
-  {
-    icon: Command,
-    tag: "Recherche ⌘K",
-    title: "Tout ton labo, à une frappe.",
-    body: "Recherche sémantique. Tape « anti-air dive kick » et retrouve ta note où tu avais écrit « DP punish jump-in Akuma ». Plus besoin de te souvenir des mots exacts.",
-    span: "md:col-span-2",
-  },
-];
-
-export function BenefitsBento(props: BenefitsBentoProps) {
+export async function BenefitsBento(props: BenefitsBentoProps) {
   const { className } = props;
+
+  const t = await getTranslations("landing");
+
+  const benefits: Benefit[] = [
+    {
+      icon: PlayCircle,
+      tag: t("benefits.items.matchNotebook.tag"),
+      title: t("benefits.items.matchNotebook.title"),
+      body: t("benefits.items.matchNotebook.body"),
+      span: "md:col-span-2",
+      accent: true,
+    },
+    {
+      icon: BookOpen,
+      tag: t("benefits.items.comboNotebook.tag"),
+      title: t("benefits.items.comboNotebook.title"),
+      body: t("benefits.items.comboNotebook.body"),
+      span: "md:col-span-1",
+    },
+    {
+      icon: Grid3x3,
+      tag: t("benefits.items.strategyMatrix.tag"),
+      title: t("benefits.items.strategyMatrix.title"),
+      body: t("benefits.items.strategyMatrix.body"),
+      span: "md:col-span-1",
+    },
+    {
+      icon: Sparkles,
+      tag: t("benefits.items.aiReport.tag"),
+      title: t("benefits.items.aiReport.title"),
+      body: t("benefits.items.aiReport.body"),
+      span: "md:col-span-2",
+      accent: true,
+    },
+    {
+      icon: StickyNote,
+      tag: t("benefits.items.memos.tag"),
+      title: t("benefits.items.memos.title"),
+      body: t("benefits.items.memos.body"),
+      span: "md:col-span-1",
+    },
+    {
+      icon: Command,
+      tag: t("benefits.items.search.tag"),
+      title: t("benefits.items.search.title"),
+      body: t("benefits.items.search.body"),
+      span: "md:col-span-2",
+    },
+  ];
 
   return (
     <section
@@ -85,22 +88,21 @@ export function BenefitsBento(props: BenefitsBentoProps) {
         <div className="mb-12 flex flex-col items-start gap-3 md:mb-16 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
             <span className="font-mono-fgc text-fgc-accent mb-4 inline-block text-[10px] tracking-[0.3em] uppercase">
-              {"// Bénéfices"}
+              {t("benefits.eyebrow")}
             </span>
             <h2 className="marketing-h1 text-fgc-text text-4xl md:text-5xl lg:text-6xl">
-              Six modules.
+              {t("benefits.titlePart1")}
               <br />
-              <span className="text-fgc-muted">Un seul flux.</span>
+              <span className="text-fgc-muted">{t("benefits.titleHighlight")}</span>
             </h2>
           </div>
           <p className="text-fgc-muted max-w-md text-sm leading-relaxed md:text-base">
-            Tout ce qu&apos;un joueur compétitif fait après une session — annoter,
-            structurer, comparer, synthétiser, retrouver. Au même endroit.
+            {t("benefits.intro")}
           </p>
         </div>
 
         <div className="grid auto-rows-fr gap-px md:grid-cols-3">
-          {BENEFITS.map((benefit, idx) => {
+          {benefits.map((benefit, idx) => {
             const Icon = benefit.icon;
             return (
               <article

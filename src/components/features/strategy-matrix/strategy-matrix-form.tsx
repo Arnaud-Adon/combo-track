@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
 import { useState, type ReactNode } from "react";
@@ -37,8 +38,9 @@ import {
   type StrategyMatrixCreateInput,
 } from "./strategy-matrix-schema";
 import {
-  STRATEGY_MATRIX_TEMPLATES,
+  resolveStrategyMatrixTemplates,
   type StrategyMatrixTemplate,
+  type TemplateTranslator,
 } from "./strategy-matrix-templates";
 import { StrategyMatrixTemplateSelector } from "./strategy-matrix-template-selector";
 import {
@@ -107,7 +109,12 @@ function MatrixSection(props: MatrixSectionProps) {
 
 export function StrategyMatrixForm(props: Props) {
   const router = useRouter();
-  const fallback = props.initialTemplate ?? STRATEGY_MATRIX_TEMPLATES[0];
+  const t = useTranslations("strategyMatrix");
+  const tc = useTranslations("common");
+  const templates = resolveStrategyMatrixTemplates(
+    t as unknown as TemplateTranslator,
+  );
+  const fallback = props.initialTemplate ?? templates[0];
   const initialValues: StrategyMatrixCreateInput =
     props.mode === "edit"
       ? props.initialData
@@ -140,21 +147,21 @@ export function StrategyMatrixForm(props: Props) {
 
   const createAction = useAction(createStrategyMatrixAction, {
     onSuccess: ({ data }) => {
-      toast.success("Matrice créée");
+      toast.success(t("form.toast.created"));
       if (data?.id) router.push(`/notes/strategy/${data.id}`);
     },
     onError: ({ error }) => {
-      toast.error(error.serverError ?? "Erreur lors de la création");
+      toast.error(error.serverError ?? t("form.toast.createError"));
     },
   });
 
   const updateAction = useAction(updateStrategyMatrixAction, {
     onSuccess: () => {
-      toast.success("Matrice mise à jour");
+      toast.success(t("form.toast.updated"));
       router.refresh();
     },
     onError: ({ error }) => {
-      toast.error(error.serverError ?? "Erreur lors de la mise à jour");
+      toast.error(error.serverError ?? t("form.toast.updateError"));
     },
   });
 
@@ -258,8 +265,8 @@ export function StrategyMatrixForm(props: Props) {
         {props.mode === "create" && (
           <MatrixSection
             index="00"
-            title="Pars d'un modèle"
-            description="Un point de départ rapide pour ne pas démarrer d'une page blanche. Tu personnalises tout ensuite."
+            title={t("form.template.title")}
+            description={t("form.template.description")}
           >
             <div className="space-y-4">
               <Button
@@ -269,8 +276,8 @@ export function StrategyMatrixForm(props: Props) {
                 onClick={() => setShowTemplatePicker((v) => !v)}
               >
                 {showTemplatePicker
-                  ? "Masquer les modèles"
-                  : "Voir les modèles"}
+                  ? t("form.template.hide")
+                  : t("form.template.show")}
               </Button>
               {showTemplatePicker && (
                 <StrategyMatrixTemplateSelector
@@ -283,8 +290,8 @@ export function StrategyMatrixForm(props: Props) {
 
         <MatrixSection
           index="01"
-          title="Identité"
-          description="Nomme ta matrice pour la retrouver d'un coup d'œil avant un set."
+          title={t("form.identity.title")}
+          description={t("form.identity.description")}
         >
           <div className="space-y-4">
             <FormField
@@ -292,10 +299,10 @@ export function StrategyMatrixForm(props: Props) {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Titre</FormLabel>
+                  <FormLabel>{t("form.titleLabel")}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Ex: Ken vs Juri — défense en burnout"
+                      placeholder={t("form.titlePlaceholder")}
                       {...field}
                     />
                   </FormControl>
@@ -309,10 +316,10 @@ export function StrategyMatrixForm(props: Props) {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description (optionnelle)</FormLabel>
+                  <FormLabel>{t("form.descriptionLabel")}</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Contexte ou conditions d'utilisation de cette matrice"
+                      placeholder={t("form.descriptionPlaceholder")}
                       value={field.value ?? ""}
                       onChange={field.onChange}
                       className="min-h-[60px]"
@@ -327,8 +334,8 @@ export function StrategyMatrixForm(props: Props) {
 
         <MatrixSection
           index="02"
-          title="Matchup"
-          description="Associe un jeu et des persos pour retrouver la matrice par matchup (optionnel)."
+          title={t("form.matchup.title")}
+          description={t("form.matchup.description")}
         >
           <StrategyMatrixMatchupSelector
             games={props.games}
@@ -340,19 +347,19 @@ export function StrategyMatrixForm(props: Props) {
 
         <MatrixSection
           index="03"
-          title="Axes"
-          description="Tes ressources en colonnes, celles de l'adversaire en lignes. 2 à 5 niveaux par axe."
+          title={t("form.axes.title")}
+          description={t("form.axes.description")}
         >
           <div className="grid gap-4 md:grid-cols-2">
             <StrategyMatrixAxisBuilder
               tone="mine"
-              heading="Mon état (colonnes →)"
+              heading={t("form.axes.mine")}
               axis={myAxis}
               onChange={(next) => handleAxisChange("myAxis", next)}
             />
             <StrategyMatrixAxisBuilder
               tone="opponent"
-              heading="État adverse (lignes ↓)"
+              heading={t("form.axes.opponent")}
               axis={opponentAxis}
               onChange={(next) => handleAxisChange("opponentAxis", next)}
             />
@@ -361,8 +368,8 @@ export function StrategyMatrixForm(props: Props) {
 
         <MatrixSection
           index="04"
-          title="Matrice"
-          description="Clique une cellule pour décrire la stratégie optimale — ou laisse l'IA remplir toute la grille."
+          title={t("form.grid.title")}
+          description={t("form.grid.description")}
           action={
             <StrategyMatrixAiFillButton
               title={form.watch("title")}
@@ -397,14 +404,14 @@ export function StrategyMatrixForm(props: Props) {
             onClick={() => router.back()}
             disabled={isPending}
           >
-            Annuler
+            {tc("buttons.cancel")}
           </Button>
           <Button type="submit" disabled={isPending}>
             {isPending
-              ? "Enregistrement…"
+              ? t("form.submitting")
               : props.mode === "edit"
-                ? "Mettre à jour"
-                : "Créer la matrice"}
+                ? t("form.submitEdit")
+                : t("form.submitCreate")}
           </Button>
         </div>
 
