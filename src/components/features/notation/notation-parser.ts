@@ -15,6 +15,10 @@ export const NUMPAD_GLYPHS: Record<string, string> = {
 export function numpadToGlyphs(numpad: string): string | null {
   let glyphs = "";
   for (const char of numpad) {
+    if (char === "[" || char === "]") {
+      glyphs += char;
+      continue;
+    }
     const glyph = NUMPAD_GLYPHS[char];
     if (!glyph) return null;
     glyphs += glyph;
@@ -31,12 +35,16 @@ export type NotationSegment =
   | { kind: "frame"; raw: string; tone: FrameTone }
   | { kind: "text"; raw: string };
 
+function escapeRegex(source: string): string {
+  return source.replace(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`);
+}
+
 const FRAME_SOURCE = String.raw`\([+-]\d{1,2}\)|\(0\)`;
 const INTENSITY_BUTTON_SOURCE = `LP|MP|HP|LK|MK|HK`;
 const GENERIC_BUTTON_SOURCE = String.raw`(?:PPP|KKK|PP|KK|P|K)(?![A-Za-z])`;
 const KNOWN_MOTION_SOURCE = [...FGC_MOTIONS]
-  .map((motion) => motion.value)
-  .sort((a, b) => b.length - a.length)
+  .sort((a, b) => b.value.length - a.value.length)
+  .map((motion) => escapeRegex(motion.value))
   .join("|");
 const GENERIC_MOTION_SOURCE = String.raw`[1-9]{2,5}`;
 

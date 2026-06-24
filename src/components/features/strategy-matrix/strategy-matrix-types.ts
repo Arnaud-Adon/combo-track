@@ -46,6 +46,14 @@ export const FGC_MOTIONS: NotationItem[] = [
   { value: "44", label: "44 (Backdash)" },
   { value: "360", label: "360 (Tour complet / SPD)" },
   { value: "720", label: "720 (Double tour)" },
+  { value: "[4]6", label: "[4]6 (Charge arrière → avant)" },
+  { value: "[2]8", label: "[2]8 (Charge bas → haut)" },
+  { value: "[1]9", label: "[1]9 (Charge bas-arrière → haut-avant)" },
+  { value: "[4]9", label: "[4]9 (Charge arrière → haut-avant)" },
+  { value: "[4]646", label: "[4]646 (Charge super horizontale)" },
+  { value: "[2]828", label: "[2]828 (Charge super verticale)" },
+  { value: "236236", label: "236236 (Double QCF / Super)" },
+  { value: "214214", label: "214214 (Double QCB / Super)" },
 ];
 
 export const FRAME_OPTIONS = [

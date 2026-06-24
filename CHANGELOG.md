@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2026-06-24
+
+### Added: Charge and double-quarter-circle motions in the notation toolbar (with bracket-aware glyphs)
+
 ## 2026-06-22
 
 ### Refactor: Add a shared Translator type and replace the duplicated MatchTranslator/TemplateTranslator/inline casts (DRY)
