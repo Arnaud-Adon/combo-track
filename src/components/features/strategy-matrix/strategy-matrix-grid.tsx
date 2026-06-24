@@ -2,9 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import { notationComponents } from "@/components/features/notation/notation-renderer";
+import { MarkdownPreview } from "@/components/features/notation/markdown-preview";
 import type { Axis, Cell } from "./strategy-matrix-schema";
 import { buildCellLookup, cellKey } from "./strategy-matrix-types";
 
@@ -87,14 +85,9 @@ export function StrategyMatrixGrid({
                       t("grid.emptyCell")
                     )
                   ) : (
-                    <div className="prose prose-invert prose-sm line-clamp-5 max-w-none [&_*]:my-0 [&_li]:leading-snug [&_p]:leading-snug">
-                      <ReactMarkdown
-                        remarkPlugins={[remarkGfm]}
-                        components={notationComponents}
-                      >
-                        {content}
-                      </ReactMarkdown>
-                    </div>
+                    <MarkdownPreview className="prose-sm line-clamp-5 [&_*]:my-0 [&_li]:leading-snug [&_p]:leading-snug">
+                      {content}
+                    </MarkdownPreview>
                   )}
                 </div>
               );

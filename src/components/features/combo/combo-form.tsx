@@ -17,7 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { RichMarkdownEditor } from "@/components/features/editor/rich-markdown-editor";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -248,9 +248,12 @@ export function ComboForm({
             <FormItem>
               <FormLabel>{t("form.notationLabel")}</FormLabel>
               <FormControl>
-                <Textarea
+                <RichMarkdownEditor
                   {...field}
+                  maxLength={500}
+                  formatToolbar={false}
                   placeholder={t("form.notationPlaceholder")}
+                  ariaLabel={t("form.notationLabel")}
                   className="min-h-[100px] font-mono"
                 />
               </FormControl>
@@ -350,10 +353,12 @@ export function ComboForm({
             <FormItem>
               <FormLabel>{t("form.notesLabel")}</FormLabel>
               <FormControl>
-                <Textarea
+                <RichMarkdownEditor
                   {...field}
                   value={field.value ?? ""}
+                  maxLength={2000}
                   placeholder={t("form.notesPlaceholder")}
+                  ariaLabel={t("form.notesLabel")}
                   className="min-h-[80px]"
                 />
               </FormControl>

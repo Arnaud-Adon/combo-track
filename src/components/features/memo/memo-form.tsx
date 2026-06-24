@@ -1,7 +1,6 @@
 "use client";
 
-import { notationComponents } from "@/components/features/notation/notation-renderer";
-import { NotationToolbar } from "@/components/features/notation/notation-toolbar";
+import { RichMarkdownEditor } from "@/components/features/editor/rich-markdown-editor";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,15 +11,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, Pencil } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import { useActionToast } from "@/hooks/use-action-toast";
 import { createMemoAction, updateMemoAction } from "./memo-action";
 import {
@@ -45,8 +39,6 @@ export function MemoForm(props: Props) {
   const router = useRouter();
   const t = useTranslations("memo.form");
   const tCommon = useTranslations("common.buttons");
-  const [showPreview, setShowPreview] = useState(false);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const form = useForm<MemoFormInput>({
     resolver: zodResolver(memoFormSchema),
@@ -103,65 +95,15 @@ export function MemoForm(props: Props) {
           name="content"
           render={({ field }) => (
             <FormItem>
-              <div className="flex items-center justify-between">
-                <FormLabel>{t("contentLabel")}</FormLabel>
-                <div className="flex items-center gap-2">
-                  <span className="text-muted-foreground text-xs">
-                    {field.value.length} / {MAX_MEMO_CONTENT_LENGTH}
-                  </span>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setShowPreview((v) => !v)}
-                  >
-                    {showPreview ? (
-                      <>
-                        <Pencil className="mr-2 h-3 w-3" />
-                        {t("edit")}
-                      </>
-                    ) : (
-                      <>
-                        <Eye className="mr-2 h-3 w-3" />
-                        {t("preview")}
-                      </>
-                    )}
-                  </Button>
-                </div>
-              </div>
-
-              {!showPreview && (
-                <NotationToolbar
-                  textareaRef={textareaRef}
-                  value={field.value}
-                  onValueChange={(next) => field.onChange(next)}
-                  maxLength={MAX_MEMO_CONTENT_LENGTH}
-                />
-              )}
-
+              <FormLabel>{t("contentLabel")}</FormLabel>
               <FormControl>
-                {showPreview ? (
-                  <div className="prose prose-invert border-border bg-muted text-foreground min-h-[200px] max-w-none rounded-md border p-3 text-sm">
-                    <ReactMarkdown
-                      remarkPlugins={[remarkGfm]}
-                      components={notationComponents}
-                    >
-                      {field.value || t("emptyPreview")}
-                    </ReactMarkdown>
-                  </div>
-                ) : (
-                  <Textarea
-                    ref={textareaRef}
-                    value={field.value}
-                    onChange={(e) =>
-                      field.onChange(
-                        e.target.value.slice(0, MAX_MEMO_CONTENT_LENGTH),
-                      )
-                    }
-                    placeholder={t("contentPlaceholder")}
-                    className="min-h-[240px]"
-                  />
-                )}
+                <RichMarkdownEditor
+                  {...field}
+                  maxLength={MAX_MEMO_CONTENT_LENGTH}
+                  placeholder={t("contentPlaceholder")}
+                  ariaLabel={t("contentLabel")}
+                  className="min-h-[240px]"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

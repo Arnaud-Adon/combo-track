@@ -10,7 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { RichMarkdownEditor } from "@/components/features/editor/rich-markdown-editor";
 import type { Translator } from "@/types/translator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
@@ -110,9 +110,7 @@ export function StrategyMatrixForm(props: Props) {
   const router = useRouter();
   const t = useTranslations("strategyMatrix");
   const tc = useTranslations("common");
-  const templates = resolveStrategyMatrixTemplates(
-    t as unknown as Translator,
-  );
+  const templates = resolveStrategyMatrixTemplates(t as unknown as Translator);
   const fallback = props.initialTemplate ?? templates[0];
   const initialValues: StrategyMatrixCreateInput =
     props.mode === "edit"
@@ -313,10 +311,12 @@ export function StrategyMatrixForm(props: Props) {
                 <FormItem>
                   <FormLabel>{t("form.descriptionLabel")}</FormLabel>
                   <FormControl>
-                    <Textarea
+                    <RichMarkdownEditor
                       placeholder={t("form.descriptionPlaceholder")}
+                      ariaLabel={t("form.descriptionLabel")}
                       value={field.value ?? ""}
                       onChange={field.onChange}
+                      maxLength={500}
                       className="min-h-[60px]"
                     />
                   </FormControl>

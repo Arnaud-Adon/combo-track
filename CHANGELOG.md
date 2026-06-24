@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## 2026-06-24
 
+### Added: Shared RichMarkdownEditor with a markdown formatting toolbar (bold, italic, strikethrough, highlight, headings, lists, quote, code block, link)
+
+### Added: Centralized MarkdownPreview wrapper with ==highlight== support via a zero-dependency rehype plugin
+
+### Changed: Note, combo and strategy-matrix forms now use the rich markdown editor (note content capped at 2000 characters)
+
+### Refactor: Memo, strategy-matrix cell and glossary editors converge on the shared RichMarkdownEditor
+
 ### Added: Charge and double-quarter-circle motions in the notation toolbar (with bracket-aware glyphs)
 
 ## 2026-06-22
@@ -18,7 +26,7 @@ All notable changes to this project will be documented in this file.
 
 ### Refactor: Extract a shared ConfirmDeleteDialog + useDeleteDialog hook and reuse them across admin, note, combo lists (DRY)
 
-### Refactor: Extract a generic RecentSection component and thin the three dashboard recent-* sections down to config (DRY)
+### Refactor: Extract a generic RecentSection component and thin the three dashboard recent-\* sections down to config (DRY)
 
 ### Refactor: Extract a useActionToast hook and migrate the 16 next-safe-action toast call sites onto it (DRY)
 

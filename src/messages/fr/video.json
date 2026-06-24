@@ -74,6 +74,7 @@
   },
   "validation": {
     "noteMin": "La note doit contenir au moins 2 caractères",
+    "noteMax": "La note ne peut pas dépasser 2000 caractères",
     "tagRequired": "Au moins un tag doit être sélectionné",
     "tagMax": "Maximum 10 tags autorisés",
     "noteIdRequired": "L'ID de la note est requis"
