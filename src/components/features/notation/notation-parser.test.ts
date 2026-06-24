@@ -9,6 +9,11 @@ describe("numpadToGlyphs", () => {
   it("returns null when a digit is not directional (contains 0)", () => {
     expect(numpadToGlyphs("360")).toBeNull();
   });
+
+  it("keeps charge brackets around the directional glyphs", () => {
+    expect(numpadToGlyphs("[4]6")).toBe("[←]→");
+    expect(numpadToGlyphs("[2]8")).toBe("[↓]↑");
+  });
 });
 
 describe("parseNotation", () => {
@@ -105,5 +110,17 @@ describe("parseNotation", () => {
 
   it("does not match a single button letter inside a word", () => {
     expect(parseNotation("Punch")).toEqual([{ kind: "text", raw: "Punch" }]);
+  });
+
+  it("recognizes a charge motion with brackets ([4]6P)", () => {
+    expect(parseNotation("[4]6P")).toEqual([
+      {
+        kind: "motion",
+        raw: "[4]6",
+        glyphs: "[←]→",
+        label: expect.stringContaining("Charge"),
+      },
+      { kind: "button", raw: "P", intensity: "neutral" },
+    ]);
   });
 });
