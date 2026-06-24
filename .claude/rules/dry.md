@@ -14,6 +14,9 @@ Before duplicating logic, markup or config, reuse the shared building blocks bel
 - **i18n test render**: `renderWithIntl` from `@/test/render-with-intl` — never redeclare the `NextIntlClientProvider` wrapper in a test file.
 - **Translations**: `getTranslations` / `useTranslations` + the `fr` catalogs (see `i18n.md`). Generic labels live in the `common` namespace — reuse, don't duplicate.
 - **Form validation display**: the shadcn `FormMessage` already translates Zod message keys — don't build per-form error rendering.
+- **Rich text input**: `RichMarkdownEditor` from `@/components/features/editor/rich-markdown-editor` — controlled (`value` / `onChange`) markdown editor bundling the format toolbar + `NotationToolbar` + edit/preview toggle + char counter. Drop-in for a bare `<Textarea>` (spread `{...field}` for react-hook-form). Toggle `formatToolbar` / `notationToolbar` / `preview` per surface. Never re-inline a textarea-with-toolbar-and-preview block.
+- **Markdown rendering**: `MarkdownPreview` from `@/components/features/notation/markdown-preview` — the single place wiring `remark-gfm` + `rehypeMark` (`==highlight==`) + `notationComponents`. Don't re-inline `<ReactMarkdown remarkPlugins={…} components={notationComponents}>`.
+- **Textarea selection edits**: `wrapSelection` / `prefixLines` / `replaceSelection` from `@/lib/wrap-selection` (pure, like `insert-notation.ts`) — don't hand-roll cursor slicing in a component.
 
 ## Extract when you see it 3×
 

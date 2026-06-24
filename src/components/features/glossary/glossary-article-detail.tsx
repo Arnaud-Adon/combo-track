@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useTranslations } from "next-intl";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeMark from "@/lib/markdown/rehype-mark";
 import type { ArticleDetail } from "../../../../prisma/query/glossary.query";
 import { formatDate } from "@/utils";
 import { CategoryBadge } from "./glossary-category-badge";
@@ -49,6 +50,7 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
       <div className="max-w-none text-[15px] leading-relaxed">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
+          rehypePlugins={[rehypeMark]}
           components={{
             h1: ({ children }) => (
               <h1 className="mt-8 mb-4 text-2xl font-bold first:mt-0">
@@ -88,6 +90,11 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
               <strong className="text-foreground font-semibold">
                 {children}
               </strong>
+            ),
+            mark: ({ children }) => (
+              <mark className="bg-primary/20 text-foreground rounded-sm px-0.5">
+                {children}
+              </mark>
             ),
             code: ({ className, children }) =>
               className && /language-/.test(className) ? (

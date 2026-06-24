@@ -11,7 +11,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
+import { RichMarkdownEditor } from "@/components/features/editor/rich-markdown-editor";
 import { useSpeechRecognition } from "@/hooks/use-speech-recognition";
 import { useVideoPlayerStore } from "@/stores/video-player";
 import { formatTime } from "@/utils";
@@ -23,7 +23,11 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { createNoteAction } from "./note-action";
-import { noteSchema, NoteSchemaType } from "./note-schema";
+import {
+  MAX_NOTE_CONTENT_LENGTH,
+  noteSchema,
+  NoteSchemaType,
+} from "./note-schema";
 import { NoteSuggestTagsButton } from "./note-suggest-tags-button";
 import { NoteTagButton } from "./note-tag-button";
 import { NoteTemplateSelector } from "./note-template-selector";
@@ -90,7 +94,10 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
 
   useEffect(() => {
     if (transcript) {
-      form.setValue("note", transcript, { shouldDirty: true, shouldValidate: true });
+      form.setValue("note", transcript, {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
     }
   }, [transcript, form]);
 
@@ -173,7 +180,7 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <FormLabel>{t("label")}</FormLabel>
-                  <span className="bg-accent text-primary rounded font-mono text-xs font-bold tabular-nums px-2 py-0.5">
+                  <span className="bg-accent text-primary rounded px-2 py-0.5 font-mono text-xs font-bold tabular-nums">
                     {formatTime(currentTime)}
                   </span>
                 </div>
@@ -188,9 +195,11 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
                 </div>
               </div>
               <FormControl>
-                <Textarea
+                <RichMarkdownEditor
                   {...field}
+                  maxLength={MAX_NOTE_CONTENT_LENGTH}
                   placeholder={t("placeholder")}
+                  ariaLabel={t("label")}
                   className="min-h-[100px]"
                 />
               </FormControl>
@@ -207,7 +216,9 @@ export function NoteForm({ matchId, availableTags }: NoteFormProps) {
 
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <FormLabel>{t("tagsLabel", { count: selectedTagIds.length })}</FormLabel>
+            <FormLabel>
+              {t("tagsLabel", { count: selectedTagIds.length })}
+            </FormLabel>
             <NoteSuggestTagsButton
               onSuggest={handleSuggestTags}
               isSuggesting={isSuggesting}

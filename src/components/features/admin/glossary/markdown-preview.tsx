@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+import rehypeMark from "@/lib/markdown/rehype-mark";
 import { notationComponents } from "@/components/features/notation/notation-renderer";
 
 interface MarkdownPreviewProps {
@@ -17,6 +18,7 @@ export function MarkdownPreview({ content }: MarkdownPreviewProps) {
     <div className="prose prose-invert border-border bg-card text-accent-foreground max-w-none rounded-lg border p-4">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
+        rehypePlugins={[rehypeMark]}
         components={{
           ...notationComponents,
           img: ({ src, alt }) => (

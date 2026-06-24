@@ -19,14 +19,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
-import { Eye, Pencil } from "lucide-react";
+import { RichMarkdownEditor } from "@/components/features/editor/rich-markdown-editor";
 import { useTranslations } from "next-intl";
-import { useEffect, useRef, useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import { notationComponents } from "@/components/features/notation/notation-renderer";
-import { NotationToolbar } from "@/components/features/notation/notation-toolbar";
+import { useEffect, useState } from "react";
 import { FrameLegend } from "./frame-legend";
 import { MAX_CELL_LENGTH } from "./strategy-matrix-types";
 
@@ -50,14 +45,11 @@ export function StrategyMatrixCellEditor({
   const t = useTranslations("strategyMatrix");
   const tc = useTranslations("common");
   const [content, setContent] = useState(initialContent);
-  const [showPreview, setShowPreview] = useState(false);
   const [confirmCloseOpen, setConfirmCloseOpen] = useState(false);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if (open) {
       setContent(initialContent);
-      setShowPreview(false);
       setConfirmCloseOpen(false);
     }
   }, [open, initialContent]);
@@ -123,65 +115,18 @@ export function StrategyMatrixCellEditor({
               <span className="text-muted-foreground">×</span>
               <span>{opponentLevelLabel}</span>
             </DialogTitle>
-            <DialogDescription>
-              {t("cellEditor.description")}
-            </DialogDescription>
+            <DialogDescription>{t("cellEditor.description")}</DialogDescription>
           </DialogHeader>
 
           <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-muted-foreground font-mono text-xs tabular-nums">
-                {content.length} / {MAX_CELL_LENGTH}
-              </span>
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowPreview((v) => !v)}
-              >
-                {showPreview ? (
-                  <>
-                    <Pencil className="mr-2 h-3 w-3" />
-                    {t("cellEditor.edit")}
-                  </>
-                ) : (
-                  <>
-                    <Eye className="mr-2 h-3 w-3" />
-                    {t("cellEditor.preview")}
-                  </>
-                )}
-              </Button>
-            </div>
-
-            {!showPreview && (
-              <NotationToolbar
-                textareaRef={textareaRef}
-                value={content}
-                onValueChange={setContent}
-                maxLength={MAX_CELL_LENGTH}
-              />
-            )}
-
-            {showPreview ? (
-              <div className="prose prose-invert border-border bg-muted text-foreground min-h-[200px] max-w-none rounded-md border p-3 text-sm">
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  components={notationComponents}
-                >
-                  {content || t("cellEditor.emptyPreview")}
-                </ReactMarkdown>
-              </div>
-            ) : (
-              <Textarea
-                ref={textareaRef}
-                value={content}
-                onChange={(e) =>
-                  setContent(e.target.value.slice(0, MAX_CELL_LENGTH))
-                }
-                placeholder={t("cellEditor.placeholder")}
-                className="min-h-[200px]"
-              />
-            )}
+            <RichMarkdownEditor
+              value={content}
+              onChange={setContent}
+              maxLength={MAX_CELL_LENGTH}
+              placeholder={t("cellEditor.placeholder")}
+              ariaLabel={t("cellEditor.eyebrow")}
+              className="min-h-[200px]"
+            />
 
             <FrameLegend className="pt-1" />
           </div>

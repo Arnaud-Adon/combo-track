@@ -40,4 +40,11 @@ export const notationComponents: Partial<Components> = {
 
     return renderInlineNotation(children);
   },
+  mark({ children }) {
+    return (
+      <mark className="bg-primary/20 text-foreground rounded-sm px-0.5">
+        {children}
+      </mark>
+    );
+  },
 };

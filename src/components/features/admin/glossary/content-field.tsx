@@ -5,9 +5,8 @@ import { useTranslations } from "next-intl";
 import { useRef, useState, type ChangeEvent } from "react";
 import { toast } from "sonner";
 
-import { NotationToolbar } from "@/components/features/notation/notation-toolbar";
+import { RichMarkdownEditor } from "@/components/features/editor/rich-markdown-editor";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { uploadGlossaryImageAction } from "@/lib/actions/upload-glossary-image";
 
 interface ContentFieldProps {
@@ -83,11 +82,6 @@ export function ContentField({ value, onChange }: ContentFieldProps) {
   return (
     <div className="space-y-2">
       <div className="flex flex-wrap items-center gap-2">
-        <NotationToolbar
-          textareaRef={textareaRef}
-          value={value}
-          onValueChange={onChange}
-        />
         <input
           type="file"
           accept="image/jpeg,image/png,image/webp"
@@ -116,11 +110,12 @@ export function ContentField({ value, onChange }: ContentFieldProps) {
         </label>
       </div>
 
-      <Textarea
+      <RichMarkdownEditor
         ref={textareaRef}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={onChange}
         placeholder={t("article.contentField.placeholder")}
+        ariaLabel={t("article.contentField.placeholder")}
         className="min-h-[300px] font-mono"
       />
     </div>
