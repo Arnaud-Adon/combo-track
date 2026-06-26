@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file.
 
 ### Added: Cascading button submenu on notation motions to insert combined tokens like 236LP in one click
 
+### Docs: Add anti-premature-abstraction guidance to the DRY rule
+
 ## 2026-06-24
 
 ### Added: Shared RichMarkdownEditor with a markdown formatting toolbar (bold, italic, strikethrough, highlight, headings, lists, quote, code block, link)
