@@ -68,6 +68,7 @@
     "react-twitch-embed": "^3.0.2",
     "react-youtube": "^10.1.0",
     "recharts": "2.15.4",
+    "remark-breaks": "^4.0.0",
     "remark-gfm": "^4.0.1",
     "simple-icons": "^16.3.0",
     "sonner": "^2.0.6",

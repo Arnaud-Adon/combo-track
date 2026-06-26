@@ -1,4 +1,5 @@
 import ReactMarkdown from "react-markdown";
+import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
 
 import rehypeMark from "@/lib/markdown/rehype-mark";
@@ -10,9 +11,15 @@ type Props = {
   children: string;
   className?: string;
   emptyFallback?: string;
+  breaks?: boolean;
 };
 
-export function MarkdownPreview({ children, className, emptyFallback }: Props) {
+export function MarkdownPreview({
+  children,
+  className,
+  emptyFallback,
+  breaks = false,
+}: Props) {
   return (
     <div
       className={cn(
@@ -21,7 +28,7 @@ export function MarkdownPreview({ children, className, emptyFallback }: Props) {
       )}
     >
       <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
+        remarkPlugins={breaks ? [remarkGfm, remarkBreaks] : [remarkGfm]}
         rehypePlugins={[rehypeMark]}
         components={notationComponents}
       >

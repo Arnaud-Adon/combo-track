@@ -48,7 +48,7 @@ export function MemoVisualizeDialog({ title, content }: Props) {
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
         {content ? (
-          <MarkdownPreview>{content}</MarkdownPreview>
+          <MarkdownPreview breaks>{content}</MarkdownPreview>
         ) : (
           <p className="text-muted-foreground text-sm">
             {t("visualize.emptyContent")}
