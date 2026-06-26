@@ -7,17 +7,19 @@ import {
   type KeyboardEvent,
   type ComponentProps,
 } from "react";
-import { Eye, Pencil } from "lucide-react";
+import { Eye, Pencil, Redo2, Undo2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { MarkdownPreview } from "@/components/features/notation/markdown-preview";
 import { NotationToolbar } from "@/components/features/notation/notation-toolbar";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { wrapSelection } from "@/lib/wrap-selection";
 
 import { FormatToolbar } from "./format-toolbar";
+import { useEditorHistory } from "./use-editor-history";
 
 type Props = Omit<ComponentProps<"textarea">, "onChange" | "value" | "ref"> & {
   value: string;
@@ -49,6 +51,7 @@ export const RichMarkdownEditor = forwardRef<HTMLTextAreaElement, Props>(
     const innerRef = useRef<HTMLTextAreaElement>(null);
 
     const currentValue = value ?? "";
+    const history = useEditorHistory(currentValue, onChange);
 
     const setRefs = (node: HTMLTextAreaElement | null) => {
       innerRef.current = node;
@@ -65,6 +68,21 @@ export const RichMarkdownEditor = forwardRef<HTMLTextAreaElement, Props>(
     const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
       if (!(event.metaKey || event.ctrlKey)) return;
       const key = event.key.toLowerCase();
+
+      if (key === "z") {
+        event.preventDefault();
+        if (event.shiftKey) {
+          history.redo();
+        } else {
+          history.undo();
+        }
+        return;
+      }
+      if (key === "y") {
+        event.preventDefault();
+        history.redo();
+        return;
+      }
       if (key !== "b" && key !== "i") return;
       event.preventDefault();
 
@@ -76,7 +94,7 @@ export const RichMarkdownEditor = forwardRef<HTMLTextAreaElement, Props>(
         maxLength,
       });
 
-      onChange(result.value);
+      history.record(result.value);
       requestAnimationFrame(() => {
         textarea?.focus();
         textarea?.setSelectionRange(result.selectionStart, result.selectionEnd);
@@ -87,11 +105,40 @@ export const RichMarkdownEditor = forwardRef<HTMLTextAreaElement, Props>(
       <div className="space-y-2">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
+            {!showPreview && (
+              <div className="flex items-center gap-0.5">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="size-8"
+                  aria-label={t("undo")}
+                  title={t("undo")}
+                  disabled={!history.canUndo}
+                  onClick={history.undo}
+                >
+                  <Undo2 aria-hidden />
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="size-8"
+                  aria-label={t("redo")}
+                  title={t("redo")}
+                  disabled={!history.canRedo}
+                  onClick={history.redo}
+                >
+                  <Redo2 aria-hidden />
+                </Button>
+                <Separator orientation="vertical" className="mx-1 h-5" />
+              </div>
+            )}
             {!showPreview && formatToolbar && (
               <FormatToolbar
                 textareaRef={innerRef}
                 value={currentValue}
-                onValueChange={onChange}
+                onValueChange={history.record}
                 maxLength={maxLength}
               />
             )}
@@ -99,7 +146,7 @@ export const RichMarkdownEditor = forwardRef<HTMLTextAreaElement, Props>(
               <NotationToolbar
                 textareaRef={innerRef}
                 value={currentValue}
-                onValueChange={onChange}
+                onValueChange={history.record}
                 maxLength={maxLength}
               />
             )}
@@ -146,7 +193,7 @@ export const RichMarkdownEditor = forwardRef<HTMLTextAreaElement, Props>(
             {...rest}
             ref={setRefs}
             value={currentValue}
-            onChange={(e) => onChange(clamp(e.target.value))}
+            onChange={(e) => history.record(clamp(e.target.value))}
             onKeyDown={handleKeyDown}
             aria-label={ariaLabel}
             className={cn("min-h-[120px]", className)}
