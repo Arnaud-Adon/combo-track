@@ -85,7 +85,12 @@ export function StrategyMatrixGrid({
                       t("grid.emptyCell")
                     )
                   ) : (
-                    <MarkdownPreview className="prose-sm line-clamp-5 [&_*]:my-0 [&_li]:leading-snug [&_p]:leading-snug">
+                    <MarkdownPreview
+                      className={cn(
+                        "prose-sm [&_*]:my-0 [&_li]:leading-snug [&_p]:leading-snug",
+                        !readOnly && "line-clamp-5",
+                      )}
+                    >
                       {content}
                     </MarkdownPreview>
                   )}

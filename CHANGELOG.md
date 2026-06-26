@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## 2026-06-26
 
+### Changed: Render markdown (colors, notation, line breaks) in the memo and strategy matrix visualize dialogs
+
 ### Added: Undo/redo arrows in the rich markdown editor with Ctrl/Cmd+Z and Ctrl/Cmd+Shift+Z shortcuts
 
 ### Added: Cascading button submenu on notation positions to insert combined tokens like st.LP in one click

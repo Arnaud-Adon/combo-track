@@ -1,5 +1,6 @@
 "use client";
 
+import { MarkdownPreview } from "@/components/features/notation/markdown-preview";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -47,7 +48,7 @@ export function MemoVisualizeDialog({ title, content }: Props) {
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
         {content ? (
-          <p className="text-sm whitespace-pre-wrap">{content}</p>
+          <MarkdownPreview>{content}</MarkdownPreview>
         ) : (
           <p className="text-muted-foreground text-sm">
             {t("visualize.emptyContent")}
