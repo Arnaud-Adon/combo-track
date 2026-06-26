@@ -18,6 +18,19 @@ Before duplicating logic, markup or config, reuse the shared building blocks bel
 - **Markdown rendering**: `MarkdownPreview` from `@/components/features/notation/markdown-preview` — the single place wiring `remark-gfm` + `rehypeMark` (`==highlight==`) + `notationComponents`. Don't re-inline `<ReactMarkdown remarkPlugins={…} components={notationComponents}>`.
 - **Textarea selection edits**: `wrapSelection` / `prefixLines` / `replaceSelection` from `@/lib/wrap-selection` (pure, like `insert-notation.ts`) — don't hand-roll cursor slicing in a component.
 
+## Don't over-DRY — avoid premature abstraction
+
+DRY is about a single source of truth for **knowledge**, not about deleting every visual or syntactic similarity. Wrong abstractions cost more than duplication: they couple unrelated callers, sprout boolean/config flags, and are painful to unwind. Prefer a little duplication over the wrong abstraction.
+
+**Do NOT extract when:**
+
+- The pattern appears only **2×** and isn't error-prone — wait for the third (rule of three). Two similar blocks side by side are fine and often clearer.
+- The similarity is **coincidental** (the blocks look alike today but answer to different reasons and will drift apart). Duplication that evolves independently is not a DRY violation.
+- Collapsing them forces a parametrized component/function whose body is mostly `if (variant)` branches or `renderX` props — that's a sign the cases aren't really the same thing.
+- The shared helper would need to know about its callers' specifics (leaky params, context flags) to behave correctly.
+
+**When unsure**: leave the duplication, and add a short note (or a backlog entry below) at the spot so the third occurrence triggers the extraction with full context. Don't abstract on a guess.
+
 ## Extract when you see it 3×
 
 - A confirmation dialog → reuse `ConfirmDeleteDialog`, not an inline `AlertDialog` per list.
