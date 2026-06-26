@@ -7,16 +7,27 @@ import {
   FGC_POSITIONS,
   FRAME_OPTIONS,
 } from "@/components/features/strategy-matrix/strategy-matrix-types";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { insertNotationToken } from "@/lib/insert-notation";
+import { ChevronDown } from "lucide-react";
 import { useState, type RefObject } from "react";
 import { numpadToGlyphs } from "./notation-parser";
 
@@ -33,8 +44,6 @@ export function NotationToolbar({
   onValueChange,
   maxLength,
 }: Props) {
-  const [notationKey, setNotationKey] = useState(0);
-  const [motionKey, setMotionKey] = useState(0);
   const [frameKey, setFrameKey] = useState(0);
 
   const handleInsert = (
@@ -59,69 +68,118 @@ export function NotationToolbar({
     });
   };
 
+  const insertButton = (token: string) =>
+    handleInsert(token, { closeZone: true });
+
   return (
     <div className="flex items-center gap-2">
-      <Select
-        key={`notation-${notationKey}`}
-        onValueChange={(v) => {
-          handleInsert(v, {
-            closeZone: FGC_BUTTONS.some((button) => button.value === v),
-          });
-          setNotationKey((k) => k + 1);
-        }}
-      >
-        <SelectTrigger size="sm" className="w-auto text-xs">
-          <SelectValue placeholder="Notation..." />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectLabel>Positions</SelectLabel>
-            {FGC_POSITIONS.map((item) => (
-              <SelectItem key={item.value} value={item.value}>
-                {item.label}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-          <SelectGroup>
-            <SelectLabel>Boutons</SelectLabel>
-            {FGC_BUTTONS.map((item) => (
-              <SelectItem key={item.value} value={item.value}>
-                {item.label}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-          <SelectGroup>
-            <SelectLabel>Actions</SelectLabel>
-            {FGC_ACTIONS.map((item) => (
-              <SelectItem key={item.value} value={item.value}>
-                {item.label}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="w-auto gap-1.5 px-3 text-xs font-normal text-muted-foreground"
+          >
+            Notation...
+            <ChevronDown aria-hidden className="size-4 opacity-50" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start">
+          <DropdownMenuLabel>Positions</DropdownMenuLabel>
+          {FGC_POSITIONS.map((position) => (
+            <DropdownMenuSub key={position.value}>
+              <DropdownMenuSubTrigger>{position.label}</DropdownMenuSubTrigger>
+              <DropdownMenuSubContent>
+                <DropdownMenuItem
+                  onSelect={() => handleInsert(position.value)}
+                  className="font-mono"
+                >
+                  {position.value}
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                {FGC_BUTTONS.map((button) => (
+                  <DropdownMenuItem
+                    key={button.value}
+                    onSelect={() => insertButton(position.value + button.value)}
+                    className="font-mono"
+                  >
+                    {position.value}
+                    {button.value}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
+          ))}
 
-      <Select
-        key={`motion-${motionKey}`}
-        onValueChange={(v) => {
-          handleInsert(v);
-          setMotionKey((k) => k + 1);
-        }}
-      >
-        <SelectTrigger size="sm" className="w-auto text-xs">
-          <SelectValue placeholder="Motion..." />
-        </SelectTrigger>
-        <SelectContent>
-          {FGC_MOTIONS.map((item) => {
-            const glyphs = numpadToGlyphs(item.value);
+          <DropdownMenuSeparator />
+          <DropdownMenuLabel>Boutons</DropdownMenuLabel>
+          {FGC_BUTTONS.map((button) => (
+            <DropdownMenuItem
+              key={button.value}
+              onSelect={() => insertButton(button.value)}
+            >
+              {button.label}
+            </DropdownMenuItem>
+          ))}
+
+          <DropdownMenuSeparator />
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          {FGC_ACTIONS.map((action) => (
+            <DropdownMenuItem
+              key={action.value}
+              onSelect={() => handleInsert(action.value)}
+            >
+              {action.label}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="w-auto gap-1.5 px-3 text-xs font-normal text-muted-foreground"
+          >
+            Motion...
+            <ChevronDown aria-hidden className="size-4 opacity-50" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start">
+          {FGC_MOTIONS.map((motion) => {
+            const glyphs = numpadToGlyphs(motion.value);
             return (
-              <SelectItem key={item.value} value={item.value}>
-                {glyphs ? `${glyphs}  ${item.label}` : item.label}
-              </SelectItem>
+              <DropdownMenuSub key={motion.value}>
+                <DropdownMenuSubTrigger>
+                  {glyphs ? `${glyphs}  ${motion.label}` : motion.label}
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem
+                    onSelect={() => handleInsert(motion.value)}
+                    className="font-mono"
+                  >
+                    {glyphs ? `${glyphs} ${motion.value}` : motion.value}
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  {FGC_BUTTONS.map((button) => (
+                    <DropdownMenuItem
+                      key={button.value}
+                      onSelect={() => insertButton(motion.value + button.value)}
+                      className="font-mono"
+                    >
+                      {motion.value}
+                      {button.value}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
             );
           })}
-        </SelectContent>
-      </Select>
+        </DropdownMenuContent>
+      </DropdownMenu>
 
       <Select
         key={`frame-${frameKey}`}
