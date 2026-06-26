@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## 2026-06-26
 
+### Added: Undo/redo arrows in the rich markdown editor with Ctrl/Cmd+Z and Ctrl/Cmd+Shift+Z shortcuts
+
 ### Added: Cascading button submenu on notation positions to insert combined tokens like st.LP in one click
 
 ### Added: Cascading button submenu on notation motions to insert combined tokens like 236LP in one click

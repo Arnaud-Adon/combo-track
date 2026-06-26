@@ -42,6 +42,8 @@
     "linkUrlInvalid": "URL invalide",
     "linkInsert": "Insérer",
     "linkCancel": "Annuler",
+    "undo": "Annuler",
+    "redo": "Rétablir",
     "preview": "Aperçu",
     "edit": "Édition",
     "emptyPreview": "*Aucun contenu*"
