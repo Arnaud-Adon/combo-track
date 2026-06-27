@@ -2,6 +2,11 @@
 
 import { prisma } from "@/lib/prisma";
 import { adminActionClient } from "@/lib/admin-action";
+import {
+  assertSlugAvailable,
+  normalizeOptionalUrl,
+  runDelete,
+} from "@/lib/admin/entity-actions";
 import { revalidatePath } from "next/cache";
 import { getTranslations } from "next-intl/server";
 import { createGameSchema, updateGameSchema } from "./game-schema";
@@ -13,19 +18,16 @@ export const createGameAction = adminActionClient
     const t = await getTranslations("admin");
     const { name, slug, iconUrl } = parsedInput;
 
-    const existing = await prisma.game.findUnique({
-      where: { slug },
-    });
-
-    if (existing) {
-      throw new Error(t("game.errors.slugExists"));
-    }
+    await assertSlugAvailable(
+      () => prisma.game.findUnique({ where: { slug } }),
+      t("game.errors.slugExists"),
+    );
 
     const game = await prisma.game.create({
       data: {
         name,
         slug,
-        iconUrl: iconUrl && iconUrl.length > 0 ? iconUrl : null,
+        iconUrl: normalizeOptionalUrl(iconUrl),
       },
     });
 
@@ -41,23 +43,17 @@ export const updateGameAction = adminActionClient
     const t = await getTranslations("admin");
     const { id, name, slug, iconUrl } = parsedInput;
 
-    const existing = await prisma.game.findFirst({
-      where: {
-        slug,
-        NOT: { id },
-      },
-    });
-
-    if (existing) {
-      throw new Error(t("game.errors.slugExists"));
-    }
+    await assertSlugAvailable(
+      () => prisma.game.findFirst({ where: { slug, NOT: { id } } }),
+      t("game.errors.slugExists"),
+    );
 
     const game = await prisma.game.update({
       where: { id },
       data: {
         name,
         slug,
-        iconUrl: iconUrl && iconUrl.length > 0 ? iconUrl : null,
+        iconUrl: normalizeOptionalUrl(iconUrl),
       },
     });
 
@@ -69,17 +65,11 @@ export const updateGameAction = adminActionClient
 
 export const deleteGameAction = adminActionClient
   .inputSchema(
-    z.object({
-      id: z.string().min(1, "admin.validation.game.idRequired"),
-    }),
+    z.object({ id: z.string().min(1, "admin.validation.game.idRequired") }),
   )
-  .action(async ({ parsedInput }) => {
-    await prisma.game.delete({
-      where: { id: parsedInput.id },
-    });
-
-    revalidatePath("/admin/games");
-    revalidatePath("/characters");
-
-    return { success: true };
-  });
+  .action(async ({ parsedInput }) =>
+    runDelete((id) => prisma.game.delete({ where: { id } }), parsedInput.id, [
+      "/admin/games",
+      "/characters",
+    ]),
+  );

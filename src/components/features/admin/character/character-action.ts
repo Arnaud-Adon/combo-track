@@ -2,6 +2,11 @@
 
 import { prisma } from "@/lib/prisma";
 import { adminActionClient } from "@/lib/admin-action";
+import {
+  assertSlugAvailable,
+  normalizeOptionalUrl,
+  runDelete,
+} from "@/lib/admin/entity-actions";
 import { revalidatePath } from "next/cache";
 import { getTranslations } from "next-intl/server";
 import {
@@ -21,20 +26,17 @@ export const createCharacterAction = adminActionClient
       throw new Error(t("character.errors.gameNotFound"));
     }
 
-    const existing = await prisma.character.findFirst({
-      where: { gameId, slug },
-    });
-
-    if (existing) {
-      throw new Error(t("character.errors.slugExists"));
-    }
+    await assertSlugAvailable(
+      () => prisma.character.findFirst({ where: { gameId, slug } }),
+      t("character.errors.slugExists"),
+    );
 
     const character = await prisma.character.create({
       data: {
         gameId,
         name,
         slug,
-        iconUrl: iconUrl && iconUrl.length > 0 ? iconUrl : null,
+        iconUrl: normalizeOptionalUrl(iconUrl),
       },
     });
 
@@ -55,17 +57,10 @@ export const updateCharacterAction = adminActionClient
       throw new Error(t("character.errors.gameNotFound"));
     }
 
-    const existing = await prisma.character.findFirst({
-      where: {
-        gameId,
-        slug,
-        NOT: { id },
-      },
-    });
-
-    if (existing) {
-      throw new Error(t("character.errors.slugExists"));
-    }
+    await assertSlugAvailable(
+      () => prisma.character.findFirst({ where: { gameId, slug, NOT: { id } } }),
+      t("character.errors.slugExists"),
+    );
 
     const character = await prisma.character.update({
       where: { id },
@@ -73,7 +68,7 @@ export const updateCharacterAction = adminActionClient
         gameId,
         name,
         slug,
-        iconUrl: iconUrl && iconUrl.length > 0 ? iconUrl : null,
+        iconUrl: normalizeOptionalUrl(iconUrl),
       },
     });
 
@@ -85,17 +80,12 @@ export const updateCharacterAction = adminActionClient
 
 export const deleteCharacterAction = adminActionClient
   .inputSchema(
-    z.object({
-      id: z.string().min(1, "admin.validation.character.idRequired"),
-    }),
+    z.object({ id: z.string().min(1, "admin.validation.character.idRequired") }),
   )
-  .action(async ({ parsedInput }) => {
-    await prisma.character.delete({
-      where: { id: parsedInput.id },
-    });
-
-    revalidatePath("/admin/characters");
-    revalidatePath("/admin/games");
-
-    return { success: true };
-  });
+  .action(async ({ parsedInput }) =>
+    runDelete(
+      (id) => prisma.character.delete({ where: { id } }),
+      parsedInput.id,
+      ["/admin/characters", "/admin/games"],
+    ),
+  );

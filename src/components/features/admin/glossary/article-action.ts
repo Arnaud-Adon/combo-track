@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { adminActionClient } from "@/lib/admin-action";
+import { assertSlugAvailable, runDelete } from "@/lib/admin/entity-actions";
 import { embedGlossaryArticleIfNeeded } from "@/lib/rag/embed-content";
 import { revalidatePath } from "next/cache";
 import { after } from "next/server";
@@ -16,14 +17,10 @@ export const createArticleAction = adminActionClient
     const { title, slug, content, excerpt, category, image, published } =
       parsedInput;
 
-    // Check slug uniqueness
-    const existing = await prisma.glossaryArticle.findUnique({
-      where: { slug },
-    });
-
-    if (existing) {
-      throw new Error(t("article.errors.slugExists"));
-    }
+    await assertSlugAvailable(
+      () => prisma.glossaryArticle.findUnique({ where: { slug } }),
+      t("article.errors.slugExists"),
+    );
 
     const article = await prisma.glossaryArticle.create({
       data: {
@@ -59,17 +56,10 @@ export const updateArticleAction = adminActionClient
     const { id, title, slug, content, excerpt, category, image, published } =
       parsedInput;
 
-    // Check slug uniqueness (excluding current article)
-    const existing = await prisma.glossaryArticle.findFirst({
-      where: {
-        slug,
-        NOT: { id },
-      },
-    });
-
-    if (existing) {
-      throw new Error(t("article.errors.slugExists"));
-    }
+    await assertSlugAvailable(
+      () => prisma.glossaryArticle.findFirst({ where: { slug, NOT: { id } } }),
+      t("article.errors.slugExists"),
+    );
 
     const article = await prisma.glossaryArticle.update({
       where: { id },
@@ -100,17 +90,12 @@ export const updateArticleAction = adminActionClient
 
 export const deleteArticleAction = adminActionClient
   .inputSchema(
-    z.object({
-      id: z.string().min(1, "admin.validation.article.idRequired"),
-    }),
+    z.object({ id: z.string().min(1, "admin.validation.article.idRequired") }),
   )
-  .action(async ({ parsedInput }) => {
-    await prisma.glossaryArticle.delete({
-      where: { id: parsedInput.id },
-    });
-
-    revalidatePath("/glossary");
-    revalidatePath("/admin/glossary");
-
-    return { success: true };
-  });
+  .action(async ({ parsedInput }) =>
+    runDelete(
+      (id) => prisma.glossaryArticle.delete({ where: { id } }),
+      parsedInput.id,
+      ["/glossary", "/admin/glossary"],
+    ),
+  );

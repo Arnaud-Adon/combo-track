@@ -36,6 +36,8 @@ All notable changes to this project will be documented in this file.
 
 ## 2026-06-22
 
+### Refactor: Extract shared admin action helpers (runDelete/assertSlugAvailable/normalizeOptionalUrl) for game/character/article actions (DRY)
+
 ### Refactor: Add a shared Translator type and replace the duplicated MatchTranslator/TemplateTranslator/inline casts (DRY)
 
 ### Refactor: Add formatDateLong/formatDateFull utils and route ~9 inline toLocaleDateString call sites through @/utils (DRY)
