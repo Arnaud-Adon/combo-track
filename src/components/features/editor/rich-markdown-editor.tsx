@@ -184,7 +184,7 @@ export const RichMarkdownEditor = forwardRef<HTMLTextAreaElement, Props>(
         {showPreview ? (
           <MarkdownPreview
             emptyFallback={t("emptyPreview")}
-            className="border-border bg-muted min-h-[120px] rounded-md border p-3"
+            className="border-border bg-muted min-h-[120px] space-y-4 rounded-md border p-3 leading-relaxed [&_li]:leading-relaxed [&_ol]:list-decimal [&_ol]:pl-6 [&_ul]:list-disc [&_ul]:pl-6"
           >
             {currentValue}
           </MarkdownPreview>
