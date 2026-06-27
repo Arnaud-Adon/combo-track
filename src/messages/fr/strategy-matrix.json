@@ -142,7 +142,9 @@
   },
   "visualize": {
     "trigger": "Visualiser",
-    "error": "Impossible d'afficher cette matrice."
+    "error": "Impossible d'afficher cette matrice.",
+    "previous": "Matrice précédente",
+    "next": "Matrice suivante"
   },
   "frameLegend": {
     "heading": "Frame data",

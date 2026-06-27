@@ -36,7 +36,9 @@
   },
   "visualize": {
     "trigger": "Visualiser",
-    "emptyContent": "Aucun contenu."
+    "emptyContent": "Aucun contenu.",
+    "previous": "Mémo précédent",
+    "next": "Mémo suivant"
   },
   "errors": {
     "notFound": "Mémo introuvable",

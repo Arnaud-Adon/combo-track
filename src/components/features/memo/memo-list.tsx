@@ -18,10 +18,11 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { FolderOpen, Trash2 } from "lucide-react";
+import { Eye, FolderOpen, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useActionToast } from "@/hooks/use-action-toast";
 import { formatDate } from "@/utils";
 import type { MemoListItem } from "../../../../prisma/query/memo.query";
@@ -35,7 +36,9 @@ type Props = {
 export function MemoList({ memos }: Props) {
   const router = useRouter();
   const t = useTranslations("memo.list");
+  const tViz = useTranslations("memo.visualize");
   const tCommon = useTranslations("common.buttons");
+  const [visualizeIndex, setVisualizeIndex] = useState<number | null>(null);
   const { execute, isPending } = useActionToast(deleteMemoAction, {
     successMessage: t("deleted"),
     errorMessage: t("deleteError"),
@@ -56,66 +59,88 @@ export function MemoList({ memos }: Props) {
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {memos.map((memo) => (
-        <Card key={memo.id} className="flex flex-col gap-3 p-4">
-          <div className="space-y-1">
-            <h3 className="line-clamp-1 font-semibold">{memo.title}</h3>
-            {memo.content && (
-              <p className="text-muted-foreground line-clamp-3 text-sm whitespace-pre-wrap">
-                {memo.content}
-              </p>
-            )}
-          </div>
-          <div className="text-muted-foreground text-xs">
-            {t("updatedOn")} {formatDate(memo.updatedAt)}
-          </div>
-          <div className="mt-auto flex justify-end gap-2">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button asChild size="icon" variant="outline">
-                  <Link href={`/notes/memo/${memo.id}`} aria-label={t("open")}>
-                    <FolderOpen className="h-4 w-4" />
-                  </Link>
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>{t("open")}</TooltipContent>
-            </Tooltip>
-            <MemoVisualizeDialog title={memo.title} content={memo.content} />
-            <AlertDialog>
+    <>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {memos.map((memo, index) => (
+          <Card key={memo.id} className="flex flex-col gap-3 p-4">
+            <div className="space-y-1">
+              <h3 className="line-clamp-1 font-semibold">{memo.title}</h3>
+              {memo.content && (
+                <p className="text-muted-foreground line-clamp-3 text-sm whitespace-pre-wrap">
+                  {memo.content}
+                </p>
+              )}
+            </div>
+            <div className="text-muted-foreground text-xs">
+              {t("updatedOn")} {formatDate(memo.updatedAt)}
+            </div>
+            <div className="mt-auto flex justify-end gap-2">
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <AlertDialogTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      disabled={isPending}
-                      aria-label={t("delete")}
+                  <Button asChild size="icon" variant="outline">
+                    <Link
+                      href={`/notes/memo/${memo.id}`}
+                      aria-label={t("open")}
                     >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </AlertDialogTrigger>
+                      <FolderOpen className="h-4 w-4" />
+                    </Link>
+                  </Button>
                 </TooltipTrigger>
-                <TooltipContent>{t("delete")}</TooltipContent>
+                <TooltipContent>{t("open")}</TooltipContent>
               </Tooltip>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>{t("deleteTitle")}</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    {t("deleteDescription", { title: memo.title })}
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>{tCommon("cancel")}</AlertDialogCancel>
-                  <AlertDialogAction onClick={() => execute({ id: memo.id })}>
-                    {tCommon("delete")}
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </div>
-        </Card>
-      ))}
-    </div>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    aria-label={tViz("trigger")}
+                    onClick={() => setVisualizeIndex(index)}
+                  >
+                    <Eye className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>{tViz("trigger")}</TooltipContent>
+              </Tooltip>
+              <AlertDialog>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        disabled={isPending}
+                        aria-label={t("delete")}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </AlertDialogTrigger>
+                  </TooltipTrigger>
+                  <TooltipContent>{t("delete")}</TooltipContent>
+                </Tooltip>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>{t("deleteTitle")}</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      {t("deleteDescription", { title: memo.title })}
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>{tCommon("cancel")}</AlertDialogCancel>
+                    <AlertDialogAction onClick={() => execute({ id: memo.id })}>
+                      {tCommon("delete")}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
+          </Card>
+        ))}
+      </div>
+      <MemoVisualizeDialog
+        memos={memos}
+        index={visualizeIndex}
+        onIndexChange={setVisualizeIndex}
+      />
+    </>
   );
 }

@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## 2026-06-27
 
+### Added: Navigate between memos and strategy matrices inside the visualize dialog with side arrows and arrow keys
+
 ### Changed: Space memo visualize dialog paragraphs on double line breaks like the glossary (drop remark-breaks)
 
 ## 2026-06-26
